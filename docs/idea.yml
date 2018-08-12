@@ -1,0 +1,164 @@
+Idea:
+    Origin: Fallen Stars
+    State:
+        Statistics:
+            Base:
+              - Strength:
+                - Force
+                - Athletic
+              - Dexterity:
+                - Reflexes
+                - Initiative
+              - Intelligence:
+                - Knowledge
+                - Reason
+              - Wisdom:
+                - Faith
+                - Perception
+              - Constitution:
+                - Endurance
+                - Fortitude
+              - Charisma:
+                - Presence
+                - Willpower
+            Derived:
+              - Vitality:
+                  Effected Token: None
+                  Effect: Base Morale (Hit Points)
+              - Power:
+                  Effected Token: Attack
+                  Effect: Increase Duration
+              - Toughness:
+                  Effected Token: Defense
+                  Effect: Increase Duration
+              - Willpower:
+                  Effected Token: Morale
+                  Effect: Increase Duration
+              - Ferocious:
+                  Effected Token: Attack
+                  Effect: Increase Crit Chance
+              - Vigilance:
+                  Effected Token: Defense
+                  Effect: Increase Crit Chance
+              - Charismatic:
+                  Effected Token: Morale
+                  Effect: Increase Crit Chance
+        Gear:
+            Purpose: Gear determines probabilities of each dice
+            Quantity: 12
+            List:
+                - Helm: 1
+                - Shoulders: 1
+                - Gloves: 1
+                - Pants: 1
+                - Shoes: 1
+                - Chest: 1
+                - Belt: 1
+                - Ring: 1
+                - Ring: 1
+                - Necklace: 1
+                - Weapon:
+                    - Main_Handed: 1
+                    - Off_Handed: 1
+                    - Two_Handed: 2
+            Example:
+                Name: Helm of Resiliancy
+                Dice_Color: Blue
+    Abilities:
+
+Tokens:
+    Attributes:
+        - Duration
+    Types:
+        Attack:
+            Icon: Sword
+            Attribute: Attack
+            Quantity: 1
+            Critical: Unblockable
+            Type: Buff
+        Defense:
+            Icon: Shield
+            Attribute: Defense
+            Quantity: 1
+            Critical: Unconsumable Defense
+            Type: Buff
+        Morale:
+            Icon: Flag
+            Attribute: Morale
+            Quantity: 1
+            Critical: Double Duration
+            Type: Buff
+        Movement:
+            Icon: Boot
+            Attribute: Move
+            Quantity: 1
+            Critical: One Additional
+            Type: Buff
+        Bleed:
+            Icon: Blood
+            Attribue: Damage Over Time
+            Quantity: 1
+            Critical: None
+            Type: Debuff
+        Burn:
+            Icon: Fire
+            Attribue: Damage Over Time
+            Quantity: 1
+            Critical: None
+            Type: Debuff
+        Chill:
+            Icon: Snow Flake
+            Attribue: Double Movement Duration
+            Quantity: 1
+            Critical: Double Duration
+            Type: Debuff
+        Cripple:
+            Icon: Vine
+            Attribue: Double Movement Duration
+            Quantity: 1
+            Critical: Double Damage
+            Type: Debuff
+        Shock:
+            Icon: Lightning Bold
+            Attribue: Unblockable Damage
+            Quantity: 1
+            Critical: Double Damage
+            Type: Debuff
+Dice:
+    Face_Numbers:
+        - Primary: 1
+        - Secondary: 2
+        - Tertiary: 3
+    Faces:
+        - Sword:  Attack
+        - Shield: Defense
+        - Flag:   Morale
+    Dice_Colors:
+        Red:
+            - Sword:  1
+            - Shield: 3
+            - Flag:   2
+        Purple:
+            - Sword:  1
+            - Shield: 2
+            - Flag:   3
+        Blue:
+            - Sword:  2
+            - Shield: 1
+            - Flag:   3
+        Green:
+            - Sword:  3
+            - Shield: 1
+            - Flag:   2
+        Yellow:
+            - Sword:  3
+            - Shield: 2
+            - Flag:   1
+        Orange:
+            - Sword:  2
+            - Shield: 3
+            - Flag:   1
+        White:
+            - Sword:  2
+            - Shield: 2
+            - Flag:   2
