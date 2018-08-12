@@ -1,0 +1,157 @@
+---
+'dagger':
+    skills:
+      - simple
+      - light
+      - finesse
+      - thrown
+    damage: 
+      - slash
+    handed: 
+      - main
+      - off
+'glaive': 
+    skills: 
+      - simple
+      - martial
+      - heavy
+      - reach
+    damage: 
+      - slash
+    handed: 
+      - both
+'sickle': 
+    skills: 
+      - simple
+    damage: 
+      - slash
+    handed: 
+      - main
+      - off
+'sword': 
+    skills: 
+      - simple
+      - martial
+    damage: 
+      - slash
+    handed: 
+      - main
+      - both
+'sword great': 
+    skills: 
+      - simple
+      - martial
+      - heavy
+    damage: 
+      - slash
+    handed: 
+      - both
+'sword long': 
+    skills: 
+      - simple
+      - martial
+    damage: 
+      - slash
+    handed: 
+      - main
+      - both
+'sword short': 
+    skills: 
+      - simple
+      - martial
+      - light
+      - finesse
+    damage: 
+      - slash
+      - pierce
+    handed: 
+      - main
+      - off
+      - both
+'sword rapier': 
+    skills: 
+      - simple
+      - light
+      - finesse
+    damage: 
+      - pierce
+    handed: 
+      - main
+      - off
+'staff': 
+    skills: 
+      - simple
+    damage: 
+      - bludgeon
+    handed: 
+      - both
+'mace': 
+    skills: 
+      - simple
+      - martial
+    damage: 
+      - bludgeon
+    handed: 
+      - main
+      - both
+'morning star': 
+    skills: 
+      - simple
+      - martial
+    damage: 
+      - bludgeon
+      - pierce
+    handed: 
+      - main
+      - both
+'axe': 
+    skills: 
+      - simple
+      - martial
+      - hunt
+    damage: 
+      - chop
+    handed: 
+      - main
+      - both
+'axe great': 
+    skills: 
+      - simple
+      - martial
+      - heavy
+    damage: 
+      - chop
+    handed: 
+      - both
+'axe half moon': 
+    skills: 
+      - simple
+      - martial
+    damage: 
+      - slash
+      - pierce
+    handed: 
+      - main
+      - both
+'axe hand': 
+    skills: 
+      - simple
+      - martial
+      - light
+      - thrown
+    damage: 
+      - chop
+    handed: 
+      - main
+      - off
+'spear': 
+    skills: 
+      - simple
+      - martial
+      - reach
+      - thrown
+    damage: 
+      - pierce
+    handed: 
+      - main
+      - off

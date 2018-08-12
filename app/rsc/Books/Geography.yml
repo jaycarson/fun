@@ -1,0 +1,265 @@
+---
+types:
+    - hill
+    - island
+    - mountain
+    - plain
+    - volcano
+    - volcanic Island
+flora:
+    - desert
+    - tundra
+    - coniferous
+    - deciduous
+    - rainforest
+    - wasteland
+    - shrubland
+    - bog
+    - marsh
+    - swamp
+    - plains
+    - mangrove
+feature_keys:
+    flora_1: 250
+    flora_2: 200
+    flora_3: 150
+    flora_4: 100
+    flora_5: 50
+    water_1: 250
+    water_2: 200
+dists:
+    desert:
+        flora_1: 250
+        flora_2: 225
+        flora_3: 200
+        flora_4: 175
+        flora_5: 125
+        water_1: 250
+        water_2: 225
+        spike_1: 250
+        spike_2: 200
+        spike_3: 150
+        spike_4: 100
+        spike_5: 50
+    tundra:
+        flora_1: 250
+        flora_2: 200
+        flora_3: 100
+        flora_4: 75
+        flora_5: 50
+        water_1: 250
+        water_2: 215
+        spike_1: 250
+        spike_2: 175
+        spike_3: 125
+        spike_4: 100
+        spike_5: 50
+    coniferous:
+        flora_1: 250
+        flora_2: 150
+        flora_3: 125
+        flora_4: 100
+        flora_5: 50
+        water_1: 225
+        water_2: 200
+        spike_1: 200
+        spike_2: 175
+        spike_3: 125
+        spike_4: 75
+        spike_5: 25
+    deciduous:
+        flora_1: 200
+        flora_2: 100
+        flora_3: 75
+        flora_4: 50
+        flora_5: 25
+        water_1: 220
+        water_2: 175
+        spike_1: 200
+        spike_2: 175
+        spike_3: 100
+        spike_4: 100
+        spike_5: 50
+    rainforest:
+        flora_1: 200
+        flora_2: 100
+        flora_3: 75
+        flora_4: 50
+        flora_5: 25
+        water_1: 220
+        water_2: 200
+        spike_1: 200
+        spike_2: 100
+        spike_3: 75
+        spike_4: 60
+        spike_5: 50
+    wasteland:
+        flora_1: 250
+        flora_2: 225
+        flora_3: 150
+        flora_4: 50
+        flora_5: 50
+        water_1: 250
+        water_2: 245
+        spike_1: 240
+        spike_2: 220
+        spike_3: 210
+        spike_4: 200
+        spike_5: 100
+    shrubland:
+        flora_1: 240
+        flora_2: 210
+        flora_3: 180
+        flora_4: 100
+        flora_5: 50
+        water_1: 250
+        water_2: 230
+        spike_1: 230
+        spike_2: 210
+        spike_3: 170
+        spike_4: 150
+        spike_5: 120
+    bog:
+        flora_1: 250
+        flora_2: 200
+        flora_3: 150
+        flora_4: 100
+        flora_5: 50
+        water_1: 245
+        water_2: 110
+        spike_1: 200
+        spike_2: 120
+        spike_3: 100
+        spike_4: 50
+        spike_5: 25
+    marsh:
+        flora_1: 210
+        flora_2: 180
+        flora_3: 150
+        flora_4: 125
+        flora_5: 100
+        water_1: 242
+        water_2: 100
+        spike_1: 200
+        spike_2: 175
+        spike_3: 155
+        spike_4: 105
+        spike_5: 55
+    swamp:
+        flora_1: 200
+        flora_2: 170
+        flora_3: 140
+        flora_4: 120
+        flora_5: 100
+        water_1: 180
+        water_2: 75
+        spike_1: 200
+        spike_2: 101
+        spike_3: 73
+        spike_4: 64
+        spike_5: 51
+    plains:
+        flora_1: 250
+        flora_2: 225
+        flora_3: 204
+        flora_4: 170
+        flora_5: 160
+        water_1: 250
+        water_2: 225
+        spike_1: 250
+        spike_2: 204
+        spike_3: 154
+        spike_4: 104
+        spike_5: 50
+    mangrove:
+        flora_1: 250
+        flora_2: 200
+        flora_3: 150
+        flora_4: 100
+        flora_5: 50
+        water_1: 100
+        water_2: 50
+        spike_1: 100
+        spike_2: 75
+        spike_3: 50
+        spike_4: 25
+        spike_5: 5
+feature:
+    desert:
+        flora_heavy: saguaro
+        flora_light: prickly pear
+        wet_heavy: mud
+        wet_light: mud
+        wet_flora: brush
+    tundra:
+        flora_heavy: pine
+        flora_light: pine
+        wet_heavy: water deep
+        wet_light: water shallow
+        wet_flora: water
+    coniferous:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    deciduous:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    rainforest:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    wasteland:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    shrubland:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    bog:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    marsh:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    swamp:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    plains:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    mangrove:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
+    unknown:
+        flora_heavy: 200
+        flora_light: 100
+        wet_heavy: 200
+        wet_light: 100
+        wet_flora: swamp
