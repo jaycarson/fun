@@ -2,7 +2,7 @@ job('{{DEFAULT_PATH}}/test-job'){
     scm {
         git {
             remote {
-                url({{JENKINS_CONFIG}})
+                url({{fun}})
             }
         branch('{{BRANCH}}')
         }
