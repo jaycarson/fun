@@ -1,0 +1,16 @@
+job('Branches/{{BRANCH}}/fun-stuff'){
+    scm {
+        git {
+            remote {
+                url({{JENKINS_CONFIG}})
+            }
+        branch('{{BRANCH}}')
+        }
+    }
+    triggers{
+        scm('*/15 * * * *')
+    }
+    steps{
+        shell('mkdir test_dir; ls; rmdir test_dir')
+    }
+}
