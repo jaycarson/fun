@@ -1,4 +1,4 @@
-job('Branches/{{BRANCH}}/fun-stuff'){
+job('{{DEFAULT_PATH}}/fun-stuff'){
     scm {
         git {
             remote {
