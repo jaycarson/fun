@@ -2,7 +2,7 @@ job('{{DEFAULT_PATH}}/test-job'){
     scm {
         git {
             remote {
-                url({{fun}})
+                url({{FUN}})
             }
         branch('{{BRANCH}}')
         }
