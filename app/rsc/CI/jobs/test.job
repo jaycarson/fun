@@ -1,4 +1,4 @@
-job('{{DEFAULT_PATH}}/fun-stuff'){
+job('{{DEFAULT_PATH}}/test-job'){
     scm {
         git {
             remote {
