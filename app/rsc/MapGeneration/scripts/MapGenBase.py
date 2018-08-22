@@ -10,7 +10,6 @@ from os.path import isfile, join
 class MapGenBase(MapGen):
     def __init__(self):
         MapGen.__init__(self)
-        self._files_path = '../PNG/'
         self._map_type_derived = ['noise_o', 'noise_t']
         self._map_type_new = 'base'
 
