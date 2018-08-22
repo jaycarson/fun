@@ -14,7 +14,7 @@ from os.path import isfile, join
 class MapGen(object):
     def __init__(self):
         self._maps = {}
-        self._files_path = '../PNG/'
+        self._files_path = './'
         self._map_size = 256
         self._height = self._map_size
         self._width = self._map_size
