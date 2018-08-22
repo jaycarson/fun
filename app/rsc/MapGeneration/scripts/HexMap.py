@@ -31,6 +31,10 @@ class HexMap(object):
                 Hex(1, 1, -2),
             ]
 
+    def set_dimenstions(self, x, y):
+        self._image_width = x
+        self._image_height = y
+
     def serialize(self, path):
         new_map = Image.new(
                 'RGBA', 
