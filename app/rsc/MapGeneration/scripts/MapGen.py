@@ -1,14 +1,16 @@
 #!/usr/bin/python
 
-from HexMath import HexMath
-from HexMath import Hex
-
 import yaml
 import re
 
 from PIL import Image  # sudo pip install Pillow
 from os import listdir
 from os.path import isfile, join
+
+import sys
+sys.path.insert(0, '../../../src')
+
+from HexMap import HexMap, Hex
 
 
 class MapGen(object):
@@ -20,7 +22,7 @@ class MapGen(object):
         self._width = self._map_size
         self._map_type_derived = []
         self._map_type_new = ''
-        self._hex_math = HexMath()
+        self._hex_map = HexMap()
         
         path = "../../Books/Geography.yml"
         self._book = yaml.load(open(path))

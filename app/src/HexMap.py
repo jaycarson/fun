@@ -1,8 +1,26 @@
 #!/usr/bin/python
 
-from HexMath import Hex
-from HexMath import HexMath
 from PIL import Image  # sudo pip install Pillow
+
+
+class Hex(object):
+    def __init__(self, x, y, z=None):
+        if z is None:
+            z = -x -y
+
+        self.x = x
+        self.y = y
+        self.z = z
+        self.r = 0
+        self.g = 0
+        self.b = 0
+        self.a = 0
+
+    def set_color(self, r=0, g=0, b=0, a=0):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
 
 
 class HexMap(object):
@@ -10,6 +28,7 @@ class HexMap(object):
         self._hex_map = {}
         self._image_width = 256
         self._image_height = 256
+        self._radius = 127
         self._center_disp_x = self._image_width / 2
         self._center_disp_y = self._image_height / 2
 
@@ -31,7 +50,7 @@ class HexMap(object):
                 Hex(1, 1, -2),
             ]
 
-    def set_dimenstions(self, x, y):
+    def set_image_dimenstions(self, x, y):
         self._image_width = x
         self._image_height = y
 
@@ -43,12 +62,12 @@ class HexMap(object):
 
         for key in self._hex_map.keys():
             this_hex = self._hex_map[key]
-            x = this_hex.get_x() + self._center_disp_x
-            y = this_hex.get_y() + self._center_disp_y
-            r = this_hex.get_r()
-            g = this_hex.get_g()
-            b = this_hex.get_b()
-            a = this_hex.get_a()
+            x = this_hex.x + self._center_disp_x
+            y = this_hex.y + self._center_disp_y
+            r = this_hex.r
+            g = this_hex.g
+            b = this_hex.b
+            a = this_hex.a
 
             new_map.putpixel(
                     (x, y),
@@ -70,7 +89,7 @@ class HexMap(object):
         self._initializing = True
         self._hex_map = {}
         point = self.get_hex(x=0, y=0)
-        self.hex_spiral(center_hex=point, radius=127)
+        self.spiral(center_hex=point, radius=self._radius)
         self._initializing = False
 
     def get_hex(self, x, y, z=None):
@@ -100,75 +119,75 @@ class HexMap(object):
     def get_hypotheical_hex(self, x, y, z=0):
         return Hex(x, y, z)
 
-    def hex_add(self, hex_1, hex_2):
+    def add(self, hex_1, hex_2):
         return self.get_hex(
-                hex_1.get_x() + hex_2.get_x(),
-                hex_1.get_y() + hex_2.get_y(),
-                hex_1.get_z() + hex_2.get_z(),
+                hex_1.x + hex_2.x,
+                hex_1.y + hex_2.y,
+                hex_1.z + hex_2.z,
             )
 
-    def hex_subtract(self, hex_1, hex_2):
+    def subtract(self, hex_1, hex_2):
         return self.get_hypotheical_hex(
-                hex_1.get_x() - hex_2.get_x(),
-                hex_1.get_y() - hex_2.get_y(),
-                hex_1.get_z() - hex_2.get_z(),
+                hex_1.x - hex_2.x,
+                hex_1.y - hex_2.y,
+                hex_1.z - hex_2.z,
             )
 
-    def hex_scale(self, input_hex, scale):
+    def scale(self, input_hex, scale):
         return self.get_hex(
-                input_hex.get_x() * scale,
-                input_hex.get_y() * scale,
-                input_hex.get_z() * scale,
+                input_hex.x * scale,
+                input_hex.y * scale,
+                input_hex.z * scale,
             )
 
-    def hex_rotate_left(self, input_hex):
+    def get_rotate_left(self, input_hex):
         return self.get_hex(
-                x=-input_hex.get_z(),
-                y=-input_hex.get_x(),
-                z=-input_hex.get_y(),
+                x=-input_hex.z,
+                y=-input_hex.x,
+                z=-input_hex.y,
             )
 
-    def hex_rotate_right(self, input_hex):
+    def get_rotate_right(self, input_hex):
         return self.get_hex(
-                x=-input_hex.get_y(),
-                y=-input_hex.get_z(),
-                z=-input_hex.get_x(),
+                x=-input_hex.y,
+                y=-input_hex.z,
+                z=-input_hex.x,
             )
 
-    def get_hex_direction(self, direction):
+    def get_direction(self, direction):
         return self._directions[direction]
 
-    def get_hex_neighbor(self, input_hex, direction):
-        return self.hex_add(
+    def get_neighbor(self, input_hex, direction):
+        return self.add(
                 input_hex,
-                self.get_hex_direction(direction)
+                self.get_direction(direction)
             )
 
     def get_neighbors(self, input_hex):
         neighbors = []
         for x in range(0, 6):
-            neighbors.append(self.get_hex_neighbor(input_hex, x))
+            neighbors.append(self.get_neighbor(input_hex, x))
 
         return neighbors
 
-    def get_hex_diagonal_neighbor(self, input_hex, direction):
-        return hex_add(
+    def get_diagonal_neighbor(self, input_hex, direction):
+        return add(
                 input_hex,
                 self._diagonals[direction]
             )
 
-    def hex_length(self, input_hex):
+    def length(self, input_hex):
         hex_sum = (
-                abs(input_hex.get_x()) +
-                abs(input_hex.get_y()) +
-                abs(input_hex.get_z())
+                abs(input_hex.x) +
+                abs(input_hex.y) +
+                abs(input_hex.z)
             )
         return hex_sum // 2
 
     def distance(self, hex_1, hex_2):
-        return self.hex_length(self.hex_subtract(hex_1, hex_2))
+        return self.length(self.subtract(hex_1, hex_2))
 
-    def hex_round(self, h):
+    def round(self, h):
         qi = int(round(h.q))
         ri = int(round(h.r))
         si = int(round(h.s))
@@ -184,36 +203,36 @@ class HexMap(object):
                 si = -qi - ri
         return Hex(qi, ri, si)
 
-    def hex_lerp(self, hex_1, hex_2, t):
+    def lerp(self, hex_1, hex_2, t):
         return self.get_hex(
-                hex_1.get_x() * (1 - t) + hex_2.get_x() * t,
-                hex_1.get_y() * (1 - t) + hex_2.get_y() * t,
-                hex_1.get_z() * (1 - t) + hex_2.get_z() * t
+                hex_1.x * (1 - t) + hex_2.x * t,
+                hex_1.y * (1 - t) + hex_2.y * t,
+                hex_1.z * (1 - t) + hex_2.z * t
             )
 
-    def hex_linedraw(self, hex_1, hex_2):
-        distance = hex_distance(hex_1, hex_2)
+    def linedraw(self, hex_1, hex_2):
+        dist = self.distance(hex_1, hex_2)
         
         hex_1_nudge = Hex(
-                hex_1.get_x() + 0.000001,
-                hex_1.get_y() + 0.000001,
-                hex_1.get_z() - 0.000002
+                hex_1.x + 0.000001,
+                hex_1.y + 0.000001,
+                hex_1.z - 0.000002
             )
 
         hex_2_nudge = Hex(
-                hex_2.get_x() + 0.000001,
-                hex_2.get_y() + 0.000001,
-                hex_2.get_z() - 0.000002
+                hex_2.x + 0.000001,
+                hex_2.y + 0.000001,
+                hex_2.z - 0.000002
             )
 
         results = []
         
-        step = 1.0 / max(distance, 1)
+        step = 1.0 / max(dist, 1)
         
-        for i in range(0, distance + 1):
+        for i in range(0, dist + 1):
             results.append(
-                    self.hex_round(
-                        self.hex_lerp(
+                    self.round(
+                        self.lerp(
                             hex_1_nudge,
                             hex_2_nudge,
                             step * i,
@@ -223,26 +242,26 @@ class HexMap(object):
 
         return results
 
-    def hex_ring(self, center_hex, radius):
+    def ring(self, center_hex, radius):
         results = []
 
-        current_hex = self.hex_add(
+        current_hex = self.add(
                         center_hex, 
-                        self.hex_scale(self.get_hex_direction(4), radius)
+                        self.scale(self.get_direction(4), radius)
                     )
 
         for direction in range(0, 6):
             for length in range(0, radius):
                 results.append(current_hex)
-                current_hex = self.get_hex_neighbor(current_hex, direction)
+                current_hex = self.get_neighbor(current_hex, direction)
         
         return results
 
-    def hex_spiral(self, center_hex, radius):
+    def spiral(self, center_hex, radius):
         results = [center_hex]
 
         for step in range(0, radius + 1):
-            results += self.hex_ring(
+            results += self.ring(
                     center_hex=center_hex,
                     radius=step,
                 )
@@ -250,32 +269,32 @@ class HexMap(object):
         return results
 
     def get_variance(self, point, radius):
-        points = self.hex_spiral(point, radius)
+        points = self.spiral(point, radius)
         
         total = 0
         count = 0
         variance = 0
 
         for tot_point in points:
-            total += tot_point.get_a()
+            total += tot_point.a
             count += 1
 
         average = total/count
 
         for var_point in points:
-            dif = var_point.get_a() - average
+            dif = var_point.a - average
             variance = variance + (dif * dif)
 
         return variance
 
     def get_area_average(self, point, radius):
-        points = self.hex_spiral(point, radius)
+        points = self.spiral(point, radius)
         
         total = 0
         count = 0
 
         for point in points:
-            total += point.get_a()
+            total += point.a
             count += 1
 
         average = total/count

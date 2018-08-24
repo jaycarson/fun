@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
-from HexMath import HexMath
-from HexMath import Hex
-from MapGen import MapGen
-
 import yaml
 from PIL import Image  # sudo pip install Pillow
 from os import listdir
 from os.path import isfile, join
+
+sys.path.insert(0, '../../../src')
+
+from HexMap import HexMap, Hex
 
 
 class MapGenBattle(MapGen):

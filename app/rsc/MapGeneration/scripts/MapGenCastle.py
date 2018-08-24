@@ -1,13 +1,15 @@
 #!/usr/bin/python
 
-from HexMath import HexMath
-from HexMath import Hex
-from HexMap import HexMap
 from MapGen import MapGen
 import yaml
 from PIL import Image  # sudo pip install Pillow
 from os import listdir
 from os.path import isfile, join
+
+import sys
+sys.path.insert(0, '../../../src')
+
+from HexMap import HexMap, Hex
 
 
 class MapGenCastle(MapGen):
@@ -65,7 +67,7 @@ class MapGenCastle(MapGen):
         for point in points:
             variance = hex_map.get_variance(
                     point=point,
-                    radius=radius
+                    radius=radius,
                 )
             if variance < current_variance:
                 current_variance = variance
@@ -82,27 +84,27 @@ class MapGenCastle(MapGen):
 
         average = int(hex_map.get_area_average(point, full_radius))
 
-        castle_hexes = hex_map.hex_spiral(point, castle_radius)
+        castle_hexes = hex_map.spiral(point, castle_radius)
 
-        for ground_point in hex_map.hex_spiral(point, full_radius):
-            ground_point.set_a(average)
+        for ground_point in hex_map.spiral(point, full_radius):
+            ground_point.a = average
 
-        for floor in hex_map.hex_spiral(point, castle_radius):
-            floor.set_r(castle_floor['r'])
-            floor.set_b(castle_floor['b'])
+        for floor in hex_map.spiral(point, castle_radius):
+            floor.r = castle_floor['r']
+            floor.b = castle_floor['b']
 
         for ring in range(0, wall_width):
-            walls = hex_map.hex_ring(point, castle_radius + ring)
+            walls = hex_map.ring(point, castle_radius + ring)
             for wall in walls:
-                wall.set_r(castle_wall['r'])
-                wall.set_b(castle_wall['b'])
+                wall.r = castle_wall['r']
+                wall.b = castle_wall['b']
 
         for ring in range(0, wall_width):
             outer_wall_radius = castle_radius * 3 + ring
-            walls = hex_map.hex_ring(point, outer_wall_radius)
+            walls = hex_map.ring(point, outer_wall_radius)
             for wall in walls:
-                wall.set_r(castle_wall['r'])
-                wall.set_b(castle_wall['b'])
+                wall.r = castle_wall['r']
+                wall.b = castle_wall['b']
 
 
 if __name__ == "__main__":

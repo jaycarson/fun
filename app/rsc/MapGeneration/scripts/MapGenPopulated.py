@@ -1,21 +1,19 @@
 #!/usr/bin/python
 
-from HexMath import HexMath
-from HexMath import Hex
+from MapGen import MapGen
 import yaml
 from PIL import Image  # sudo pip install Pillow
 from os import listdir
 from os.path import isfile, join
 
 
-class MapGenPopulated(object):
+class MapGenPopulated(MapGen):
     def __init__(MapGen):
         MapGen.__init__(self)
         self._map_type_derived = [
                 'terrain',
             ]
         self._map_type_new = 'final'
-        self._hex_math = HexMath()
 
         path = "../../Books/Structures.yml"
         self._structures_book = yaml.load(open(path))

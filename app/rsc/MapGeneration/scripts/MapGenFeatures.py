@@ -11,7 +11,7 @@ from os.path import isfile, join
 class MapGenFeatures(MapGen):
     def __init__(self):
         MapGen.__init__(self)
-        self._files_path = '../PNG/'
+        self._files_path = './'
         self._map_type_derived = ['base', 'noise_z']
         self._map_type_new = 'feature'
 

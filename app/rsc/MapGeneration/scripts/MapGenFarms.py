@@ -1,13 +1,15 @@
 #!/usr/bin/python
 
-from HexMath import HexMath
-from HexMath import Hex
-from HexMap import HexMap
 from MapGen import MapGen
 import yaml
 from PIL import Image  # sudo pip install Pillow
 from os import listdir
 from os.path import isfile, join
+
+import sys
+sys.path.insert(0, '../../../src')
+
+from HexMap import HexMap, Hex
 
 
 class MapGenFarms(MapGen):
@@ -43,7 +45,7 @@ class MapGenFarms(MapGen):
     def get_points_to_consider(self, hex_map):
         points_to_consider = []
 
-        points = hex_map.hex_ring(
+        points = hex_map.ring(
                 hex_map.get_hex(0, 0),
                 self._zone_radius - 20
             )
@@ -85,13 +87,10 @@ class MapGenFarms(MapGen):
         water = 0
         farm_type = None
 
-        for ground_point in hex_map.hex_spiral(point, self._farm_radius):
-            g = ground_point.get_g()
-            b = ground_point.get_b()
-            
-            if b > water_2_id:
+        for ground_point in hex_map.spiral(point, self._farm_radius):
+            if ground_point.b > water_2_id:
                 water += 1
-            if flora_5_id <= g and g < flora_4_id:
+            if flora_5_id <= ground_point.g and ground_point.g < flora_4_id:
                 grass += 1
 
         if grass >= water:
@@ -125,19 +124,19 @@ class MapGenFarms(MapGen):
 
         average = int(hex_map.get_area_average(point, farm_radius))
 
-        for ground_point in hex_map.hex_spiral(point, farm_radius):
-            ground_point.set_g(flora_id)
-            ground_point.set_b(ground_farm['b'])
-            ground_point.set_a(average)
-            ground_point.set_r(population_level)
+        for ground_point in hex_map.spiral(point, farm_radius):
+            ground_point.g = flora_id
+            ground_point.b = ground_farm['b']
+            ground_point.a = average
+            ground_point.r = population_level
 
-        for farm_floor in hex_map.hex_spiral(point, house_radius):
-            farm_floor.set_b(house_floor['b'])
-            farm_floor.set_r(population_level)
+        for farm_floor in hex_map.spiral(point, house_radius):
+            farm_floor.b = house_floor['b']
+            farm_floor.r = population_level
 
-        for wall in hex_map.hex_ring(point, house_radius):
-            wall.set_b(house_wall['b'])
-            wall.set_r(population_level)
+        for wall in hex_map.ring(point, house_radius):
+            wall.b = house_wall['b']
+            wall.r = population_level
 
 
 if __name__ == "__main__":
