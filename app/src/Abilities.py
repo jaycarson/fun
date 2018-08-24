@@ -1,6 +1,17 @@
 #!/usr/bin/python
 
 
+class Abilities(object):
+    def __init__(self):
+        self.abilities = {
+                'gash': Gash(),
+                'final_thrust': FinalThrust(),
+            }
+
+    def get_ability(self, name):
+        return self.abilities[name]
+
+
 class Ability(object):
     def __init__(self):
         self._owner = None
