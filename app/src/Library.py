@@ -337,7 +337,7 @@ class BookGeography(object):
             'sw',
         ]
 
-    def get_terrain_types(self): {
+    def get_terrain_types(self):
         return self._terrain_types
 
     def get_flora_types(self):
