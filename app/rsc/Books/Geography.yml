@@ -1,4 +1,6 @@
 ---
+stats:
+    sea_level = 10
 types:
     - hill
     - island
