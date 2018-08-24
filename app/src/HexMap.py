@@ -157,16 +157,16 @@ class HexMap(object):
     def get_direction(self, direction):
         return self._directions[direction]
 
-    def get_neighbor(self, input_hex, direction):
+    def neighbor(self, input_hex, direction):
         return self.add(
                 input_hex,
                 self.get_direction(direction)
             )
 
-    def get_neighbors(self, input_hex):
+    def neighbors(self, input_hex):
         neighbors = []
         for x in range(0, 6):
-            neighbors.append(self.get_neighbor(input_hex, x))
+            neighbors.append(self.neighbor(input_hex, x))
 
         return neighbors
 
@@ -253,7 +253,7 @@ class HexMap(object):
         for direction in range(0, 6):
             for length in range(0, radius):
                 results.append(current_hex)
-                current_hex = self.get_neighbor(current_hex, direction)
+                current_hex = self.neighbor(current_hex, direction)
         
         return results
 

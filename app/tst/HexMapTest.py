@@ -21,7 +21,7 @@ class DiceTest(unittest.TestCase):
 
     def test_getting_neighbors_returns_the_right_quantity(self):
         test_hex = self.sut.get_hex(0, 0)
-        test_hexes = self.sut.get_neighbors(test_hex)
+        test_hexes = self.sut.neighbors(test_hex)
         self.assertEqual(6, len(test_hexes))
 
     def test_getting_ring_returns_the_right_quantity_radius_1(self):
