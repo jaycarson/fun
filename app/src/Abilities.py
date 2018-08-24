@@ -4,8 +4,32 @@
 class Abilities(object):
     def __init__(self):
         self.abilities = {
-                'gash': Gash(),
+                'advance': Advance(),
+                'bash': Bash(),
+                'blow': Blow(),
+                'chop': Chop(),
+                'cut': Cut(),
+                'double_chop': DoubleChop(),
                 'final_thrust': FinalThrust(),
+                'flurry': Flurry(),
+                'gash': Gash(),
+                'jab': Jab(),
+                'rip': Rip(),
+                'skull_crack': SkullCrack(),
+                'slash': Slash(),
+                'slice': Slice(),
+                'smack': Smack(),
+                'strike': Strike(),
+                'thrust': Thrust(),
+                'swing': Swing(),
+                'wild_bash': WildBash(),
+                'wild_slash': WildSlash(),
+                'wild_strike': WildStrike(),
+                'wild_swing': WildSwing(),
+                'wild_thrust': WildThrust(),
+                'triple_chop': TripleChop(),
+                'wild_blow': WildBlow(),
+                'whirl': Whirl(),
             }
 
     def get_ability(self, name):
@@ -157,6 +181,12 @@ class WildStrike(Ability):
     def __init__(self):
         Ability.__init__(self)
         self._name = 'Wild Strike'
+
+
+class WildSwing(Ability):
+    def __init__(self):
+        Ability.__init__(self)
+        self._name = 'Wild Swing'
 
 
 class Smack(Ability):

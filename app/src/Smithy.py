@@ -7,40 +7,7 @@ from Library import BookWeapon
 from Library import BookArmor
 from Library import BookSkill
 
-from Abilities import FinalThrust
-from Abilities import Gash
-from Abilities import Hamstring
-from Abilities import Hit
-from Abilities import Impale
-from Abilities import Rip
-from Abilities import Ripost
-from Abilities import Rush
-from Abilities import SavageLeap
-from Abilities import SeverArtery
-from Abilities import Swing
-from Abilities import Slash
-from Abilities import Slice
-from Abilities import Gash
-from Abilities import WildSlash
-from Abilities import Strike
-from Abilities import WildStrike
-from Abilities import Smack
-from Abilities import Blow
-from Abilities import SkullCrack
-from Abilities import WildBlow
-from Abilities import Bash
-from Abilities import WildBash
-from Abilities import Thrust
-from Abilities import Jab
-from Abilities import WildThrust
-from Abilities import Advance
-from Abilities import Chop
-from Abilities import DoubleChop
-from Abilities import TripleChop
-from Abilities import Cut
-from Abilities import Flurry
-from Abilities import Whirl
-
+from Abilities import Abilities
 from Weapon import Weapon
 from Armor import Armor
 
@@ -165,6 +132,7 @@ class SmithWeapon(Smith):
         self._book_weapon = BookWeapon()
         self._book_skill = BookSkill()
         self._weapons = self._book_weapon.get_weapon_list()
+        self._abilities = Abilities()
 
     def create(self,
                weapon='any',
@@ -233,73 +201,4 @@ class SmithWeapon(Smith):
         return power_set
 
     def _get_ability(self, ability_name):
-        ability = 'None'
-
-        if ability_name == 'final_thrust':
-            ability = FinalThrust()
-        elif ability_name == 'gash':
-            ability = Gash()
-        elif ability_name == 'hamstring':
-            ability = Hamstring()
-        elif ability_name == 'impale':
-            ability = Impale()
-        elif ability_name == 'rip':
-            ability = Rip()
-        elif ability_name == 'ripost':
-            ability = Ripost()
-        elif ability_name == 'rush':
-            ability = Rush()
-        elif ability_name == 'savage_leap':
-            ability = SavageLeap()
-        elif ability_name == 'sever_artery':
-            ability = SeverArtery()
-        elif ability_name == 'swing':
-            ability = Swing()
-        elif ability_name == 'slash':
-            ability = Slash()
-        elif ability_name == 'slice':
-            ability = Slice()
-        elif ability_name == 'gash':
-            ability = Gash()
-        elif ability_name == 'wild_slash':
-            ability = WildSlash()
-        elif ability_name == 'strike':
-            ability = Strike()
-        elif ability_name == 'wild_strike':
-            ability = WildStrike()
-        elif ability_name == 'smack':
-            ability = Smack()
-        elif ability_name == 'blow':
-            ability = Blow()
-        elif ability_name == 'skull_crack':
-            ability = SkullCrack()
-        elif ability_name == 'wild_blow':
-            ability = WildBlow()
-        elif ability_name == 'bash':
-            ability = Bash()
-        elif ability_name == 'wild_bash':
-            ability = WildBash()
-        elif ability_name == 'thrust':
-            ability = Thrust()
-        elif ability_name == 'jab':
-            ability = Jab()
-        elif ability_name == 'wild_thrust':
-            ability = WildThrust()
-        elif ability_name == 'advance':
-            ability = Advance()
-        elif ability_name == 'chop':
-            ability = Chop()
-        elif ability_name == 'double_chop':
-            ability = DoubleChop()
-        elif ability_name == 'triple_chop':
-            ability = TripleChop()
-        elif ability_name == 'cut':
-            ability = Cut()
-        elif ability_name == 'flurry':
-            ability = Flurry()
-        elif ability_name == 'whirl':
-            ability = Whirl()
-        else:
-            ability = Hit()
-
-        return ability
+        return self._abilities.get_ability(ability_name)
