@@ -15,6 +15,8 @@ class Hex(object):
         self.g = 0
         self.b = 0
         self.a = 0
+        self.ground = 'grass'
+        self.height = 10
 
     def set_color(self, r=0, g=0, b=0, a=0):
         self.r = r
@@ -31,6 +33,11 @@ class HexMap(object):
         self._radius = 127
         self._center_disp_x = self._image_width / 2
         self._center_disp_y = self._image_height / 2
+        
+        self.get_hex = self.get_hex_actual
+        
+        self.arena_height = 10
+        self.arena_ground = 'grass'
 
         self._directions = [
                 Hex(1, 0, -1), 
@@ -86,20 +93,25 @@ class HexMap(object):
         self.initialize_map()
 
     def initialize_map(self):
-        self._initializing = True
+        self.get_hex = self.get_hex_initial
         self._hex_map = {}
         point = self.get_hex(x=0, y=0)
         self.spiral(center_hex=point, radius=self._radius)
-        self._initializing = False
+        self.get_hex = self.get_hex_actual
 
-    def get_hex(self, x, y, z=None):
+    def get_hex_actual(self, x, y, z=None):
         if z is None:
             z = -x - y
 
         key = (x, y, z)
+        
+        return self._hex_map[key]
 
-        if not self._initializing:
-            return self._hex_map[key]
+    def get_hex_initial(self, x, y, z=None):
+        if z is None:
+            z = -x - y
+
+        key = (x, y, z)
 
         disp_x = x + self._center_disp_x
         disp_y = y + self._center_disp_y
@@ -115,6 +127,19 @@ class HexMap(object):
             self._hex_map[key] = new_hex
             
             return new_hex
+
+    def get_hex_arena(self, x, y, z=None):
+        if z is None:
+            z = -x - y
+
+        key = (x, y, z)
+
+        new_hex = Hex(x, y, z)
+        new_hex.ground = self.arena_ground
+        new_hex.height = self.arena_height
+        self._hex_map[key] = new_hex
+            
+        return new_hex
 
     def get_hypotheical_hex(self, x, y, z=0):
         return Hex(x, y, z)
@@ -299,3 +324,15 @@ class HexMap(object):
 
         average = total/count
         return average
+
+    def create_arena(self, arena=None, radius=5):
+        self._radius = radius
+        self.get_hex = self.get_hex_arena
+        self.arena_height = 10
+        self.arena_ground = 'grass'
+
+        self._hex_map = {}
+        point = self.get_hex(x=0, y=0)
+        self.spiral(center_hex=point, radius=self._radius)
+
+        self.get_hex = self.get_hex_actual
