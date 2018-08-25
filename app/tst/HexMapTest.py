@@ -7,7 +7,7 @@ sys.path.insert(0, '../src')
 from HexMap import HexMap
 
 
-class DiceTest(unittest.TestCase):
+class HexMapTest(unittest.TestCase):
     def setUp(self):
         self.sut = HexMap()
         self.sut.deserialize(path='../rsc/MapGeneration/PNG/noise_h_map_solid_256_4_1_2675506463.png')
@@ -93,6 +93,25 @@ class DiceTest(unittest.TestCase):
             ring_size += 6
             count = count + ring_size
         self.assertEqual(count, len(test_hexes))
+
+
+class HexMapArenaTest(unittest.TestCase):
+    def setUp(self):
+        self.sut = HexMap()
+        self.radius = 5
+        self.arena_ground = 'plains'
+        self.arena_height = 10
+        self.sut.arena_ground = self.arena_ground
+        self.sut.arena_height = self.arena_height
+        self.sut.create_arena(radius=self.radius)
+
+    def test_getting_a_hex(self):
+        test_hex = self.sut.get_hex(0, 0)
+        self.assertEqual(self.arena_height, test_hex.height)
+
+    def test_getting_another_hex(self):
+        test_hex = self.sut.get_hex(5, 0, -5)
+        self.assertEqual(self.arena_height, test_hex.height)
 
 
 if __name__ == '__main__':
