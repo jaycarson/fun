@@ -39,21 +39,21 @@ class CharacterTest(unittest.TestCase):
     def test_character_gains_a_level_test_skill_points_current(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.get_skill_points_current())
+        self.assertEqual(expected, self.sut.skill_points_current)
 
     def test_character_gains_a_level_test_skill_points_total(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.get_skill_points_total())
+        self.assertEqual(expected, self.sut.skill_points_total)
 
     def test_starts_with_no_experience(self):
         expected = 0
-        self.assertEqual(expected, self.sut.get_experience())
+        self.assertEqual(expected, self.sut.experience)
 
     def test_character_gains_experience(self):
-        starting = self.sut.get_experience()
+        starting = self.sut.experience
         self.sut.give_experience(1001)
-        ending = self.sut.get_experience()
+        ending = self.sut.experience
         self.assertGreater(ending, starting)
 
     def test_gets_correct_id(self):
@@ -61,12 +61,12 @@ class CharacterTest(unittest.TestCase):
         expected_2 = 2
         sut_1 = Character(char_id=expected_1)
         sut_2 = Character(char_id=expected_2)
-        self.assertEqual(expected_1, sut_1.get_id())
-        self.assertEqual(expected_2, sut_2.get_id())
+        self.assertEqual(expected_1, sut_1.char_id)
+        self.assertEqual(expected_2, sut_2.char_id)
 
     def test_gets_name(self):
         expected = 'sut'
-        self.assertEqual(expected, self.sut.get_name())
+        self.assertEqual(expected, self.sut.name)
 
     def test_character_knows_the_worlds_time(self):
         test_time = 0
@@ -82,14 +82,14 @@ class CharacterTest(unittest.TestCase):
         test_locale_id = 1
         test_time = 0
         self._clock.add_locale(locale_id=test_locale_id)
-        self.sut.set_locale_id(test_locale_id)
+        self.sut.locale_id = test_locale_id
         self.assertEqual(test_time, self.sut.get_locale_time())
 
     def test_character_still_knows_the_locale_time(self):
         test_locale_id = 1
         test_time = 1
         self._clock.add_locale(locale_id=test_locale_id)
-        self.sut.set_locale_id(test_locale_id)
+        self.sut.locale_id = test_locale_id
         self._clock.increment_locale_time(test_locale_id)
         self.assertEqual(test_time, self.sut.get_locale_time())
 
@@ -141,7 +141,7 @@ class CharacterCombatTest(unittest.TestCase):
             stats=new_stats
             )
 
-        self.sut.set_locale_id(locale_id)
+        self.sut.locale_id = locale_id
 
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
@@ -149,15 +149,17 @@ class CharacterCombatTest(unittest.TestCase):
 
     def test_weapon_starts_off_cooldown(self):
         weapon = self.sut.get_equiped_weapon()
-        locale_id = self.sut.get_locale_id()
         slot = 2
-        self._clock.increment_locale_time(locale_id)
+        self._clock.increment_locale_time(self.sut.locale_id)
         self.assertFalse(weapon.on_cooldown(slot))
 
     def test_weapon_goes_on_cooldown(self):
         weapon = self.sut.get_equiped_weapon()
-        locale_id = self.sut.get_locale_id()
         slot = 2
-        self._clock.increment_locale_time(locale_id)
+        self._clock.increment_locale_time(self.sut.locale_id)
         self.sut.attack(slot)
         self.assertTrue(weapon.on_cooldown(slot))
+
+
+if __name__ == '__main__':
+    unittest.main()

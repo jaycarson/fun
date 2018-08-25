@@ -64,8 +64,8 @@ class Ability(object):
         self._activate()
 
     def _activate(self):
-        target_enemy = self._owner.get_target_enemy()
-        target_ally = self._owner.get_target_ally()
+        target_enemy = self._owner.target_enemy
+        target_ally = self._owner.target_ally
         return
 
     def get_current_time(self):
