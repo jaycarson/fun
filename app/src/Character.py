@@ -191,3 +191,8 @@ class Character(object):
 
     def get_equiped_armor(self, piece='chest'):
         return self.armors_equiped_by_piece[piece]
+
+    def activate(self, dungeon_master):
+        global_cooldown = 1000
+        self.global_cooldown = self.get_local_time() + global_cooldown
+        return self.global_cooldown

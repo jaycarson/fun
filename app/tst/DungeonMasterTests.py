@@ -4,6 +4,8 @@ import unittest
 import sys
 sys.path.insert(0, '../src')
 
+from DungeonMaster import DungeonMaster
+
 from Clock import Clock
 from Character import Character
 
@@ -19,29 +21,33 @@ class DungeonMasterTest(unittest.TestCase):
     def setUp(self):
         self.locale_id = 5000
         self.start_time = 5
-        self._clock = Clock()
-        self._clock.add_locale(locale_id=self.locale_id, local_time=self.start_time)
+
+        self.sut = DungeonMaster(
+                clock=Clock(),
+                dungeon=self.create_arena(),
+                locale_id=self.locale_id,
+            )
+
+        self.sut.clock.add_locale(
+                locale_id=self.locale_id,
+                local_time=self.start_time,
+            )
+
         self._book_stat = BookStat()
         self.weapon_smith = SmithWeapon()
-        self.arena = self.create_arena()
 
-        npc_1 = self.create_npc()
-
-        npc_2 = self.create_npc()
-
-
-    def create_npc(self):
+    def create_vpc(self, name):
         new_stats = self._book_stat.generate_for_character()
 
         npc = Character(
             experience=0,
             race='human',
-            name='Jon',
+            name=name,
             char_id=0,
-            clock=self._clock,
+            clock=self.sut.clock,
             stats=new_stats
             )
-        npc.set_locale_id(self.locale_id)
+        npc.locale_id = self.locale_id
 
         new_weapon = self.weapon_smith.create()
         npc.give_weapon(new_weapon)
@@ -56,9 +62,25 @@ class DungeonMasterTest(unittest.TestCase):
 
         return hex_map
 
+    def add_chars_to_dungeon(self):
+        self.vpc_1 = self.create_vpc('jon')
+        self.vpc_2 = self.create_vpc('joe')
+        self.team_1 = 'red'
+        self.team_2 = 'blue'
+        self.chars = [vpc_1, vpc_2]
+
+        self.sut.add_char(team_1, self.vpc_1)
+        self.sut.add_char(team_2, self.vpc_2)
+
     def test_initial_world_time(self):
         test_time = 0
-        self.assertEqual(test_time, self._clock.get_world_time())
+        self.assertEqual(test_time, self.sut.clock.get_world_time())
+
+    def test_dungeon_master_accepts_vpcs(self):
+        self.assertTrue(self.sut.next_char() in chars)
+
+    def test_run_dungeon(self):
+
 
 
 if __name__ == '__main__':
