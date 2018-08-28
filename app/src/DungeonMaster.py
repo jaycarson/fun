@@ -11,20 +11,26 @@ class DungeonMaster(object):
         self.queue = PriorityQueue()
         self.teams = {}
         self.playing = True
-        self.dungeon_expire = 1000000
+        self.dungeon_expire = self.clock.max_locale_time
+
+    def run_dungeon(self):
+        while self.is_playing():
+            self.run()
 
     def run(self):
-        while self.is_playing():
-            char = self.next_char()
-            while self.get_time() < char.global_cooldown:
-                self.increment_time()
-            self.activate_char(char)
+        char = self.next_char()
+        self.increment_time()
+        while self.get_time() < char.global_cooldown:
+            self.increment_time()
+        self.activate_char(char)
 
     def is_playing(self):
         if self.get_time() > self.dungeon_expire:
             self.playing = False
         else:
             self.playing = True
+
+        return self.playing
 
     def add_char(self, team_name, vpc):
         if team_name not in self.teams.keys():

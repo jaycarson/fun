@@ -15,6 +15,7 @@ class Character(object):
         self.experience = experience
         self.char_id = char_id
         self.locale_id = 0
+        self.global_cooldown = 0
 
         self.race = race
         self.name = name
@@ -194,5 +195,5 @@ class Character(object):
 
     def activate(self, dungeon_master):
         global_cooldown = 1000
-        self.global_cooldown = self.get_local_time() + global_cooldown
+        self.global_cooldown = self.get_locale_time() + global_cooldown
         return self.global_cooldown
