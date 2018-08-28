@@ -17,6 +17,7 @@ class Hex(object):
         self.a = 0
         self.ground = 'grass'
         self.height = 10
+        self.character = None
 
     def set_color(self, r=0, g=0, b=0, a=0):
         self.r = r

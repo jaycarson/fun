@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from Library import BookArmor
+from random import choice
 
 
 class Character(object):
@@ -21,6 +22,8 @@ class Character(object):
         self.name = name
         self.clock = clock
         self.local_id = 0
+        self.location = None
+        self.captain = None
 
         self.stats = stats
 
@@ -193,7 +196,47 @@ class Character(object):
     def get_equiped_armor(self, piece='chest'):
         return self.armors_equiped_by_piece[piece]
 
-    def activate(self, dungeon_master):
+    def activate(self, dungeon_master, character):
         global_cooldown = 1000
-        self.global_cooldown = self.get_locale_time() + global_cooldown
-        return self.global_cooldown
+        character.global_cooldown = self.get_locale_time() + global_cooldown
+        return characater.global_cooldown
+
+    def place_char(self, character, locations):
+        looking = True
+        
+        while looking:
+            location = choice(locations)
+            if location.character is None:
+                location.character = character
+                character.location = location
+                looking = False
+
+
+class CharacterPC(Character):
+    def __init__(self, experience=0, race='human', name='None'):
+        Character.__init__(
+            self,
+            experience=experience,
+            race=race,
+            name=name,
+        )
+
+
+class CharacterNPC(Character):
+    def __init__(self, experience=0, race='human', name='None'):
+        Character.__init__(
+            self,
+            experience=experience,
+            race=race,
+            name=name,
+        )
+
+
+class CharacterVPC(Character):
+    def __init__(self, experience=0, race='human', name='None'):
+        Character.__init__(
+            self,
+            experience=experience,
+            race=race,
+            name=name,
+        )

@@ -9,9 +9,50 @@ class DungeonMaster(object):
         self.dungeon = dungeon
         self.locale_id = locale_id
         self.queue = PriorityQueue()
-        self.teams = {}
+        self.factions = {}
         self.playing = True
         self.dungeon_expire = self.clock.max_locale_time
+        self.captains = set()
+        self.char_id = 'DM'
+        self.placement_locations = {
+                'ne': [],    
+                'e': [],    
+                'se': [],    
+                'nw': [],    
+                'w': [],    
+                'sw': [],    
+            }
+        self.init_placement_locations()
+
+    def init_placement_locations(self):
+        center = self.dungeon.get_hex(x=0, y=0, z=0)
+        ring_1 = self.dungeon.ring(center, self.dungeon.map_radius-1)
+        ring_2 = self.dungeon.ring(center, self.dungeon.map_radius)
+        rings = ring_1 + ring_2
+
+        high = self.dungeon.map_radius - 1
+        low = 1
+
+        for point in rings:
+            x = abs(point.x)
+            y = abs(point.y)
+            z = abs(point.z)
+
+            if x >= high and y > low and y < high:
+                if point.x < 0:
+                    self.placement_locations['w'].append(point)
+                else:
+                    self.placement_locations['e'].append(point)
+            elif y >= high and x > low and x < high:
+                if point.y < 0:
+                    self.placement_locations['se'].append(point)
+                else:
+                    self.placement_locations['nw'].append(point)
+            elif z >= high and x > low and x < high:
+                if point.z < 0:
+                    self.placement_locations['ne'].append(point)
+                else:
+                    self.placement_locations['sw'].append(point)
 
     def run_dungeon(self):
         while self.is_playing():
@@ -32,12 +73,16 @@ class DungeonMaster(object):
 
         return self.playing
 
-    def add_char(self, team_name, vpc):
-        if team_name not in self.teams.keys():
-            self.teams[team_name] = []
+    def add_char(self, member, captain='dm', edge='dm'):
+        self.captains.add(captain.char_id)
 
-        self.teams[team_name].append(vpc)
-        self.queue.put(vpc, self.get_time())
+        if captain.char_id not in self.factions.keys():
+            self.factions[captain.char_id] = []
+
+        self.factions[captain.char_id].append(member)
+        self.queue.put(member, self.get_time())
+
+        captain.place_char(member, self.get_placement_locations(edge))
 
     def next_char(self):
         return self.queue.get()
@@ -49,4 +94,12 @@ class DungeonMaster(object):
         self.clock.increment_locale_time(self.locale_id)
 
     def activate_char(self, char):
-        self.queue.put(char, char.activate(self))
+        priority = char.captain.activate(self)
+        
+        self.queue.put(char, priority)
+
+    def get_placement_locations(self, edge):
+        sides = ['ne', 'e', 'se', 'sw', 'w', 'nw']
+
+        if edge in sides:
+            return self.placement_locations[edge]

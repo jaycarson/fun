@@ -65,12 +65,12 @@ class DungeonMasterTest(unittest.TestCase):
     def add_chars_to_dungeon(self):
         self.vpc_1 = self.create_vpc('jon')
         self.vpc_2 = self.create_vpc('joe')
-        self.team_1 = 'red'
-        self.team_2 = 'blue'
+        self.vpc_1.char_id = 'red'
+        self.vpc_2.char_id = 'blue'
         self.chars = [self.vpc_1, self.vpc_2]
 
-        self.sut.add_char(self.team_1, self.vpc_1)
-        self.sut.add_char(self.team_2, self.vpc_2)
+        self.sut.add_char(captain=self.vpc_1, member=self.vpc_1, edge='ne')
+        self.sut.add_char(captain=self.vpc_2, member=self.vpc_2, edge='sw')
 
     def test_initial_world_time(self):
         test_time = 0
@@ -95,6 +95,20 @@ class DungeonMasterTest(unittest.TestCase):
         self.sut.run_dungeon()
         end_time = self.sut.get_time()
         self.assertGreater(end_time, start_time)
+
+    def test_characters_got_placed(self):
+        self.add_chars_to_dungeon()
+        test_char = self.sut.next_char()
+        radius = self.sut.dungeon.map_radius
+        
+        self.assertGreaterEqual(abs(test_char.location.x), 0)
+        self.assertGreaterEqual(abs(test_char.location.y), 0)
+        self.assertGreaterEqual(abs(test_char.location.z), 0)
+
+        self.assertGreaterEqual(radius, abs(test_char.location.x))
+        self.assertGreaterEqual(radius, abs(test_char.location.y))
+        self.assertGreaterEqual(radius, abs(test_char.location.z))
+
 
 
 if __name__ == '__main__':
