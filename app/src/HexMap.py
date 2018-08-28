@@ -27,19 +27,19 @@ class Hex(object):
 
 class HexMap(object):
     def __init__(self):
-        self._hex_map = {}
-        self._image_width = 256
-        self._image_height = 256
-        self._radius = 127
-        self._center_disp_x = self._image_width / 2
-        self._center_disp_y = self._image_height / 2
+        self.hex_map = {}
+        self.image_width = 256
+        self.image_height = 256
+        self.map_radius = 127
+        self.center_disp_x = self.image_width / 2
+        self.center_disp_y = self.image_height / 2
         
         self.get_hex = self.get_hex_actual
         
         self.arena_height = 10
         self.arena_ground = 'grass'
 
-        self._directions = [
+        self.directions = [
                 Hex(1, 0, -1), 
                 Hex(1, -1, 0), 
                 Hex(0, -1, 1), 
@@ -48,7 +48,7 @@ class HexMap(object):
                 Hex(0, 1, -1),
             ]
         
-        self._diagonals = [
+        self.diagonals = [
                 Hex(2, -1, -1),
                 Hex(1, -2, 1),
                 Hex(-1, -1, 2),
@@ -58,19 +58,19 @@ class HexMap(object):
             ]
 
     def set_image_dimenstions(self, x, y):
-        self._image_width = x
-        self._image_height = y
+        self.image_width = x
+        self.image_height = y
 
     def serialize(self, path):
         new_map = Image.new(
                 'RGBA', 
-                (self._image_width, self._image_height)
+                (self.image_width, self._image_height)
             )
 
-        for key in self._hex_map.keys():
-            this_hex = self._hex_map[key]
-            x = this_hex.x + self._center_disp_x
-            y = this_hex.y + self._center_disp_y
+        for key in self.hex_map.keys():
+            this_hex = self.hex_map[key]
+            x = this_hex.x + self.center_disp_x
+            y = this_hex.y + self.center_disp_y
             r = this_hex.r
             g = this_hex.g
             b = this_hex.b
@@ -88,15 +88,15 @@ class HexMap(object):
             return
 
         image_map = Image.open(path)
-        self._pixel_map = image_map.load()
+        self.pixel_map = image_map.load()
 
         self.initialize_map()
 
     def initialize_map(self):
         self.get_hex = self.get_hex_initial
-        self._hex_map = {}
+        self.hex_map = {}
         point = self.get_hex(x=0, y=0)
-        self.spiral(center_hex=point, radius=self._radius)
+        self.spiral(center_hex=point, radius=self.map_radius)
         self.get_hex = self.get_hex_actual
 
     def get_hex_actual(self, x, y, z=None):
@@ -105,7 +105,7 @@ class HexMap(object):
 
         key = (x, y, z)
         
-        return self._hex_map[key]
+        return self.hex_map[key]
 
     def get_hex_initial(self, x, y, z=None):
         if z is None:
@@ -113,18 +113,18 @@ class HexMap(object):
 
         key = (x, y, z)
 
-        disp_x = x + self._center_disp_x
-        disp_y = y + self._center_disp_y
+        disp_x = x + self.center_disp_x
+        disp_y = y + self.center_disp_y
         if (
             disp_x >= 0 and
             disp_y >= 0 and
-            disp_x < self._image_width and
-            disp_y < self._image_height
+            disp_x < self.image_width and
+            disp_y < self.image_height
         ):
-            r, g, b, a = self._pixel_map[disp_x, disp_y]
+            r, g, b, a = self.pixel_map[disp_x, disp_y]
             new_hex = Hex(x, y, z)
             new_hex.set_color(r=r, g=g, b=b, a=a)
-            self._hex_map[key] = new_hex
+            self.hex_map[key] = new_hex
             
             return new_hex
 
@@ -137,7 +137,7 @@ class HexMap(object):
         new_hex = Hex(x, y, z)
         new_hex.ground = self.arena_ground
         new_hex.height = self.arena_height
-        self._hex_map[key] = new_hex
+        self.hex_map[key] = new_hex
             
         return new_hex
 
@@ -180,7 +180,7 @@ class HexMap(object):
             )
 
     def get_direction(self, direction):
-        return self._directions[direction]
+        return self.directions[direction]
 
     def neighbor(self, input_hex, direction):
         return self.add(
@@ -198,7 +198,7 @@ class HexMap(object):
     def get_diagonal_neighbor(self, input_hex, direction):
         return add(
                 input_hex,
-                self._diagonals[direction]
+                self.diagonals[direction]
             )
 
     def length(self, input_hex):
@@ -326,13 +326,13 @@ class HexMap(object):
         return average
 
     def create_arena(self, arena=None, radius=5):
-        self._radius = radius
+        self.map_radius = radius
         self.get_hex = self.get_hex_arena
         self.arena_height = 10
         self.arena_ground = 'grass'
 
-        self._hex_map = {}
+        self.hex_map = {}
         point = self.get_hex(x=0, y=0)
-        self.spiral(center_hex=point, radius=self._radius)
+        self.spiral(center_hex=point, radius=self.map_radius)
 
         self.get_hex = self.get_hex_actual
