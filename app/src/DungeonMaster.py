@@ -12,7 +12,7 @@ class DungeonMaster(object):
         self.factions = {}
         self.playing = True
         self.dungeon_expire = self.clock.max_locale_time
-        self.captains = set()
+        self.factions = {}
         self.char_id = 'DM'
         self.placement_locations = {
                 'ne': [],    
@@ -73,16 +73,17 @@ class DungeonMaster(object):
 
         return self.playing
 
-    def add_char(self, member, captain='dm', edge='dm'):
-        self.captains.add(captain.char_id)
+    def add_char(self, member, faction='dm', edge='dm'):
+        if faction == 'dm':
+            faction = self
 
-        if captain.char_id not in self.factions.keys():
-            self.factions[captain.char_id] = []
+        if faction.faction_id not in self.factions.keys():
+            self.factions[faction.faction_id] = []
 
-        self.factions[captain.char_id].append(member)
+        self.factions[faction.faction_id].append(member)
         self.queue.put(member, self.get_time())
 
-        captain.place_char(member, self.get_placement_locations(edge))
+        faction.place_char(member, self.get_placement_locations(edge))
 
     def next_char(self):
         return self.queue.get()
@@ -94,7 +95,7 @@ class DungeonMaster(object):
         self.clock.increment_locale_time(self.locale_id)
 
     def activate_char(self, char):
-        priority = char.captain.activate(self)
+        priority = char.faction.activate(self, char)
         
         self.queue.put(char, priority)
 

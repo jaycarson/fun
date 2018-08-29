@@ -8,6 +8,7 @@ from DungeonMaster import DungeonMaster
 
 from Clock import Clock
 from Character import Character
+from Faction import Faction
 
 from Smithy import SmithWeapon
 from Smithy import SmithArmor
@@ -54,6 +55,15 @@ class DungeonMasterTest(unittest.TestCase):
 
         return npc
 
+    def create_faction(self, name):
+        return Faction(
+            experience=0,
+            race='human',
+            name=name,
+            faction_id=name,
+            clock=self.sut.clock,
+            )
+
     def create_arena(self):
         hex_map = HexMap()
         hex_map.arena_ground = 'plains'
@@ -65,12 +75,14 @@ class DungeonMasterTest(unittest.TestCase):
     def add_chars_to_dungeon(self):
         self.vpc_1 = self.create_vpc('jon')
         self.vpc_2 = self.create_vpc('joe')
-        self.vpc_1.char_id = 'red'
-        self.vpc_2.char_id = 'blue'
+        self.faction_1 = self.create_faction('red')
+        self.faction_2 = self.create_faction('blue')
+        self.vpc_1.faction = self.faction_1
+        self.vpc_2.faction = self.faction_2
         self.chars = [self.vpc_1, self.vpc_2]
 
-        self.sut.add_char(captain=self.vpc_1, member=self.vpc_1, edge='ne')
-        self.sut.add_char(captain=self.vpc_2, member=self.vpc_2, edge='sw')
+        self.sut.add_char(faction=self.faction_1, member=self.vpc_1, edge='ne')
+        self.sut.add_char(faction=self.faction_2, member=self.vpc_2, edge='sw')
 
     def test_initial_world_time(self):
         test_time = 0

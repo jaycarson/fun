@@ -23,7 +23,9 @@ class Character(object):
         self.clock = clock
         self.local_id = 0
         self.location = None
-        self.captain = None
+        self.faction = None
+
+        self.current_dungeon_master = None
 
         self.stats = stats
 
@@ -179,6 +181,13 @@ class Character(object):
         else:
             self.active_weapon_set_both = True
 
+    def equip_armor(self, armor):
+        piece = armor.get_piece()
+        self.armors_equiped_by_piece[piece] = armor
+
+    def get_equiped_armor(self, piece='chest'):
+        return self.armors_equiped_by_piece[piece]
+
     def attack(self, slot=1):
         ws = self.active_weapon_set
 
@@ -189,27 +198,10 @@ class Character(object):
         elif slot <= 5:
             self.weapon_sets[ws]['off'].activate(slot)
 
-    def equip_armor(self, armor):
-        piece = armor.get_piece()
-        self.armors_equiped_by_piece[piece] = armor
-
-    def get_equiped_armor(self, piece='chest'):
-        return self.armors_equiped_by_piece[piece]
-
-    def activate(self, dungeon_master, character):
-        global_cooldown = 1000
-        character.global_cooldown = self.get_locale_time() + global_cooldown
-        return characater.global_cooldown
-
-    def place_char(self, character, locations):
-        looking = True
-        
-        while looking:
-            location = choice(locations)
-            if location.character is None:
-                location.character = character
-                character.location = location
-                looking = False
+    def move(self, location):
+        self.location.character = None
+        self.location = location
+        self.location.character = self
 
 
 class CharacterPC(Character):

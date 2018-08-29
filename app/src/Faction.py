@@ -9,12 +9,11 @@ class Faction(object):
                  experience=0,
                  race='human',
                  name='None',
-                 char_id=0,
+                 faction_id=0,
                  clock=None,  # Clock Object
-                 stats=None,  # Dictionary
                  ):
         self.experience = experience
-        self.char_id = char_id
+        self.faction_id = faction_id
         self.locale_id = 0
         self.global_cooldown = 0
 
@@ -29,8 +28,6 @@ class Faction(object):
         self.skill_points_current = 0
         self.skill_points_total = 0
 
-        self.armors_by_piece = {}
-
     def get_level(self):
         level = self.experience / 1000
 
@@ -41,9 +38,6 @@ class Faction(object):
 
     def get_world_time(self):
         return self.clock.get_world_time()
-
-    def get_locale_time(self):
-        return self.clock.get_locale_time(self.locale_id)
 
     def _gain_level(self):
         self._gain_skill_point()
@@ -81,8 +75,9 @@ class Faction(object):
 
     def activate(self, dungeon_master, character):
         global_cooldown = 1000
-        character.global_cooldown = self.get_locale_time() + global_cooldown
-        return characater.global_cooldown
+        locale_time = character.get_locale_time()
+        character.global_cooldown = locale_time + global_cooldown
+        return character.global_cooldown
 
     def place_char(self, character, locations):
         looking = True
