@@ -51,7 +51,7 @@ class DungeonMasterTest(unittest.TestCase):
         npc.locale_id = self.locale_id
 
         new_weapon = self.weapon_smith.create()
-        npc.give_weapon(new_weapon)
+        npc.rack_weapon.give_weapon(new_weapon)
 
         return npc
 

@@ -13,4 +13,8 @@ class AbilityTest(unittest.TestCase):
 
     def test_name(self):
         test_name = 'None'
-        self.assertEqual(test_name, self.sut.get_name())
+        self.assertEqual(test_name, self.sut.name)
+
+
+if __name__ == '__main__':
+    unittest.main()

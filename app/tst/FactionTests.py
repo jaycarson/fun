@@ -25,31 +25,31 @@ class FactionTest(unittest.TestCase):
 
     def test_starts_as_level_0(self):
         expected = 0
-        self.assertEqual(expected, self.sut.get_level())
+        self.assertEqual(expected, self.sut.levelable.get_level())
 
     def test_faction_gains_a_level_level(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.get_level())
+        self.assertEqual(expected, self.sut.levelable.get_level())
 
     def test_faction_gains_a_level_test_skill_points_current(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.skill_points_current)
+        self.assertEqual(expected, self.sut.skillable.skill_points_current)
 
     def test_faction_gains_a_level_test_skill_points_total(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.skill_points_total)
+        self.assertEqual(expected, self.sut.skillable.skill_points_total)
 
     def test_starts_with_no_experience(self):
         expected = 0
-        self.assertEqual(expected, self.sut.experience)
+        self.assertEqual(expected, self.sut.get_experience())
 
     def test_faction_gains_experience(self):
-        starting = self.sut.experience
+        starting = self.sut.get_experience()
         self.sut.give_experience(1001)
-        ending = self.sut.experience
+        ending = self.sut.get_experience()
         self.assertGreater(ending, starting)
 
     def test_gets_correct_id(self):

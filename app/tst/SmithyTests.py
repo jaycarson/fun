@@ -40,7 +40,7 @@ class SmithArmorTest(unittest.TestCase):
         qualities = BookQuality().get_list()
 
         armor = self.sut.create()
-        self.assertTrue(armor.get_armor_type() in armor_types)
+        self.assertTrue(armor.armor_type in armor_types)
 
     def test_create_check_piece(self):
         armor_types = BookArmor().get_types()
@@ -49,7 +49,7 @@ class SmithArmorTest(unittest.TestCase):
         qualities = BookQuality().get_list()
 
         armor = self.sut.create()
-        self.assertTrue(armor.get_piece() in armor_pieces)
+        self.assertTrue(armor.piece in armor_pieces)
 
     def test_create_check_quality(self):
         armor_types = BookArmor().get_types()
@@ -58,7 +58,7 @@ class SmithArmorTest(unittest.TestCase):
         qualities = BookQuality().get_list()
 
         armor = self.sut.create()
-        self.assertTrue(armor.get_quality() in qualities)
+        self.assertTrue(armor.quality in qualities)
 
     def test_create_check_color(self):
         armor_types = BookArmor().get_types()
@@ -67,7 +67,7 @@ class SmithArmorTest(unittest.TestCase):
         qualities = BookQuality().get_list()
 
         armor = self.sut.create()
-        self.assertTrue(armor.get_color() in colors)
+        self.assertTrue(armor.color in colors)
 
 
 class SmithWeaponTest(unittest.TestCase):
@@ -82,17 +82,17 @@ class SmithWeaponTest(unittest.TestCase):
     def test_create_check_type(self):
         weapon_types = BookWeapon().get_weapons()
         weapon = self.sut.create()
-        self.assertTrue(weapon.get_weapon_type() in weapon_types)
+        self.assertTrue(weapon.weapon_type in weapon_types)
 
     def test_create_check_quality(self):
         qualities = BookQuality().get_list()
         weapon = self.sut.create()
-        self.assertTrue(weapon.get_quality() in qualities)
+        self.assertTrue(weapon.quality in qualities)
 
     def test_create_check_color(self):
         colors = BookColor().get_list()
         weapon = self.sut.create()
-        self.assertTrue(weapon.get_color() in colors)
+        self.assertTrue(weapon.color in colors)
 
     def test_weapon_got_five_abilities(self):
         weapon = self.sut.create()
@@ -101,3 +101,7 @@ class SmithWeaponTest(unittest.TestCase):
             expected_quantity_of_abilities, 
             len(weapon.get_active_ability_set())
         )
+
+
+if __name__ == '__main__':
+    unittest.main()

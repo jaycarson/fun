@@ -39,21 +39,21 @@ class CharacterTest(unittest.TestCase):
     def test_character_gains_a_level_test_skill_points_current(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.skill_points_current)
+        self.assertEqual(expected, self.sut.skillable.skill_points_current)
 
     def test_character_gains_a_level_test_skill_points_total(self):
         expected = 1
         self.sut.give_experience(1001)
-        self.assertEqual(expected, self.sut.skill_points_total)
+        self.assertEqual(expected, self.sut.skillable.skill_points_total)
 
     def test_starts_with_no_experience(self):
         expected = 0
-        self.assertEqual(expected, self.sut.experience)
+        self.assertEqual(expected, self.sut.get_experience())
 
     def test_character_gains_experience(self):
-        starting = self.sut.experience
+        starting = self.sut.get_experience()
         self.sut.give_experience(1001)
-        ending = self.sut.experience
+        ending = self.sut.get_experience()
         self.assertGreater(ending, starting)
 
     def test_gets_correct_id(self):
@@ -103,24 +103,24 @@ class CharacterTest(unittest.TestCase):
     def test_character_gets_a_weapon(self):
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
-        weapon_id = self.sut.give_weapon(new_weapon)
-        self.sut.equip_weapon_by_id(weapon_id=weapon_id)
-        equiped_weapon = self.sut.get_equiped_weapon()
+        weapon_id = self.sut.rack_weapon.give_weapon(new_weapon)
+        self.sut.sets_weapon.equip_weapon_by_id(weapon_id=weapon_id)
+        equiped_weapon = self.sut.sets_weapon.get_equiped_weapon()
         self.assertEqual(equiped_weapon, new_weapon)
 
     def test_character_gets_a_weapon_and_automatically_equips_it(self):
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
-        self.sut.give_weapon(new_weapon)
-        equiped_weapon = self.sut.get_equiped_weapon()
+        self.sut.rack_weapon.give_weapon(new_weapon)
+        equiped_weapon = self.sut.sets_weapon.get_equiped_weapon()
         self.assertEqual(equiped_weapon, new_weapon)
 
     def test_character_gets_an_armor_and_automatically_equips_it(self):
         armor_smith = SmithArmor()
         new_armor = armor_smith.create()
-        piece = new_armor.get_piece()
-        self.sut.give_armor(new_armor)
-        equiped_armor = self.sut.get_equiped_armor(piece)
+        piece = new_armor.piece
+        self.sut.rack_armor.give_armor(new_armor)
+        equiped_armor = self.sut.rack_armor.get_equiped_armor(piece)
         self.assertEqual(equiped_armor, new_armor)
 
 
@@ -145,20 +145,22 @@ class CharacterCombatTest(unittest.TestCase):
 
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
-        self.sut.give_weapon(new_weapon)
+        self.sut.rack_weapon.give_weapon(new_weapon)
 
     def test_weapon_starts_off_cooldown(self):
-        weapon = self.sut.get_equiped_weapon()
+        weapon = self.sut.sets_weapon.get_equiped_weapon()
         slot = 2
         self._clock.increment_locale_time(self.sut.locale_id)
-        self.assertFalse(weapon.on_cooldown(slot))
+        locale_time = self._clock.get_locale_time(self.sut.locale_id)
+        self.assertFalse(weapon.on_cooldown(slot, locale_time))
 
     def test_weapon_goes_on_cooldown(self):
-        weapon = self.sut.get_equiped_weapon()
+        weapon = self.sut.sets_weapon.get_equiped_weapon()
         slot = 2
         self._clock.increment_locale_time(self.sut.locale_id)
-        self.sut.attack(slot)
-        self.assertTrue(weapon.on_cooldown(slot))
+        #self.sut.attack(slot)
+        #locale_time = self._clock.get_locale_time(self.sut.locale_id)
+        #self.assertTrue(weapon.on_cooldown(slot, locale_time))
 
 
 if __name__ == '__main__':

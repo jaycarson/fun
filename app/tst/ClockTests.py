@@ -83,3 +83,7 @@ class ClockTest(unittest.TestCase):
             test_time,
             self.sut.get_locale_time(locale_id=test_locale_id)
         )
+
+
+if __name__ == '__main__':
+    unittest.main()

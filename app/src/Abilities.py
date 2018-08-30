@@ -38,242 +38,224 @@ class Abilities(object):
 
 class Ability(object):
     def __init__(self):
-        self._owner = None
-        self._name = 'None'
-        self._ability_cooldown = 1
-        self._cooldown = 0
-        self._power = 1
+        self.name = 'None'
+        self.ability_cooldown = 1
+        self.cooldown = 1
 
-    def set_owner(self, owner):
-        self._owner = owner
-
-    def set_power(self, power):
-        self._power = power
-
-    def on_cooldown(self):
-        if self._owner.get_locale_time() < self._cooldown:
-            return True
+    def calc_cooldown(self, cooldown_adj):
+        if isinstance(cooldown_adj, float):
+            cooldown = int(self.cooldown * cooldown_adj)
         else:
-            return False
+            cooldown = self.cooldown + cooldown_adj
 
-    def activate(self):
-        if self.on_cooldown():
-            return
+        return cooldown
 
-        self._cooldown = self._owner.get_locale_time() + self._ability_cooldown
-        self._activate()
-
-    def _activate(self):
-        target_enemy = self._owner.target_enemy
-        target_ally = self._owner.target_ally
-        return
-
-    def get_current_time(self):
-        return self._owner.get_current_time()
-
-    def get_name(self):
-        return self._name
+    def activate(self, actor, power, cooldown, current_time):
+        target_enemy = actor.target_enemy
+        target_ally = actor.target_ally
+        
+        return self.calc_cooldown(cooldown) + current_time
 
 
 class Bash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Bash'
+        self.name = 'Bash'
 
 
 class FinalThrust(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Final Thrust'
+        self.name = 'Final Thrust'
 
 
 class Gash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Gash'
+        self.name = 'Gash'
 
 
 class Hamstring(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Hamstring'
+        self.name = 'Hamstring'
 
 
 class Hit(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Hit'
+        self.name = 'Hit'
 
 
 class Impale(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Impale'
+        self.name = 'Impale'
 
 
 class Rip(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Rip'
+        self.name = 'Rip'
 
 
 class Ripost(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Ripost'
+        self.name = 'Ripost'
 
 
 class Rush(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Rush'
+        self.name = 'Rush'
 
 
 class SavageLeap(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Savage Leap'
+        self.name = 'Savage Leap'
 
 
 class SeverArtery(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Sever Artery'
+        self.name = 'Sever Artery'
 
 
 class Swing(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Swing'
+        self.name = 'Swing'
 
 
 class Slash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Slash'
+        self.name = 'Slash'
 
 
 class Slice(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Slice'
+        self.name = 'Slice'
 
 
 class Gash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Gash'
+        self.name = 'Gash'
 
 
 class WildSlash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Slash'
+        self.name = 'Wild Slash'
 
 
 class Strike(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Strike'
+        self.name = 'Strike'
 
 
 class WildStrike(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Strike'
+        self.name = 'Wild Strike'
 
 
 class WildSwing(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Swing'
+        self.name = 'Wild Swing'
 
 
 class Smack(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Smack'
+        self.name = 'Smack'
 
 
 class Blow(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Blow'
+        self.name = 'Blow'
 
 
 class SkullCrack(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Skull Crack'
+        self.name = 'Skull Crack'
 
 
 class WildBlow(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Blow'
+        self.name = 'Wild Blow'
 
 
 class Thrust(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Thrust'
+        self.name = 'Thrust'
 
 
 class Jab(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Jab'
+        self.name = 'Jab'
 
 
 class WildThrust(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Thrust'
+        self.name = 'Wild Thrust'
 
 
 class Advance(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Advance'
+        self.name = 'Advance'
 
 
 class Chop(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Chop'
+        self.name = 'Chop'
 
 
 class DoubleChop(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'DoubleChop'
+        self.name = 'DoubleChop'
 
 
 class TripleChop(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Triple Chop'
+        self.name = 'Triple Chop'
 
 
 class Cut(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Cut'
+        self.name = 'Cut'
 
 
 class Flurry(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Flurry'
+        self.name = 'Flurry'
 
 
 class Whirl(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Whirl'
+        self.name = 'Whirl'
 
 
 class WildBash(Ability):
     def __init__(self):
         Ability.__init__(self)
-        self._name = 'Wild Bash'
+        self.name = 'Wild Bash'

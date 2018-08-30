@@ -11,75 +11,69 @@ class Weapon(object):
                  damage,
                  stats,
                  ability_set,
+                 cooldown_set,
+                 cooldown_adj_set,
+                 strength_set,
                  weapon_id,
                  ):
-        self._weapon_type = weapon_type
-        self._quality = quality
-        self._color = color
-        self._skills = skills  # List
-        self._handed = handed  # List
-        self._damage = damage
-        self._stats = stats
+        self.weapon_type = weapon_type
+        self.quality = quality
+        self.color = color
+        self.skills = skills  # List
+        self.handed = handed  # List
+        self.damage = damage
+        self.stats = stats
 
-        self._ability_sets = {}
-        self._ability_sets['simple'] = ability_set
-        self._active_set = 'simple'
-        self._owner = None
-        self._id = weapon_id
-
-    def get_id(self):
-        return self._id
-
-    def get_weapon_type(self):
-        return self._weapon_type
+        self.ability_sets = {}
+        self.cooldowns = {}
+        self.strengths = {}
+        self.cooldown_adjs = {}
+        self.ability_sets['simple'] = ability_set
+        self.active_set = 'simple'
+        self.id = weapon_id
+        #self.cooldowns['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+        #self.cooldown_adjs['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+        #self.strengths['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+        self.cooldowns['simple'] = cooldown_set
+        self.cooldown_adjs['simple'] = cooldown_adj_set
+        self.strengths['simple'] = strength_set
 
     def get_slot_ability(self, slot):
-        return self._ability_sets[self._active_set][slot]
+        return self.ability_sets[self.active_set][slot]
 
-    def get_quality(self):
-        return self._quality
+    def on_cooldown(self, slot, current_time):
+        return self.cooldowns[self.active_set][slot] > current_time
 
-    def get_color(self):
-        return self._color
-
-    def get_handed(self):
-        return self._handed
-
-    def set_owner(self, owner):
-        self._owner = owner
-
-        for ability_set_name in self.get_ability_set_names():
-            for ability in self.get_ability_set(ability_set_name):
-                ability.set_owner(owner)
-
-    def on_cooldown(self, slot):
-        ability = self.get_active_ability_set()[slot]
-
-        if ability.on_cooldown():
-            return True
-        else:
-            return False
-
-    def activate(self, slot):
-        return self._ability_sets[self._active_set][slot].activate()
+    def activate(self, actor, slot, current_time):
+        ability_cooldown = self.ability_sets[self.active_set][slot].cooldown
+        self.cooldowns[slot] = ability_cooldown + current_time
+        ability = self.ability_sets[self.active_set][slot]
+        strength = self.strengths[self.active_set][slot]
+        cooldown_adj = self.cooldown_adjs[self.active_set][slot]
+        self.cooldowns[self.active_set][slot] = ability.activate(
+                actor,
+                strength,
+                cooldown_adj,
+                current_time,
+            )
 
     def get_stat(self, stat_name):
-        assert stat_name in self._stats
-        return self._stats[stat_name]
+        assert stat_name in self.stats
+        return self.stats[stat_name]
 
     def get_ability_set_names(self):
         abilities = []
 
-        for key in self._ability_sets.keys():
+        for key in self.ability_sets.keys():
             abilities.append(key)
 
         return abilities
 
     def add_ability_set(self, ability_set, ability_set_name):
-        self._ability_sets[ability_set_name] = ability_set
+        self.ability_sets[ability_set_name] = ability_set
 
     def get_active_ability_set(self):
-        return self._ability_sets[self._active_set]
+        return self.ability_sets[self.active_set]
 
     def get_ability_set(self, ability_set_name):
-        return self._ability_sets[ability_set_name]
+        return self.ability_sets[ability_set_name]

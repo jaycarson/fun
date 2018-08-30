@@ -72,7 +72,7 @@ class Smith(object):
             color = choice(self._colors)
         return color
 
-    def _generate_id(self):
+    def generate_id(self):
         new_id = randint(1, self._max_rand_id)
 
         while new_id in self._ids:
@@ -120,7 +120,7 @@ class SmithArmor(Smith):
             color=color,
             skills=skills,
             stats=self._book_stat.generate_for_gear(quality),
-            armor_id=self._generate_id(),
+            armor_id=self.generate_id(),
             )
 
         return armor
@@ -150,6 +150,11 @@ class SmithWeapon(Smith):
         damage_types = []
         damage_types.append(damage_type)
 
+        ability_set = self.generate_ability_set(damage_types)
+        strength_set = self.generate_strength_set
+        cooldown_set = self.generate_cooldown_set
+        cooldown_adj_set = self.generate_cooldown_adj_set
+
         return Weapon(
             weapon_type=weapon,
             quality=quality,
@@ -158,11 +163,14 @@ class SmithWeapon(Smith):
             handed=self._book_weapon.get_weapon_handed(weapon),
             damage=damage_types,
             stats=self._book_stat.generate_for_gear(quality),
-            ability_set=self._generate_ability_set(damage_types),
-            weapon_id=self._generate_id(),
+            ability_set=ability_set,
+            cooldown_set=cooldown_set,
+            cooldown_adj_set=cooldown_adj_set,
+            strength_set=strength_set,
+            weapon_id=self.generate_id(),
             )
 
-    def _generate_ability_set(self, damage_types, skills=['simple']):
+    def generate_ability_set(self, damage_types, skills=['simple']):
         skill_list = []
         ability_set = []
 
@@ -173,16 +181,13 @@ class SmithWeapon(Smith):
                     damage_type=damage_type,
                     )
 
-        power_set = self._generate_power_set()
-
-        for power in power_set:
-            ability = self._get_ability(choice(skill_list))
-            ability.set_power(power)
+        for counter in range(0, 5):
+            ability = self.get_ability(choice(skill_list))
             ability_set.append(ability)
 
         return ability_set
 
-    def _generate_power_set(self):
+    def generate_strength_set(self):
         p1 = randint(1, 5)
         p2 = randint(2, 10)
         p3 = randint(3, 10)
@@ -190,15 +195,26 @@ class SmithWeapon(Smith):
         p5 = randint(5, 10)
         total = p1 + p2 + p3 + p4 + p5
 
-        power_set = [
-            int(p1 / total * 10),
-            int(p2 / total * 10),
-            int(p3 / total * 10),
-            int(p4 / total * 10),
-            int(p5 / total * 10),
-            ]
+        power_set = {
+                1: int(p1 / total * 10),
+                2: int(p2 / total * 10),
+                3: int(p3 / total * 10),
+                4: int(p4 / total * 10),
+                5: int(p5 / total * 10),
+            }
 
         return power_set
 
-    def _get_ability(self, ability_name):
+    def generate_cooldown_set(self, strength_set):
+        cooldown_set = {}
+        
+        for slot in strength_set.keys():
+            cooldown_set[slot] = strength_set[slot] * 1.5
+        
+        return cooldown_set
+
+    def generate_cooldown_adj_set(self, strength_set):
+        return {1: 0, 2: 1, 3: 0, 4: 0, 5: 0}
+
+    def get_ability(self, ability_name):
         return self._abilities.get_ability(ability_name)
