@@ -151,9 +151,9 @@ class SmithWeapon(Smith):
         damage_types.append(damage_type)
 
         ability_set = self.generate_ability_set(damage_types)
-        strength_set = self.generate_strength_set
-        cooldown_set = self.generate_cooldown_set
-        cooldown_adj_set = self.generate_cooldown_adj_set
+        strength_set = self.generate_strength_set()
+        cooldown_set = self.generate_cooldown_set(strength_set)
+        cooldown_adj_set = self.generate_cooldown_adj_set(strength_set)
 
         return Weapon(
             weapon_type=weapon,

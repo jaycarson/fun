@@ -158,9 +158,9 @@ class CharacterCombatTest(unittest.TestCase):
         weapon = self.sut.sets_weapon.get_equiped_weapon()
         slot = 2
         self._clock.increment_locale_time(self.sut.locale_id)
-        #self.sut.attack(slot)
-        #locale_time = self._clock.get_locale_time(self.sut.locale_id)
-        #self.assertTrue(weapon.on_cooldown(slot, locale_time))
+        self.sut.attack(slot)
+        locale_time = self._clock.get_locale_time(self.sut.locale_id)
+        self.assertTrue(weapon.on_cooldown(slot, locale_time))
 
 
 if __name__ == '__main__':
