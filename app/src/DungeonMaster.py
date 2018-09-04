@@ -63,7 +63,7 @@ class DungeonMaster(object):
     def run(self):
         char = self.next_char()
         self.increment_time()
-        while self.get_time() < char.global_cooldown:
+        while self.get_time() < char.gcd:
             self.increment_time()
         self.activate_char(char)
 

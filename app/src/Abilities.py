@@ -41,6 +41,8 @@ class Ability(object):
         self.name = 'None'
         self.cd = 1  # Cool Down
         self.gcd = 1  # Global Cool Down
+        self.combat_type = 'melee'
+        self.combat_role = 'damage'
 
     def calc_cooldown(self, cooldown_adj):
         if isinstance(cooldown_adj, float):

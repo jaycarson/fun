@@ -18,7 +18,7 @@ class Character(object):
                  ):
         self.char_id = char_id
         self.locale_id = 0
-        self.global_cooldown = 0
+        self.gcd = 0
 
         self.skillable = Skillable()
         self.levelable = Levelable(
@@ -30,7 +30,7 @@ class Character(object):
         
         self.rack_armor = RackArmor()
         self.rack_weapon = RackWeapon(self.sets_weapon)
-        
+
         self.sets_weapon.rack_weapon = self.rack_weapon
 
         self.race = race
@@ -64,6 +64,12 @@ class Character(object):
 
     def activate(self):
         self.faction.activate(self)
+
+    def get_brain(self):
+        combat_type = self.sets_weapon.get_active_combat_type()
+        combat_role = self.sets_weapon.get_active_combat_role()
+
+        return combat_type + combat_role
 
     def attack(self, slot=1):
         ws = self.sets_weapon

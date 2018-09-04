@@ -15,12 +15,17 @@ from Library import BookColor
 class FactionTest(unittest.TestCase):
     def setUp(self):
         self._clock = Clock()
+        self.sut_name = 'sut'
+        self.sut_smithy_weapon = SmithWeapon()
+        self.sut_smithy_armor = SmithArmor()
 
         self.sut = Faction(
             experience=0,
-            name='sut',
+            name=self.sut_name,
             faction_id=0,
             clock=self._clock,
+            smithy_weapon=self.sut_smithy_weapon,
+            smithy_armor=self.sut_smithy_armor,
             )
 
     def test_starts_as_level_0(self):
@@ -61,8 +66,7 @@ class FactionTest(unittest.TestCase):
         self.assertEqual(expected_2, sut_2.faction_id)
 
     def test_gets_name(self):
-        expected = 'sut'
-        self.assertEqual(expected, self.sut.name)
+        self.assertEqual(self.sut_name, self.sut.name)
 
     def test_faction_knows_the_worlds_time(self):
         test_time = 0
@@ -89,6 +93,9 @@ class FactionTest(unittest.TestCase):
         self.sut.rack_armor.give_armor(new_armor)
         given_arm = self.sut.rack_armor.armors[new_armor.id]
         self.assertTrue(given_arm.color in colors)
+
+    def test_created_character_gets_a_weapon(self):
+        vpc = self.sut.create_vpc()
 
 
 if __name__ == '__main__':

@@ -1,4 +1,12 @@
 ---
+'club':
+    skills:
+      - simple
+    damage: 
+      - bludeon
+    handed: 
+      - main
+      - off
 'dagger':
     skills:
       - simple

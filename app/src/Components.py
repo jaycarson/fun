@@ -54,27 +54,30 @@ class RackArmor(object):
     def __init__(self):
         self.armors = {}
         self.armors_by_piece = {}
-        self.armors_equiped_by_piece = {}
+        self.armors_equipped_by_piece = {}
 
         for piece in BookArmor().get_pieces():
             self.armors_by_piece[piece] = {}
-            self.armors_equiped_by_piece[piece] = None
+            self.armors_equipped_by_piece[piece] = None
 
     def give_armor(self, armor):
         self.armors[armor.id] = armor
 
         self.armors_by_piece[armor.piece][armor.id] = armor
 
-        if self.get_equiped_armor(armor.piece) is None:
+        if self.get_equipped_armor(armor.piece) is None:
             self.equip_armor(armor)
 
         return armor.id
 
     def equip_armor(self, armor):
-        self.armors_equiped_by_piece[armor.piece] = armor
+        self.armors_equipped_by_piece[armor.piece] = armor
 
-    def get_equiped_armor(self, piece='chest'):
-        return self.armors_equiped_by_piece[piece]
+    def get_equipped_armor(self, piece='chest'):
+        return self.armors_equipped_by_piece[piece]
+
+    def remove_armor(self, piece):
+        self.armors_equipped_by_piece[piece] = None
 
 
 class RackWeapon(object):
@@ -96,14 +99,14 @@ class RackWeapon(object):
         self.weapons[weapon.id] = weapon
 
         if (
-            self.sets_weapon.get_equiped_weapon(hand='main') is None and
-            self.sets_weapon.get_equiped_weapon(hand='both') is None
+            self.sets_weapon.get_equipped_weapon(hand='main') is None and
+            self.sets_weapon.get_equipped_weapon(hand='both') is None
         ):
             self.sets_weapon.equip_weapon(weapon)
         elif (
-            self.sets_weapon.get_equiped_weapon(hand='off') is None and
-            self.sets_weapon.get_equiped_weapon(hand='both') is None and
-            'off' in weapon.get_handed()
+            self.sets_weapon.get_equipped_weapon(hand='off') is None and
+            self.sets_weapon.get_equipped_weapon(hand='both') is None and
+            'off' in weapon.handed
         ):
             self.sets_weapon.equip_weapon(weapon, hand='off')
 
@@ -115,6 +118,7 @@ class SetsWeapon(object):
         self.rack_weapon = rack_weapon
         
         self.active_weapon_set = 1
+        self.inactive_weapon_set = 2
         self.active_weapon_set_both = False
 
         self.weapon_sets = {
@@ -153,32 +157,75 @@ class SetsWeapon(object):
             self.weapon_sets[weapon_set]['off'] = None
 
         self.weapon_sets[weapon_set][hand] = weapon
-        self._set_is_wielding_both_handed()
+        self.set_is_wielding_both_handed()
 
-    def get_equiped_weapon(self, hand='main'):
+    def get_equipped_weapon(self, hand='main'):
         return self.weapon_sets[self.active_weapon_set][hand]
+    
+    def get_unequipped_weapon(self, hand='main'):
+        return self.weapon_sets[self.inactive_weapon_set][hand]
+    
+    def get_active_slot(self, slot):
+        self.get_slot(self.active_weapon_set, slot)
+
+    def get_inactive_slot(self, slot):
+        self.get_slot(self.inactive_weapon_set, slot)
+
+    def get_slot(self, weapon_set, slot):
+        active_set = self.weapon_sets[weapon_set]
+        if active_set['both'] is None:
+            if slot < 4:
+                weapon = active_set['main']
+            else:
+                weapon = active_set['off']
+        else:
+            weapon = active_set['both']
+
+        return weapon.get_active_ability_slot(slot)
+
+    def get_active_combat_type(self):
+        weapon = self.get_equipped_weapon()
+        return weapon.get_combat_type()
+
+    def get_active_combat_role(self):
+        weapon = self.get_equipped_weapon()
+        return weapon.get_combat_role()
+
+    def get_inactive_combat_type(self):
+        weapon = self.get_unequipped_weapon()
+        return weapon.get_combat_type()
+
+    def get_inactive_combat_role(self):
+        weapon = self.get_unequipped_weapon()
+        return weapon.get_combat_role()
 
     def switch_weapon_set(self, weapon_set=0):
         new_active = 1
+        new_inactive = 2
 
         if weapon_set == 1:
             new_active = 2
+            new_inactive = 1
         elif weapon_set == 2:
             new_active = 1
+            new_inactive = 2
         else:
             if self.active_weapon_set == 1:
                 new_active = 2
+                new_inactive = 1
             else:
                 new_active = 1
+                new_inactive = 2
 
         self.active_weapon_set = new_active
+        self.inactive_weapon_set = new_inactive
 
         self.set_is_wielding_both_handed()
 
         return new_active
 
-    def _set_is_wielding_both_handed(self):
-        if self.get_equiped_weapon(hand='both') is None:
+    def set_is_wielding_both_handed(self):
+        if self.get_equipped_weapon(hand='both') is None:
             self.active_weapon_set_both = False
         else:
             self.active_weapon_set_both = True

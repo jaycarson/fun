@@ -17,6 +17,8 @@ from Library import BookStat
 
 from HexMap import HexMap
 
+from Brain import Brains
+
 
 class DungeonMasterTest(unittest.TestCase):
     def setUp(self):
@@ -35,7 +37,9 @@ class DungeonMasterTest(unittest.TestCase):
             )
 
         self._book_stat = BookStat()
-        self.weapon_smith = SmithWeapon()
+        self.smith_weapon = SmithWeapon()
+        self.smith_armor = SmithArmor()
+        self.brains = Brains()
 
     def create_vpc(self, name):
         new_stats = self._book_stat.generate_for_character()
@@ -61,6 +65,9 @@ class DungeonMasterTest(unittest.TestCase):
             name=name,
             faction_id=name,
             clock=self.sut.clock,
+            smithy_weapon=self.smith_weapon,
+            smithy_armor=self.smith_armor,
+            brains=self.brains,
             )
 
     def create_arena(self):

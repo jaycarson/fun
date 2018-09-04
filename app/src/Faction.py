@@ -17,6 +17,9 @@ class Faction(object):
                  name='None',
                  faction_id=0,
                  clock=None,  # Clock Object
+                 smithy_weapon=None,
+                 smithy_armor=None,
+                 brains=None
                  ):
         self.faction_id = faction_id
         self.races = ['human']
@@ -33,6 +36,9 @@ class Faction(object):
         self.name = name
         self.clock = clock
         self.characters = []
+        self.brains = brains
+        self.smithy_weapon = smithy_weapon
+        self.smithy_armor = smithy_armor
 
     def get_level(self):
         return self.levelable.get_level()
@@ -48,8 +54,7 @@ class Faction(object):
 
     def activate(self, character):
         global_cooldown = 1000
-        locale_time = character.get_locale_time()
-        character.gcd = locale_time + global_cooldown
+        self.brains[character.get_brain()].act(character)
         return character.gcd
 
     def place_char(self, character, locations):
@@ -78,9 +83,36 @@ class Faction(object):
 
         new_character.faction = self
 
+        self.equip_standard_character(new_character)
+
         self.characters.append(new_character)
 
         return new_character
+
+    def equip_standard_character(self, character):
+        self.equip_standard_weapon(character)
+        self.equip_standard_armor(character)
+
+    def equip_standard_weapon(self, character):
+        default_weapon = self.smithy_weapon.create(
+                    weapon='club',
+                    quality='common',
+                    color='whilte',
+                )
+
+        character.rack_weapon.give_weapon(default_weapon)
+
+    def equip_standard_armor(self, character):
+        for piece in self.smithy_armor._armor_pieces:
+            default_piece = self.smithy_armor.create(
+                    armor_type='cloth',
+                    armor_piece=piece,
+                    quality='common',
+                    skills=None,
+                )
+
+            character.rack_armor.give_armor(default_piece)
+
 
 
 class FactionPC(Faction):

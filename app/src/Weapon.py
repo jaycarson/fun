@@ -31,15 +31,18 @@ class Weapon(object):
         self.ability_sets['simple'] = ability_set
         self.active_set = 'simple'
         self.id = weapon_id
-        #self.cooldowns['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
-        #self.cooldown_adjs['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
-        #self.strengths['simple'] = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
         self.cooldowns['simple'] = cooldown_set
         self.cooldown_adjs['simple'] = cooldown_adj_set
         self.strengths['simple'] = strength_set
 
     def get_slot_ability(self, slot):
         return self.ability_sets[self.active_set][slot]
+
+    def get_combat_type(self):
+        return self.ability_sets[self.active_set][0].combat_type
+
+    def get_combat_role(self):
+        return self.ability_sets[self.active_set][0].combat_role
 
     def on_cooldown(self, slot, current_time):
         return self.cooldowns[self.active_set][slot] > current_time
@@ -77,3 +80,7 @@ class Weapon(object):
 
     def get_ability_set(self, ability_set_name):
         return self.ability_sets[ability_set_name]
+
+    def get_active_ability_slot(self, slot):
+        active_set = self.get_active_ability_set()
+        return active_set[slot]

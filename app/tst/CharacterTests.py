@@ -11,6 +11,7 @@ from Smithy import SmithWeapon
 from Smithy import SmithArmor
 from HexMap import HexMap
 from DungeonMaster import DungeonMaster
+from Brain import Brains
 
 from Library import BookStat
 
@@ -20,12 +21,18 @@ class CharacterTest(unittest.TestCase):
         self._clock = Clock()
         self.locale_id = 1000
         self.book_stat = BookStat()
+        self.sut_smithy_weapon = SmithWeapon()
+        self.sut_smithy_armor = SmithArmor()
+        self.sut_brains = Brains()
 
         self.sut_faction = Faction(
                     experience=0,
                     name='Red',
                     faction_id='1000',
                     clock=self._clock,
+                    smithy_weapon=self.sut_smithy_weapon,
+                    smithy_armor=self.sut_smithy_armor,
+                    brains=self.sut_brains,
                 )
 
         self.sut = self.sut_faction.create_vpc(name='sut')
@@ -123,23 +130,28 @@ class CharacterTest(unittest.TestCase):
         new_weapon = weapon_smith.create()
         weapon_id = self.sut.rack_weapon.give_weapon(new_weapon)
         self.sut.sets_weapon.equip_weapon_by_id(weapon_id=weapon_id)
-        equiped_weapon = self.sut.sets_weapon.get_equiped_weapon()
-        self.assertEqual(equiped_weapon, new_weapon)
+        equipped_weapon = self.sut.sets_weapon.get_equipped_weapon()
+        self.assertEqual(equipped_weapon, new_weapon)
 
     def test_character_gets_a_weapon_and_automatically_equips_it(self):
+        self.sut.sets_weapon.weapon_sets[1]['main'] = None
+        self.sut.sets_weapon.weapon_sets[1]['off'] = None
+        self.sut.sets_weapon.weapon_sets[1]['both'] = None
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
-        equiped_weapon = self.sut.sets_weapon.get_equiped_weapon()
-        self.assertEqual(equiped_weapon, new_weapon)
+        equipped_weapon = self.sut.sets_weapon.get_equipped_weapon()
+        self.assertEqual(equipped_weapon, new_weapon)
 
     def test_character_gets_an_armor_and_automatically_equips_it(self):
         armor_smith = SmithArmor()
+        for piece in armor_smith._armor_pieces:
+            self.sut.rack_armor.remove_armor(piece)
         new_armor = armor_smith.create()
         piece = new_armor.piece
         self.sut.rack_armor.give_armor(new_armor)
-        equiped_armor = self.sut.rack_armor.get_equiped_armor(piece)
-        self.assertEqual(equiped_armor, new_armor)
+        equipped_armor = self.sut.rack_armor.get_equipped_armor(piece)
+        self.assertEqual(equipped_armor, new_armor)
 
 
 class CharacterCombatTest(unittest.TestCase):
@@ -147,12 +159,18 @@ class CharacterCombatTest(unittest.TestCase):
         self._clock = Clock()
         self.locale_id = 1000
         self.book_stat = BookStat()
+        self.sut_smithy_weapon = SmithWeapon()
+        self.sut_smithy_armor = SmithArmor()
+        self.sut_brains = Brains()
 
         self.sut_faction = Faction(
                     experience=0,
                     name='Red',
                     faction_id='1000',
                     clock=self._clock,
+                    smithy_weapon=self.sut_smithy_weapon,
+                    smithy_armor=self.sut_smithy_armor,
+                    brains=self.sut_brains,
                 )
 
         self.sut = self.sut_faction.create_vpc(name='sut')
@@ -179,14 +197,14 @@ class CharacterCombatTest(unittest.TestCase):
         self.sut.rack_weapon.give_weapon(new_weapon)
 
     def test_weapon_starts_off_cooldown(self):
-        weapon = self.sut.sets_weapon.get_equiped_weapon()
+        weapon = self.sut.sets_weapon.get_equipped_weapon()
         slot = 2
         self.sut.dm.increment_time()
         locale_time = self.sut.dm.get_time()
         self.assertFalse(weapon.on_cooldown(slot, locale_time))
 
     def test_weapon_goes_on_cooldown(self):
-        weapon = self.sut.sets_weapon.get_equiped_weapon()
+        weapon = self.sut.sets_weapon.get_equipped_weapon()
         slot = 2
         self.sut.dm.increment_time()
         self.sut.attack(slot)

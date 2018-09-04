@@ -96,7 +96,6 @@ class SmithArmor(Smith):
 
     def create(self,
                armor_type='any',
-               piece='any',
                quality='any',
                color='any',
                armor_piece='any',
@@ -104,8 +103,6 @@ class SmithArmor(Smith):
                ):
         if armor_type == 'any' or armor_type not in self._armor_types:
             armor_type = choice(self._armor_types)
-        if piece == 'any' or piece not in self._pieces:
-            piece = choice(self._armor_pieces)
         if quality == 'any' or quality not in self._qualities:
             quality = choice(self._qualities)
         if color == 'any' or color not in self._colors:
@@ -115,7 +112,7 @@ class SmithArmor(Smith):
 
         armor = Armor(
             armor_type=armor_type,
-            piece=piece,
+            piece=armor_piece,
             quality=quality,
             color=color,
             skills=skills,
