@@ -90,30 +90,60 @@ class Character(object):
 
 
 class CharacterPC(Character):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self,
+                 experience=0,
+                 race='human',
+                 name='None',
+                 char_id=0,
+                 clock=None,  # Clock Object
+                 stats=None,  # Dictionary
+                 ):
         Character.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            char_id=char_id,
+            clock=clock,
+            stats=stats,
         )
 
 
 class CharacterNPC(Character):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self,
+                 experience=0,
+                 race='human',
+                 name='None',
+                 char_id=0,
+                 clock=None,  # Clock Object
+                 stats=None,  # Dictionary
+                 ):
         Character.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            char_id=char_id,
+            clock=clock,
+            stats=stats,
         )
 
 
 class CharacterVPC(Character):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self,
+                 experience=0,
+                 race='human',
+                 name='None',
+                 char_id=0,
+                 clock=None,  # Clock Object
+                 stats=None,  # Dictionary
+                 ):
         Character.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            char_id=char_id,
+            clock=clock,
+            stats=stats,
         )

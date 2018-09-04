@@ -5,6 +5,10 @@ from Components import Levelable
 from Components import Skillable
 from Components import RackArmor
 
+from Character import Character, CharacterVPC, CharacterNPC, CharacterPC
+
+from Library import BookStat
+
 
 class Faction(object):
     def __init__(self,
@@ -17,6 +21,8 @@ class Faction(object):
         self.faction_id = faction_id
         self.locale_id = 0
         self.global_cooldown = 0
+        self.races = ['human']
+        self.book_stat = BookStat()
 
         self.skillable = Skillable()
         self.levelable = Levelable(
@@ -64,6 +70,25 @@ class Faction(object):
                 location.character = character
                 character.location = location
                 looking = False
+
+    def create_vpc(self, name='any', race='any'):
+        if race == 'any' or race not in self.races:
+            race = choice(self.races)
+        
+        new_stats = self._book_stat.generate_for_character()
+        
+        new_character = CharacterVPC(
+                experience=0,
+                race=race,
+                name=name,
+                char_id=name,
+                clock=self.clock,  # Clock Object
+                stats=new_stats,  # Dictionary
+            )
+
+        self.vpcs.append(new_character)
+
+        return new_character
 
 
 class FactionPC(Faction):
