@@ -45,7 +45,7 @@ class Weapon(object):
         return self.cooldowns[self.active_set][slot] > current_time
 
     def activate(self, actor, slot, current_time):
-        ability_cooldown = self.ability_sets[self.active_set][slot].cooldown
+        ability_cooldown = self.ability_sets[self.active_set][slot].cd
         self.cooldowns[slot] = ability_cooldown + current_time
         ability = self.ability_sets[self.active_set][slot]
         strength = self.strengths[self.active_set][slot]

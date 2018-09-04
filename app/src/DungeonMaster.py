@@ -24,6 +24,8 @@ class DungeonMaster(object):
             }
         self.init_placement_locations()
 
+        self.clock.set_local_time(locale_id=locale_id, locale_time=0)
+
     def init_placement_locations(self):
         center = self.dungeon.get_hex(x=0, y=0, z=0)
         ring_1 = self.dungeon.ring(center, self.dungeon.map_radius-1)
@@ -83,6 +85,8 @@ class DungeonMaster(object):
         self.factions[faction.faction_id].append(member)
         self.queue.put(member, self.get_time())
 
+        member.dm = self
+
         faction.place_char(member, self.get_placement_locations(edge))
 
     def next_char(self):
@@ -95,7 +99,7 @@ class DungeonMaster(object):
         self.clock.increment_locale_time(self.locale_id)
 
     def activate_char(self, char):
-        priority = char.faction.activate(self, char)
+        priority = char.activate()
         
         self.queue.put(char, priority)
 

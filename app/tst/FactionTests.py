@@ -82,6 +82,14 @@ class FactionTest(unittest.TestCase):
         given_wpn = self.sut.rack_weapon.weapons[new_weapon.id]
         self.assertTrue(given_wpn.color in colors)
 
+    def test_faction_receives_an_armor(self):
+        colors = BookColor().get_list()
+        armor_smith = SmithArmor()
+        new_armor = armor_smith.create()
+        self.sut.rack_armor.give_armor(new_armor)
+        given_arm = self.sut.rack_armor.armors[new_armor.id]
+        self.assertTrue(given_arm.color in colors)
+
 
 if __name__ == '__main__':
     unittest.main()

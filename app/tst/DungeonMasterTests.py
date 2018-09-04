@@ -72,12 +72,10 @@ class DungeonMasterTest(unittest.TestCase):
         return hex_map
 
     def add_chars_to_dungeon(self):
-        self.vpc_1 = self.create_vpc('jon')
-        self.vpc_2 = self.create_vpc('joe')
         self.faction_1 = self.create_faction('red')
         self.faction_2 = self.create_faction('blue')
-        self.vpc_1.faction = self.faction_1
-        self.vpc_2.faction = self.faction_2
+        self.vpc_1 = self.faction_1.create_vpc(name='jon')
+        self.vpc_2 = self.faction_2.create_vpc(name='joe')
         self.chars = [self.vpc_1, self.vpc_2]
 
         self.sut.add_char(

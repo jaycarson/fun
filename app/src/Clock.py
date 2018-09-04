@@ -19,6 +19,7 @@ class Clock(object):
         return self.world_time
 
     def get_locale_time(self, locale_id):
+        assert locale_id in self.clocks.keys()
         return self.clocks.get(locale_id)
 
     def increment_time(self):

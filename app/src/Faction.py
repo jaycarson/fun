@@ -32,6 +32,7 @@ class Faction(object):
 
         self.name = name
         self.clock = clock
+        self.characters = []
 
     def get_level(self):
         return self.levelable.get_level()
@@ -45,11 +46,11 @@ class Faction(object):
     def get_experience(self):
         return self.levelable.exp
 
-    def activate(self, dungeon_master, character):
+    def activate(self, character):
         global_cooldown = 1000
         locale_time = character.get_locale_time()
-        character.global_cooldown = locale_time + global_cooldown
-        return character.global_cooldown
+        character.gcd = locale_time + global_cooldown
+        return character.gcd
 
     def place_char(self, character, locations):
         looking = True
@@ -65,18 +66,19 @@ class Faction(object):
         if race == 'any' or race not in self.races:
             race = choice(self.races)
 
-        new_stats = self._book_stat.generate_for_character()
+        new_stats = self.book_stat.generate_for_character()
 
         new_character = CharacterVPC(
                 experience=0,
                 race=race,
                 name=name,
                 char_id=name,
-                clock=self.clock,  # Clock Object
                 stats=new_stats,  # Dictionary
             )
 
-        self.vpcs.append(new_character)
+        new_character.faction = self
+
+        self.characters.append(new_character)
 
         return new_character
 

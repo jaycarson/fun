@@ -6,8 +6,11 @@ sys.path.insert(0, '../src')
 
 from Clock import Clock
 from Character import Character
+from Faction import Faction
 from Smithy import SmithWeapon
 from Smithy import SmithArmor
+from HexMap import HexMap
+from DungeonMaster import DungeonMaster
 
 from Library import BookStat
 
@@ -15,16 +18,33 @@ from Library import BookStat
 class CharacterTest(unittest.TestCase):
     def setUp(self):
         self._clock = Clock()
-        self._book_stat = BookStat()
-        new_stats = self._book_stat.generate_for_character()
+        self.locale_id = 1000
+        self.book_stat = BookStat()
 
-        self.sut = Character(
-            experience=0,
-            race='human',
-            name='sut',
-            char_id=0,
-            clock=self._clock,
-            stats=new_stats
+        self.sut_faction = Faction(
+                    experience=0,
+                    name='Red',
+                    faction_id='1000',
+                    clock=self._clock,
+                )
+
+        self.sut = self.sut_faction.create_vpc(name='sut')
+
+        arena = HexMap()
+        arena.arena_ground = 'plains'
+        arena.arena_height = 10
+        arena.create_arena(radius=5)
+
+        self.sut_dm = DungeonMaster(
+                clock=Clock(),
+                dungeon=arena,
+                locale_id=self.locale_id,
+            )
+
+        self.sut_dm.add_char(
+                member=self.sut,
+                faction=self.sut_faction,
+                edge='sw',
             )
 
     def test_starts_as_level_0(self):
@@ -70,32 +90,30 @@ class CharacterTest(unittest.TestCase):
 
     def test_character_knows_the_worlds_time(self):
         test_time = 0
-        self.assertEqual(test_time, self.sut.get_world_time())
+        self.assertEqual(test_time, self.sut.faction.get_world_time())
         self._clock.increment_time()
 
     def test_character_still_knows_the_worlds_time(self):
         test_time = 1
         self._clock.increment_time()
-        self.assertEqual(test_time, self.sut.get_world_time())
+        self.assertEqual(test_time, self.sut.faction.get_world_time())
 
     def test_character_knows_the_locale_time(self):
         test_locale_id = 1
         test_time = 0
         self._clock.add_locale(locale_id=test_locale_id)
         self.sut.locale_id = test_locale_id
-        self.assertEqual(test_time, self.sut.get_locale_time())
+        self.assertEqual(test_time, self.sut.dm.get_time())
 
     def test_character_still_knows_the_locale_time(self):
         test_locale_id = 1
         test_time = 1
-        self._clock.add_locale(locale_id=test_locale_id)
-        self.sut.locale_id = test_locale_id
-        self._clock.increment_locale_time(test_locale_id)
-        self.assertEqual(test_time, self.sut.get_locale_time())
+        self.sut.dm.increment_time()
+        self.assertEqual(test_time, self.sut.dm.get_time())
 
     def test_character_has_stats(self):
-        base_stat = self._book_stat.get_base_stat()
-        stat_list = self._book_stat.get_list()
+        base_stat = self.book_stat.get_base_stat()
+        stat_list = self.book_stat.get_list()
 
         for stat in stat_list:
             self.assertEqual(base_stat, self.sut.get_stat(stat))
@@ -126,22 +144,35 @@ class CharacterTest(unittest.TestCase):
 
 class CharacterCombatTest(unittest.TestCase):
     def setUp(self):
-        locale_id = 5000
         self._clock = Clock()
-        self._clock.add_locale(locale_id=locale_id, local_time=5)
-        self._book_stat = BookStat()
-        new_stats = self._book_stat.generate_for_character()
+        self.locale_id = 1000
+        self.book_stat = BookStat()
 
-        self.sut = Character(
-            experience=0,
-            race='human',
-            name='sut',
-            char_id=0,
-            clock=self._clock,
-            stats=new_stats
+        self.sut_faction = Faction(
+                    experience=0,
+                    name='Red',
+                    faction_id='1000',
+                    clock=self._clock,
+                )
+
+        self.sut = self.sut_faction.create_vpc(name='sut')
+
+        arena = HexMap()
+        arena.arena_ground = 'plains'
+        arena.arena_height = 10
+        arena.create_arena(radius=5)
+
+        self.sut_dm = DungeonMaster(
+                clock=Clock(),
+                dungeon=arena,
+                locale_id=self.locale_id,
             )
 
-        self.sut.locale_id = locale_id
+        self.sut_dm.add_char(
+                member=self.sut,
+                faction=self.sut_faction,
+                edge='sw',
+            )
 
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
@@ -150,16 +181,16 @@ class CharacterCombatTest(unittest.TestCase):
     def test_weapon_starts_off_cooldown(self):
         weapon = self.sut.sets_weapon.get_equiped_weapon()
         slot = 2
-        self._clock.increment_locale_time(self.sut.locale_id)
-        locale_time = self._clock.get_locale_time(self.sut.locale_id)
+        self.sut.dm.increment_time()
+        locale_time = self.sut.dm.get_time()
         self.assertFalse(weapon.on_cooldown(slot, locale_time))
 
     def test_weapon_goes_on_cooldown(self):
         weapon = self.sut.sets_weapon.get_equiped_weapon()
         slot = 2
-        self._clock.increment_locale_time(self.sut.locale_id)
+        self.sut.dm.increment_time()
         self.sut.attack(slot)
-        locale_time = self._clock.get_locale_time(self.sut.locale_id)
+        locale_time = self.sut.dm.get_time()
         self.assertTrue(weapon.on_cooldown(slot, locale_time))
 
 

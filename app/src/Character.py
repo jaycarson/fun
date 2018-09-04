@@ -14,7 +14,6 @@ class Character(object):
                  race='human',
                  name='None',
                  char_id=0,
-                 clock=None,  # Clock Object
                  stats=None,  # Dictionary
                  ):
         self.char_id = char_id
@@ -36,10 +35,10 @@ class Character(object):
 
         self.race = race
         self.name = name
-        self.clock = clock
         self.local_id = 0
         self.location = None
         self.faction = None
+        self.dm = None
 
         self.current_dungeon_master = None
 
@@ -54,17 +53,17 @@ class Character(object):
     def get_stat(self, stat):
         return self.stats.get(stat)
 
-    def get_world_time(self):
-        return self.clock.get_world_time()
-
     def get_locale_time(self):
-        return self.clock.get_locale_time(self.locale_id)
+        return self.dm.get_time()
 
     def give_experience(self, experience):
         self.levelable.give_exp(experience)
     
     def get_experience(self):
         return self.levelable.exp
+
+    def activate(self):
+        self.faction.activate(self)
 
     def attack(self, slot=1):
         ws = self.sets_weapon
@@ -95,7 +94,6 @@ class CharacterPC(Character):
                  race='human',
                  name='None',
                  char_id=0,
-                 clock=None,  # Clock Object
                  stats=None,  # Dictionary
                  ):
         Character.__init__(
@@ -104,7 +102,6 @@ class CharacterPC(Character):
             race=race,
             name=name,
             char_id=char_id,
-            clock=clock,
             stats=stats,
         )
 
@@ -115,7 +112,6 @@ class CharacterNPC(Character):
                  race='human',
                  name='None',
                  char_id=0,
-                 clock=None,  # Clock Object
                  stats=None,  # Dictionary
                  ):
         Character.__init__(
@@ -124,7 +120,6 @@ class CharacterNPC(Character):
             race=race,
             name=name,
             char_id=char_id,
-            clock=clock,
             stats=stats,
         )
 
@@ -135,7 +130,6 @@ class CharacterVPC(Character):
                  race='human',
                  name='None',
                  char_id=0,
-                 clock=None,  # Clock Object
                  stats=None,  # Dictionary
                  ):
         Character.__init__(
@@ -144,6 +138,5 @@ class CharacterVPC(Character):
             race=race,
             name=name,
             char_id=char_id,
-            clock=clock,
             stats=stats,
         )

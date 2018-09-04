@@ -39,14 +39,14 @@ class Abilities(object):
 class Ability(object):
     def __init__(self):
         self.name = 'None'
-        self.ability_cooldown = 1
-        self.cooldown = 1
+        self.cd = 1  # Cool Down
+        self.gcd = 1  # Global Cool Down
 
     def calc_cooldown(self, cooldown_adj):
         if isinstance(cooldown_adj, float):
             cooldown = int(self.cooldown * cooldown_adj)
         else:
-            cooldown = self.cooldown + cooldown_adj
+            cooldown = self.cd + cooldown_adj
 
         return cooldown
 
