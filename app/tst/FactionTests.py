@@ -8,6 +8,7 @@ from Clock import Clock
 from Faction import Faction
 from Smithy import SmithWeapon
 from Smithy import SmithArmor
+from Library import BookColor
 
 
 
@@ -17,7 +18,6 @@ class FactionTest(unittest.TestCase):
 
         self.sut = Faction(
             experience=0,
-            race='human',
             name='sut',
             faction_id=0,
             clock=self._clock,
@@ -73,6 +73,14 @@ class FactionTest(unittest.TestCase):
         test_time = 1
         self._clock.increment_time()
         self.assertEqual(test_time, self.sut.get_world_time())
+
+    def test_faction_receives_a_weapon(self):
+        colors = BookColor().get_list()
+        weapon_smith = SmithWeapon()
+        new_weapon = weapon_smith.create()
+        self.sut.rack_weapon.give_weapon(new_weapon)
+        given_wpn = self.sut.rack_weapon.weapons[new_weapon.id]
+        self.assertTrue(given_wpn.color in colors)
 
 
 if __name__ == '__main__':

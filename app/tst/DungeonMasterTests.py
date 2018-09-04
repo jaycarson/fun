@@ -58,7 +58,6 @@ class DungeonMasterTest(unittest.TestCase):
     def create_faction(self, name):
         return Faction(
             experience=0,
-            race='human',
             name=name,
             faction_id=name,
             clock=self.sut.clock,

@@ -35,36 +35,24 @@ class SmithArmorTest(unittest.TestCase):
 
     def test_create_check_type(self):
         armor_types = BookArmor().get_types()
-        armor_pieces = BookArmor().get_pieces()
-        colors = BookColor().get_list()
-        qualities = BookQuality().get_list()
 
         armor = self.sut.create()
         self.assertTrue(armor.armor_type in armor_types)
 
     def test_create_check_piece(self):
-        armor_types = BookArmor().get_types()
         armor_pieces = BookArmor().get_pieces()
-        colors = BookColor().get_list()
-        qualities = BookQuality().get_list()
 
         armor = self.sut.create()
         self.assertTrue(armor.piece in armor_pieces)
 
     def test_create_check_quality(self):
-        armor_types = BookArmor().get_types()
-        armor_pieces = BookArmor().get_pieces()
-        colors = BookColor().get_list()
         qualities = BookQuality().get_list()
 
         armor = self.sut.create()
         self.assertTrue(armor.quality in qualities)
 
     def test_create_check_color(self):
-        armor_types = BookArmor().get_types()
-        armor_pieces = BookArmor().get_pieces()
         colors = BookColor().get_list()
-        qualities = BookQuality().get_list()
 
         armor = self.sut.create()
         self.assertTrue(armor.color in colors)
