@@ -173,7 +173,18 @@ class CharacterCombatTest(unittest.TestCase):
                     brains=self.sut_brains,
                 )
 
+        self.sut2_faction = Faction(
+                    experience=0,
+                    name='blue',
+                    faction_id='1001',
+                    clock=self._clock,
+                    smithy_weapon=self.sut_smithy_weapon,
+                    smithy_armor=self.sut_smithy_armor,
+                    brains=self.sut_brains,
+                )
+
         self.sut = self.sut_faction.create_vpc(name='sut')
+        self.sut2 = self.sut2_faction.create_vpc(name='sut2')
 
         arena = HexMap()
         arena.arena_ground = 'plains'
@@ -192,6 +203,12 @@ class CharacterCombatTest(unittest.TestCase):
                 edge='sw',
             )
 
+        self.sut_dm.add_char(
+                member=self.sut2,
+                faction=self.sut2_faction,
+                edge='se',
+            )
+
         weapon_smith = SmithWeapon()
         new_weapon = weapon_smith.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
@@ -207,6 +224,7 @@ class CharacterCombatTest(unittest.TestCase):
         weapon = self.sut.sets_weapon.get_equipped_weapon()
         slot = 2
         self.sut.dm.increment_time()
+        self.sut.target_enemy = self.sut2
         self.sut.attack(slot)
         locale_time = self.sut.dm.get_time()
         self.assertTrue(weapon.on_cooldown(slot, locale_time))

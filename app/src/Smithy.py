@@ -161,8 +161,8 @@ class SmithWeapon(Smith):
             damage=damage_types,
             stats=self._book_stat.generate_for_gear(quality),
             ability_set=ability_set,
-            cooldown_set=cooldown_set,
-            cooldown_adj_set=cooldown_adj_set,
+            cd_timer_set=cooldown_set,
+            cd_adj_set=cooldown_adj_set,
             strength_set=strength_set,
             weapon_id=self.generate_id(),
             )
@@ -193,11 +193,11 @@ class SmithWeapon(Smith):
         total = p1 + p2 + p3 + p4 + p5
 
         power_set = {
-                1: int(p1 / total * 10),
-                2: int(p2 / total * 10),
-                3: int(p3 / total * 10),
-                4: int(p4 / total * 10),
-                5: int(p5 / total * 10),
+                0: int(p1 / total * 10),
+                1: int(p2 / total * 10),
+                2: int(p3 / total * 10),
+                3: int(p4 / total * 10),
+                4: int(p5 / total * 10),
             }
 
         return power_set
@@ -206,12 +206,12 @@ class SmithWeapon(Smith):
         cooldown_set = {}
         
         for slot in strength_set.keys():
-            cooldown_set[slot] = strength_set[slot] * 1.5
+            cooldown_set[slot] = 0
         
         return cooldown_set
 
     def generate_cooldown_adj_set(self, strength_set):
-        return {1: 0, 2: 1, 3: 0, 4: 0, 5: 0}
+        return {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
 
     def get_ability(self, ability_name):
         return self._abilities.get_ability(ability_name)

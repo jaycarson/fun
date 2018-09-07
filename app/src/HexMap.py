@@ -18,12 +18,16 @@ class Hex(object):
         self.ground = 'grass'
         self.height = 10
         self.character = None
+        self.hex_string_key = str(x) + ',' + str(y) + ',' + str(z)
 
     def set_color(self, r=0, g=0, b=0, a=0):
         self.r = r
         self.g = g
         self.b = b
         self.a = a
+
+    def get_key(self):
+        return self.hex_string_key
 
 
 class HexMap(object):
@@ -34,9 +38,9 @@ class HexMap(object):
         self.map_radius = 127
         self.center_disp_x = self.image_width / 2
         self.center_disp_y = self.image_height / 2
-        
+
         self.get_hex = self.get_hex_actual
-        
+
         self.arena_height = 10
         self.arena_ground = 'grass'
 
@@ -48,7 +52,7 @@ class HexMap(object):
                 Hex(-1, 1, 0), 
                 Hex(0, 1, -1),
             ]
-        
+
         self.diagonals = [
                 Hex(2, -1, -1),
                 Hex(1, -2, 1),
@@ -105,8 +109,17 @@ class HexMap(object):
             z = -x - y
 
         key = (x, y, z)
-        
-        return self.hex_map[key]
+
+        if abs(x) > self.map_radius:
+            return_hex = None
+        elif abs(x) > self.map_radius:
+            return_hex = None
+        elif abs(z) > self.map_radius:
+            return_hex = None
+        else:
+            return_hex = self.hex_map[key]
+
+        return return_hex
 
     def get_hex_initial(self, x, y, z=None):
         if z is None:
@@ -126,7 +139,7 @@ class HexMap(object):
             new_hex = Hex(x, y, z)
             new_hex.set_color(r=r, g=g, b=b, a=a)
             self.hex_map[key] = new_hex
-            
+
             return new_hex
 
     def get_hex_arena(self, x, y, z=None):
@@ -139,7 +152,7 @@ class HexMap(object):
         new_hex.ground = self.arena_ground
         new_hex.height = self.arena_height
         self.hex_map[key] = new_hex
-            
+
         return new_hex
 
     def get_hypotheical_hex(self, x, y, z=0):
@@ -238,7 +251,7 @@ class HexMap(object):
 
     def linedraw(self, hex_1, hex_2):
         dist = self.distance(hex_1, hex_2)
-        
+
         hex_1_nudge = Hex(
                 hex_1.x + 0.000001,
                 hex_1.y + 0.000001,
@@ -252,9 +265,9 @@ class HexMap(object):
             )
 
         results = []
-        
+
         step = 1.0 / max(dist, 1)
-        
+
         for i in range(0, dist + 1):
             results.append(
                     self.round(
@@ -280,7 +293,7 @@ class HexMap(object):
             for length in range(0, radius):
                 results.append(current_hex)
                 current_hex = self.neighbor(current_hex, direction)
-        
+
         return results
 
     def spiral(self, center_hex, radius):
@@ -296,7 +309,7 @@ class HexMap(object):
 
     def get_variance(self, point, radius):
         points = self.spiral(point, radius)
-        
+
         total = 0
         count = 0
         variance = 0
@@ -315,7 +328,7 @@ class HexMap(object):
 
     def get_area_average(self, point, radius):
         points = self.spiral(point, radius)
-        
+
         total = 0
         count = 0
 
@@ -337,3 +350,6 @@ class HexMap(object):
         self.spiral(center_hex=point, radius=self.map_radius)
 
         self.get_hex = self.get_hex_actual
+
+    def cost(self, source, dest):
+        return 1

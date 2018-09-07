@@ -11,8 +11,8 @@ class Weapon(object):
                  damage,
                  stats,
                  ability_set,
-                 cooldown_set,
-                 cooldown_adj_set,
+                 cd_timer_set,
+                 cd_adj_set,
                  strength_set,
                  weapon_id,
                  ):
@@ -25,14 +25,14 @@ class Weapon(object):
         self.stats = stats
 
         self.ability_sets = {}
-        self.cooldowns = {}
+        self.cd_timers = {}
         self.strengths = {}
-        self.cooldown_adjs = {}
+        self.cd_adjs = {}
         self.ability_sets['simple'] = ability_set
         self.active_set = 'simple'
         self.id = weapon_id
-        self.cooldowns['simple'] = cooldown_set
-        self.cooldown_adjs['simple'] = cooldown_adj_set
+        self.cd_timers['simple'] = cd_timer_set
+        self.cd_adjs['simple'] = cd_adj_set
         self.strengths['simple'] = strength_set
 
     def get_slot_ability(self, slot):
@@ -45,19 +45,30 @@ class Weapon(object):
         return self.ability_sets[self.active_set][0].combat_role
 
     def on_cooldown(self, slot, current_time):
-        return self.cooldowns[self.active_set][slot] > current_time
+        return self.cd_timers[self.active_set][slot] > current_time
 
-    def activate(self, actor, slot, current_time):
-        ability_cooldown = self.ability_sets[self.active_set][slot].cd
-        self.cooldowns[slot] = ability_cooldown + current_time
+    def activate(self, actor, slot, current_time, distance):
         ability = self.ability_sets[self.active_set][slot]
         strength = self.strengths[self.active_set][slot]
-        cooldown_adj = self.cooldown_adjs[self.active_set][slot]
-        self.cooldowns[self.active_set][slot] = ability.activate(
+        cd_adj = self.cd_adjs[self.active_set][slot]
+        self.cd_timers[self.active_set][slot] = ability.activate(
                 actor,
                 strength,
-                cooldown_adj,
                 current_time,
+                distance,
+                cd_adj,
+            )
+
+    def activate_hyp(self, actor, slot, current_time, distance):
+        ability = self.ability_sets[self.active_set][slot]
+        strength = self.strengths[self.active_set][slot]
+        cd_adj = self.cd_adjs[self.active_set][slot]
+        return ability.activate_hyp(
+                actor,
+                strength,
+                current_time,
+                distance,
+                cd_adj,
             )
 
     def get_stat(self, stat_name):

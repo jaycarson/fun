@@ -27,8 +27,8 @@ class WeaponTest(unittest.TestCase):
             damage='slash',
             stats=sut_stats,
             ability_set=sut_ability_set,
-            cooldown_set=sut_cooldown_set,
-            cooldown_adj_set=sut_cooldown_adj_set,
+            cd_timer_set=sut_cooldown_set,
+            cd_adj_set=sut_cooldown_adj_set,
             strength_set=sut_strength_set,
             weapon_id=1
             )

@@ -64,7 +64,7 @@ class Faction(object):
             location = choice(locations)
             if location.character is None:
                 location.character = character
-                character.location = location
+                character.dungeon_hex = location
                 looking = False
 
     def create_vpc(self, name='any', race='any'):

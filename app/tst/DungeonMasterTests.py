@@ -88,12 +88,14 @@ class DungeonMasterTest(unittest.TestCase):
         self.sut.add_char(
                 faction=self.faction_1,
                 member=self.vpc_1,
-                edge='ne'
+                edge='ne',
+                insert_time=0,
             )
         self.sut.add_char(
                 faction=self.faction_2,
                 member=self.vpc_2,
-                edge='sw'
+                edge='sw',
+                insert_time=1,
             )
 
     def test_initial_world_time(self):
@@ -125,13 +127,13 @@ class DungeonMasterTest(unittest.TestCase):
         test_char = self.sut.next_char()
         radius = self.sut.dungeon.map_radius
         
-        self.assertGreaterEqual(abs(test_char.location.x), 0)
-        self.assertGreaterEqual(abs(test_char.location.y), 0)
-        self.assertGreaterEqual(abs(test_char.location.z), 0)
+        self.assertGreaterEqual(abs(test_char.dungeon_hex.x), 0)
+        self.assertGreaterEqual(abs(test_char.dungeon_hex.y), 0)
+        self.assertGreaterEqual(abs(test_char.dungeon_hex.z), 0)
 
-        self.assertGreaterEqual(radius, abs(test_char.location.x))
-        self.assertGreaterEqual(radius, abs(test_char.location.y))
-        self.assertGreaterEqual(radius, abs(test_char.location.z))
+        self.assertGreaterEqual(radius, abs(test_char.dungeon_hex.x))
+        self.assertGreaterEqual(radius, abs(test_char.dungeon_hex.y))
+        self.assertGreaterEqual(radius, abs(test_char.dungeon_hex.z))
 
 
 if __name__ == '__main__':

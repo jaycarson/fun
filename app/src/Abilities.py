@@ -39,30 +39,86 @@ class Abilities(object):
 class Ability(object):
     def __init__(self):
         self.name = 'None'
-        self.cd = 1  # Cool Down
-        self.gcd = 1  # Global Cool Down
+        self.cd = 1000  # Cool Down
+        self.gcd = 1000  # Global Cool Down
         self.combat_type = 'melee'
         self.combat_role = 'damage'
+        self.range = 1
+        self.base_damage = 100
+        self.damage_type = 'physical'
 
-    def calc_cooldown(self, cooldown_adj):
+    def activate(
+            self,
+            actor,
+            power,
+            current_time,
+            distance,
+            cd_adj,
+            ):
+        target_enemy = actor.target_enemy
+        target_ally = actor.target_ally
+        cooldown_added = 0
+
+        if target_enemy is not None:
+            target_enemy.take_damage(
+                    self.calc_damage(power),
+                    self.damage_type,
+                )
+        
+            actor.take_gcd(cooldown=self.calc_gcd(power))
+            cooldown_added = self.calc_cooldown(power)
+        
+        return cooldown_added + current_time
+
+    def activate_hyp(
+            self,
+            actor,
+            power,
+            current_time,
+            distance,
+            cd_adj,
+            ):
+        if distance > self.get_range(actor, power):
+            return 0
+        else:
+            return self.calc_damage(power)
+
+    def get_range(self, actor, power):
+        return self.calc_range(power)
+
+    def get_cooldown(self, actor, power, cooldown_adj):
+        cooldown = self.calc_cooldown(power)
+
         if isinstance(cooldown_adj, float):
-            cooldown = int(self.cooldown * cooldown_adj)
+            cooldown = int(self.cd * cooldown_adj)
         else:
             cooldown = self.cd + cooldown_adj
 
         return cooldown
 
-    def activate(self, actor, power, cooldown, current_time):
-        target_enemy = actor.target_enemy
-        target_ally = actor.target_ally
-        
-        return self.calc_cooldown(cooldown) + current_time
+    def calc_damage(self, power):
+        return self.base_damage
+
+    def calc_range(self, power):
+        return self.range
+
+    def calc_cooldown(self, power):
+        return self.cd
+
+    def calc_gcd(self, power):
+        return self.gcd
 
 
 class Bash(Ability):
     def __init__(self):
         Ability.__init__(self)
         self.name = 'Bash'
+
+    def calc_damage(self, power):
+        return self.base_damage * 1.1
+
+    def calc_cooldown(self, power):
+        return self.self
 
 
 class FinalThrust(Ability):

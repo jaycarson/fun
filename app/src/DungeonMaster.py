@@ -1,18 +1,19 @@
 #!/usr/bin/python
 
 from PriorityQueue import PriorityQueue
+from PathFinder import PathFinder
 
 
 class DungeonMaster(object):
     def __init__(self, clock, dungeon, locale_id):
         self.clock = clock
         self.dungeon = dungeon
+        self.path_finder = PathFinder(dungeon)
         self.locale_id = locale_id
         self.queue = PriorityQueue()
         self.factions = {}
         self.playing = True
         self.dungeon_expire = self.clock.max_locale_time
-        self.factions = {}
         self.char_id = 'DM'
         self.placement_locations = {
                 'ne': [],    
@@ -70,24 +71,35 @@ class DungeonMaster(object):
     def is_playing(self):
         if self.get_time() > self.dungeon_expire:
             self.playing = False
+        elif len(self.factions) <= 1:
+            self.playing = False
         else:
             self.playing = True
 
         return self.playing
 
-    def add_char(self, member, faction='dm', edge='dm'):
+    def add_char(self, member, faction='dm', edge='dm', insert_time=0):
         if faction == 'dm':
             faction = self
 
         if faction.faction_id not in self.factions.keys():
             self.factions[faction.faction_id] = []
 
+        if insert_time == 0:
+            insert_time = self.get_time()
+
         self.factions[faction.faction_id].append(member)
-        self.queue.put(member, self.get_time())
+        self.queue.put(member, insert_time)
 
         member.dm = self
 
         faction.place_char(member, self.get_placement_locations(edge))
+
+    def remove_char(self, member):
+        faction_id = member.faction.faction_id
+        self.factions[faction_id].remove(member)
+        if len(self.factions[faction_id]) == 0:
+            self.factions.pop(faction_id, None)
 
     def next_char(self):
         return self.queue.get()
@@ -100,11 +112,64 @@ class DungeonMaster(object):
 
     def activate_char(self, char):
         priority = char.activate()
-        
-        self.queue.put(char, priority)
+
+        if char.health > 0:
+            self.queue.put(char, priority)
 
     def get_placement_locations(self, edge):
         sides = ['ne', 'e', 'se', 'sw', 'w', 'nw']
 
         if edge in sides:
             return self.placement_locations[edge]
+
+    def get_adjacent_enemies(self, requestor):
+        hexes = self.dungeon.neighbors(requestor.dungeon_hex)
+        return self.get_enemies(requestor, hexes)
+
+    def get_nearby_enemies(self, requestor, radius=2):
+        hexes = self.dungeon.spiral(requestor.dungeon_hex, radius)
+        return self.get_enemies(requestor, hexes)
+
+    def get_enemies(self, requestor, hexes):
+        enemies = []
+
+        for dungeon_hex in hexes:
+            if dungeon_hex is None:
+                next
+            elif dungeon_hex.character is None:
+                next
+            elif dungeon_hex.character.faction != requestor.faction:
+                enemies.append(dungeon_hex.character)
+
+        return enemies
+
+    def get_nearest_enemy(self, requestor):
+        enemies = []
+        min_dist = requestor.sight_range
+        closest = None
+
+        for faction in self.factions.keys():
+            if faction != requestor.faction.faction_id:
+                for member in self.factions[faction]:
+                    enemies.append(member)
+
+        for enemy in enemies:
+            current = self.distance(requestor, enemy)
+            if current < min_dist:
+                min_dist = current
+                closest = enemy
+
+        return closest
+
+    def distance(self, actor, target):
+        return self.dungeon.distance(actor.dungeon_hex, target.dungeon_hex)
+
+    def move_char_along_path(self, actor, source, dest, distance):
+        path = self.path_finder.find_path(
+                start=source,
+                goal=dest,
+            )
+        if (len(path) - 1) < distance:
+            distance = (len(path) - 1)
+        actor.move(path[distance])
+

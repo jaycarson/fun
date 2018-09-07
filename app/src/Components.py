@@ -166,7 +166,12 @@ class SetsWeapon(object):
         return self.weapon_sets[self.inactive_weapon_set][hand]
     
     def get_active_slot(self, slot):
-        self.get_slot(self.active_weapon_set, slot)
+        return self.get_slot(self.active_weapon_set, slot)
+
+    def get_active_slot_range(self, slot, actor):
+        ability = self.get_slot(self.active_weapon_set, slot)
+        power = actor.get_active_weapon_power(slot)
+        return ability.get_range(actor, power)
 
     def get_inactive_slot(self, slot):
         self.get_slot(self.inactive_weapon_set, slot)

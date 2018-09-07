@@ -25,9 +25,9 @@ class Character(object):
                     exp=experience,
                     skillable=self.skillable,
                 )
-        
+
         self.sets_weapon = SetsWeapon()
-        
+
         self.rack_armor = RackArmor()
         self.rack_weapon = RackWeapon(self.sets_weapon)
 
@@ -36,9 +36,16 @@ class Character(object):
         self.race = race
         self.name = name
         self.local_id = 0
-        self.location = None
+        self.dungeon_hex = None
         self.faction = None
         self.dm = None
+        self.sight_range = 100
+        self.max_health = 1000
+        self.health = self.max_health
+        self.movement = 3
+        self.movement_speed = 1000
+
+        self.traits = set()
 
         self.current_dungeon_master = None
 
@@ -58,12 +65,12 @@ class Character(object):
 
     def give_experience(self, experience):
         self.levelable.give_exp(experience)
-    
+
     def get_experience(self):
         return self.levelable.exp
 
     def activate(self):
-        self.faction.activate(self)
+        return self.faction.activate(self)
 
     def get_brain(self):
         combat_type = self.sets_weapon.get_active_combat_type()
@@ -71,27 +78,64 @@ class Character(object):
 
         return combat_type + combat_role
 
-    def attack(self, slot=1):
-        ws = self.sets_weapon
-        active_ws = self.sets_weapon.active_weapon_set
+    def attack(self, slot=1, distance=1):
+        weapon = self.get_weapon(slot)
 
-        if ws.active_weapon_set_both:
-            attack_set = ws.weapon_sets[active_ws]['both']
-        elif slot <= 3:
-            attack_set = ws.weapon_sets[active_ws]['main']
-        elif slot <= 5:
-            attack_set = ws.weapon_sets[active_ws]['off']
-        
-        attack_set.activate(
+        weapon.activate(
                 self,
                 slot,
                 self.get_locale_time(),
+                distance,
             )
 
-    def move(self, location):
-        self.location.character = None
-        self.location = location
-        self.location.character = self
+    def attack_hyp(self, slot=1, distance=1):
+        weapon = self.get_weapon(slot)
+
+        if weapon is None:
+            return -1
+
+        return weapon.activate_hyp(
+                actor=self,
+                slot=slot,
+                current_time=self.get_locale_time(),
+                distance=distance,
+            )
+
+    def get_weapon(self, slot=1):
+        ws = self.sets_weapon
+        active_ws = self.get_active_weapon_set()
+
+        if ws.active_weapon_set_both:
+            weapon = ws.weapon_sets[active_ws]['both']
+        elif slot <= 3:
+            weapon = ws.weapon_sets[active_ws]['main']
+        elif slot <= 5:
+            weapon = ws.weapon_sets[active_ws]['off']
+
+        return weapon
+
+    def get_range(self, slot):
+        return self.sets_weapon.get_active_slot_range(slot, self)
+
+    def get_active_weapon_power(self, slot):
+        weapon = self.get_weapon()
+        return weapon.strengths[weapon.active_set][slot]
+
+    def get_active_weapon_set(self):
+        return self.sets_weapon.active_weapon_set
+
+    def move(self, dungeon_hex):
+        self.dungeon_hex.character = None
+        self.dungeon_hex = dungeon_hex
+        self.dungeon_hex.character = self
+
+    def take_damage(self, damage, damage_type):
+        self.health -= damage
+        if self.health < 0:
+            self.dm.remove_char(self)
+
+    def take_gcd(self, cooldown):
+        self.gcd = self.dm.get_time() + cooldown
 
 
 class CharacterPC(Character):
