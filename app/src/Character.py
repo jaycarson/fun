@@ -88,7 +88,7 @@ class Character(object):
                 distance,
             )
 
-    def attack_hyp(self, slot=1, distance=1):
+    def attack_hyp(self, slot, distance, moved):
         weapon = self.get_weapon(slot)
 
         if weapon is None:
@@ -99,6 +99,7 @@ class Character(object):
                 slot=slot,
                 current_time=self.get_locale_time(),
                 distance=distance,
+                moved=moved,
             )
 
     def get_weapon(self, slot=1):
@@ -107,9 +108,9 @@ class Character(object):
 
         if ws.active_weapon_set_both:
             weapon = ws.weapon_sets[active_ws]['both']
-        elif slot <= 3:
+        elif slot < 3:
             weapon = ws.weapon_sets[active_ws]['main']
-        elif slot <= 5:
+        elif slot < 5:
             weapon = ws.weapon_sets[active_ws]['off']
 
         return weapon

@@ -59,9 +59,19 @@ class Weapon(object):
                 distance=distance,
                 cd_adj=cd_adj,
             )
+        print self.cd_timers
 
-    def activate_hyp(self, actor, slot, current_time, distance):
+    def activate_hyp(self, actor, slot, current_time, distance, moved):
+        current_cd = self.cd_timers[self.active_set][slot]
+
+        if current_cd > current_time:
+            return -1
+
         ability = self.ability_sets[self.active_set][slot]
+
+        if moved and not ability.can_attack_on_move:
+            return -1
+
         strength = self.strengths[self.active_set][slot]
         cd_adj = self.cd_adjs[self.active_set][slot]
         return ability.activate_hyp(

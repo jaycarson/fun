@@ -46,6 +46,9 @@ class Ability(object):
         self.range = 1
         self.base_damage = 100
         self.damage_type = 'physical'
+        self.min_gcd = 500
+        self.max_cd = 60000
+        self.can_attack_on_move = True
 
     def activate(
             self,
@@ -65,10 +68,10 @@ class Ability(object):
                     self.calc_damage(power, slot),
                     self.damage_type,
                 )
-        
+
             actor.take_gcd(cooldown=self.calc_gcd(power, slot))
             cooldown_added = self.calc_cooldown(power, slot)
-        
+
         return cooldown_added + current_time
 
     def activate_hyp(
@@ -99,16 +102,25 @@ class Ability(object):
         return cooldown
 
     def calc_damage(self, power, slot):
-        return self.base_damage
+        slot_damage = self.base_damage * slot * 0.5
+        power_damage = self.base_damage * power * 0.5
+        return int(self.base_damage + slot_damage + power_damage)
 
     def calc_range(self, power, slot):
         return self.range
 
     def calc_cooldown(self, power, slot):
-        return self.cd
+        if slot == 0:
+            return 0
+        else:
+            slot_penalty = self.cd * slot * 5
+            power_bonus = self.cd * power * 5
+            return min(int(self.cd + slot_penalty - power_bonus), self.max_cd)
 
     def calc_gcd(self, power, slot):
-        return self.gcd
+        power_bonus = 1 - power
+        slot_bonus = 0
+        return max(int(self.gcd * power_bonus - slot_bonus), self.min_gcd)
 
 
 class Bash(Ability):
@@ -120,7 +132,7 @@ class Bash(Ability):
         return self.base_damage * 1.1
 
     def calc_cooldown(self, power, slot):
-        return self.self
+        return self.cd
 
 
 class FinalThrust(Ability):

@@ -185,12 +185,12 @@ class SmithWeapon(Smith):
         return ability_set
 
     def generate_strength_set(self):
-        p1 = randint(1, 5)
-        p2 = randint(2, 10)
-        p3 = randint(3, 10)
-        p4 = randint(4, 10)
-        p5 = randint(5, 10)
-        total = p1 + p2 + p3 + p4 + p5
+        p1 = randint(1, 10)
+        p2 = randint(1, 10)
+        p3 = randint(1, 10)
+        p4 = randint(1, 10)
+        p5 = randint(1, 10)
+        total = float(p1 + p2 + p3 + p4 + p5)
 
         power_set = {
                 0: p1 / total,
