@@ -23,7 +23,7 @@ class Levelable(object):
             level = 40
 
         return level
-    
+
     def give_exp_without_skill(self, exp):
         self.exp += exp
 
@@ -79,6 +79,13 @@ class RackArmor(object):
     def remove_armor(self, piece):
         self.armors_equipped_by_piece[piece] = None
 
+    def get_stat(self, stat):
+        total = 0
+        for piece in self.armors_equipped_by_piece.keys():
+            total += self.armors_equipped_by_piece[piece].get_stat(stat)
+
+        return total
+
 
 class RackWeapon(object):
     def __init__(self, weapon_sets=None):
@@ -89,7 +96,7 @@ class RackWeapon(object):
         else:
             self.sets_weapon = weapon_sets
             self.give_weapon = self.give_weapon_equipable
-    
+
     def give_weapon_not_equipable(self, weapon):
         self.weapons[weapon.id] = weapon
 
@@ -112,11 +119,26 @@ class RackWeapon(object):
 
         return weapon.id
 
+    def get_stat(self, stat):
+        total = 0
+
+        if self.sets_weapon.get_equipped_weapon(hand='both') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='both')
+            total += weapon.get_stat(stat)
+        if self.sets_weapon.get_equipped_weapon(hand='main') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='main')
+            total += weapon.get_stat(stat)
+        if self.sets_weapon.get_equipped_weapon(hand='off') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='off')
+            total += weapon.get_stat(stat)
+
+        return total
+
 
 class SetsWeapon(object):
     def __init__(self, rack_weapon=None):
         self.rack_weapon = rack_weapon
-        
+
         self.active_weapon_set = 1
         self.inactive_weapon_set = 2
         self.active_weapon_set_both = False
@@ -133,7 +155,7 @@ class SetsWeapon(object):
                     'both': None,
                 },
             }
-    
+
     def equip_weapon_by_id(self, weapon_id, hand='main', weapon_set=0):
         if weapon_id in self.rack_weapon.weapons.keys():
             self.equip_weapon(
@@ -161,10 +183,10 @@ class SetsWeapon(object):
 
     def get_equipped_weapon(self, hand='main'):
         return self.weapon_sets[self.active_weapon_set][hand]
-    
+
     def get_unequipped_weapon(self, hand='main'):
         return self.weapon_sets[self.inactive_weapon_set][hand]
-    
+
     def get_active_slot(self, slot):
         return self.get_slot(self.active_weapon_set, slot)
 

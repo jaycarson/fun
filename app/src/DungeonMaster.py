@@ -86,7 +86,7 @@ class DungeonMaster(object):
             self.factions[faction.faction_id] = []
 
         if insert_time == 0:
-            insert_time = self.get_time()
+            insert_time = self.get_time() + member.get_stat('initiative')
 
         self.factions[faction.faction_id].append(member)
         self.queue.put(member, insert_time)

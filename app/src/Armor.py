@@ -18,3 +18,7 @@ class Armor(object):
         self.required_skills = skills
         self.stats = stats
         self.id = armor_id
+
+    def get_stat(self, stat):
+        assert stat in self.stats
+        return self.stats.get(stat)

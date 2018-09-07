@@ -59,7 +59,6 @@ class Weapon(object):
                 distance=distance,
                 cd_adj=cd_adj,
             )
-        print self.cd_timers
 
     def activate_hyp(self, actor, slot, current_time, distance, moved):
         current_cd = self.cd_timers[self.active_set][slot]

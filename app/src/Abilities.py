@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from Library import BookStat
+
 
 class Abilities(object):
     def __init__(self):
@@ -49,6 +51,10 @@ class Ability(object):
         self.min_gcd = 500
         self.max_cd = 60000
         self.can_attack_on_move = True
+        self.primary_attribute = 'force'
+        self.secondary_attribute = 'athletic'
+        self.base_stat = BookStat().base
+        self.max_stat = self.base_stat * 2
 
     def activate(
             self,
@@ -65,12 +71,12 @@ class Ability(object):
 
         if target_enemy is not None:
             target_enemy.take_damage(
-                    self.calc_damage(power, slot),
+                    self.calc_damage(actor, power, slot),
                     self.damage_type,
                 )
 
-            actor.take_gcd(cooldown=self.calc_gcd(power, slot))
-            cooldown_added = self.calc_cooldown(power, slot)
+            actor.take_gcd(cooldown=self.calc_gcd(actor, power, slot))
+            cooldown_added = self.calc_cooldown(actor, power, slot)
 
         return cooldown_added + current_time
 
@@ -86,13 +92,16 @@ class Ability(object):
         if distance > self.get_range(actor, power, slot):
             return 0
         else:
-            return self.calc_damage(power, slot)
+            damage = self.calc_damage(actor, power, slot)
+            time = self.calc_gcd(actor, power, slot) / 1000.0
+            dps = damage / time
+            return dps
 
     def get_range(self, actor, power, slot):
-        return self.calc_range(power, slot)
+        return self.calc_range(actor, power, slot)
 
     def get_cooldown(self, actor, power, slot, cooldown_adj):
-        cooldown = self.calc_cooldown(power)
+        cooldown = self.calc_cooldown(actor, power, slot)
 
         if isinstance(cooldown_adj, float):
             cooldown = int(self.cd * cooldown_adj)
@@ -101,25 +110,49 @@ class Ability(object):
 
         return cooldown
 
-    def calc_damage(self, power, slot):
+    def calc_damage(self, actor, power, slot):
         slot_damage = self.base_damage * slot * 0.5
         power_damage = self.base_damage * power * 0.5
-        return int(self.base_damage + slot_damage + power_damage)
+        primary = actor.get_full_stat(self.primary_attribute)
+        stat_damage = self.base_damage * primary / self.max_stat
+        total_damage = int(
+                    self.base_damage +
+                    slot_damage +
+                    power_damage +
+                    stat_damage
+                )
+        return total_damage
 
-    def calc_range(self, power, slot):
+    def calc_range(self, actor, power, slot):
         return self.range
 
-    def calc_cooldown(self, power, slot):
+    def calc_cooldown(self, actor, power, slot):
         if slot == 0:
             return 0
         else:
             slot_penalty = self.cd * slot * 5
             power_bonus = self.cd * power * 5
-            return min(int(self.cd + slot_penalty - power_bonus), self.max_cd)
+            secondary = actor.get_stat(self.secondary_attribute) / 2
+            stat_bonus = self.cd * secondary / self.max_stat
+            cooldown = int(
+                    self.cd +
+                    slot_penalty -
+                    power_bonus -
+                    stat_bonus
+                )
+            return min(cooldown, self.max_cd)
 
-    def calc_gcd(self, power, slot):
+    def calc_gcd(self, actor, power, slot):
+        secondary = actor.get_stat(self.secondary_attribute) / 2
         power_bonus = 1 - power
         slot_bonus = 0
+        stat_bonus = 1 - (secondary/self.max_stat/4)
+        cooldown = int(
+                self.gcd *
+                stat_bonus *
+                power_bonus -
+                slot_bonus
+            )
         return max(int(self.gcd * power_bonus - slot_bonus), self.min_gcd)
 
 
@@ -128,10 +161,10 @@ class Bash(Ability):
         Ability.__init__(self)
         self.name = 'Bash'
 
-    def calc_damage(self, power, slot):
+    def calc_damage(self, actor, power, slot):
         return self.base_damage * 1.1
 
-    def calc_cooldown(self, power, slot):
+    def calc_cooldown(self, actor, power, slot):
         return self.cd
 
 

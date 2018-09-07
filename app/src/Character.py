@@ -60,6 +60,13 @@ class Character(object):
     def get_stat(self, stat):
         return self.stats.get(stat)
 
+    def get_full_stat(self, stat):
+        base_stat = self.stats.get(stat)
+        armor_stat = self.rack_armor.get_stat(stat)
+        weapon_stat = self.rack_weapon.get_stat(stat)
+
+        return base_stat + armor_stat + weapon_stat
+
     def get_locale_time(self):
         return self.dm.get_time()
 

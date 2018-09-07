@@ -59,7 +59,7 @@ class BookQuality(object):
 
 class BookStat(object):
     def __init__(self, base=80):
-        self._stats = {
+        self.stats = {
             'force': base,
             'athletic': base,
             'reflex': base,
@@ -74,7 +74,7 @@ class BookStat(object):
             'willpower': base,
         }
 
-        self._zero_stats = {
+        self.zero_stats = {
             'force': 0,
             'athletic': 0,
             'reflex': 0,
@@ -89,40 +89,40 @@ class BookStat(object):
             'willpower': 0,
         }
 
-        self._book_quality = BookQuality()
-        self._base = base
+        self.book_quality = BookQuality()
+        self.base = base
 
-        self._list_of_stats = []
+        self.list_of_stats = []
 
-        for key in self._stats.keys():
-            self._list_of_stats.append(key)
+        for key in self.stats.keys():
+            self.list_of_stats.append(key)
 
     def set_stat(self, stat, value):
-        assert stat in self._stats.keys()
-        self._stats[stat] = value
+        assert stat in self.stats.keys()
+        self.stats[stat] = value
 
     def get_stats(self):
-        return self._stats
+        return self.stats
 
     def get_base_stat(self):
-        return self._base
+        return self.base
 
     def get_stat(self, stat):
         assert stat in self._stats.keys()
-        return self._stats[stat]
+        return self.stats[stat]
 
     def get_list(self):
-        return self._list_of_stats
+        return self.list_of_stats
 
     def generate_for_gear(self, quality):
-        assert quality in self._book_quality.get_list_of_qualities()
+        assert quality in self.book_quality.get_list_of_qualities()
 
-        total_stat_weight = self._book_quality.get_quality(quality)
+        total_stat_weight = self.book_quality.get_quality(quality)
         remainder = total_stat_weight
 
-        gear_stats = self._zero_stats.copy()
+        gear_stats = self.zero_stats.copy()
 
-        list_of_stats = list(self._list_of_stats)
+        list_of_stats = list(self.list_of_stats)
 
         number_of_stats = randint(1, 5)
 
@@ -156,7 +156,7 @@ class BookStat(object):
         character_stats = {}
 
         for stat in self.get_list():
-            character_stats[stat] = self._base
+            character_stats[stat] = self.base
 
         return character_stats
 
