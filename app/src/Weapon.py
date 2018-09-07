@@ -52,11 +52,12 @@ class Weapon(object):
         strength = self.strengths[self.active_set][slot]
         cd_adj = self.cd_adjs[self.active_set][slot]
         self.cd_timers[self.active_set][slot] = ability.activate(
-                actor,
-                strength,
-                current_time,
-                distance,
-                cd_adj,
+                actor=actor,
+                power=strength,
+                slot=slot,
+                current_time=current_time,
+                distance=distance,
+                cd_adj=cd_adj,
             )
 
     def activate_hyp(self, actor, slot, current_time, distance):
@@ -64,11 +65,12 @@ class Weapon(object):
         strength = self.strengths[self.active_set][slot]
         cd_adj = self.cd_adjs[self.active_set][slot]
         return ability.activate_hyp(
-                actor,
-                strength,
-                current_time,
-                distance,
-                cd_adj,
+                actor=actor,
+                power=strength,
+                slot=slot,
+                current_time=current_time,
+                distance=distance,
+                cd_adj=cd_adj,
             )
 
     def get_stat(self, stat_name):

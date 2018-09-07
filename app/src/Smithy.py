@@ -193,11 +193,11 @@ class SmithWeapon(Smith):
         total = p1 + p2 + p3 + p4 + p5
 
         power_set = {
-                0: int(p1 / total * 10),
-                1: int(p2 / total * 10),
-                2: int(p3 / total * 10),
-                3: int(p4 / total * 10),
-                4: int(p5 / total * 10),
+                0: p1 / total,
+                1: p2 / total,
+                2: p3 / total,
+                3: p4 / total,
+                4: p5 / total,
             }
 
         return power_set

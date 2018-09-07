@@ -51,6 +51,7 @@ class Ability(object):
             self,
             actor,
             power,
+            slot,
             current_time,
             distance,
             cd_adj,
@@ -61,12 +62,12 @@ class Ability(object):
 
         if target_enemy is not None:
             target_enemy.take_damage(
-                    self.calc_damage(power),
+                    self.calc_damage(power, slot),
                     self.damage_type,
                 )
         
-            actor.take_gcd(cooldown=self.calc_gcd(power))
-            cooldown_added = self.calc_cooldown(power)
+            actor.take_gcd(cooldown=self.calc_gcd(power, slot))
+            cooldown_added = self.calc_cooldown(power, slot)
         
         return cooldown_added + current_time
 
@@ -74,19 +75,20 @@ class Ability(object):
             self,
             actor,
             power,
+            slot,
             current_time,
             distance,
             cd_adj,
             ):
-        if distance > self.get_range(actor, power):
+        if distance > self.get_range(actor, power, slot):
             return 0
         else:
-            return self.calc_damage(power)
+            return self.calc_damage(power, slot)
 
-    def get_range(self, actor, power):
-        return self.calc_range(power)
+    def get_range(self, actor, power, slot):
+        return self.calc_range(power, slot)
 
-    def get_cooldown(self, actor, power, cooldown_adj):
+    def get_cooldown(self, actor, power, slot, cooldown_adj):
         cooldown = self.calc_cooldown(power)
 
         if isinstance(cooldown_adj, float):
@@ -96,16 +98,16 @@ class Ability(object):
 
         return cooldown
 
-    def calc_damage(self, power):
+    def calc_damage(self, power, slot):
         return self.base_damage
 
-    def calc_range(self, power):
+    def calc_range(self, power, slot):
         return self.range
 
-    def calc_cooldown(self, power):
+    def calc_cooldown(self, power, slot):
         return self.cd
 
-    def calc_gcd(self, power):
+    def calc_gcd(self, power, slot):
         return self.gcd
 
 
@@ -114,10 +116,10 @@ class Bash(Ability):
         Ability.__init__(self)
         self.name = 'Bash'
 
-    def calc_damage(self, power):
+    def calc_damage(self, power, slot):
         return self.base_damage * 1.1
 
-    def calc_cooldown(self, power):
+    def calc_cooldown(self, power, slot):
         return self.self
 
 
