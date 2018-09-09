@@ -35,6 +35,15 @@ class Weapon(object):
         self.cd_adjs['simple'] = cd_adj_set
         self.strengths['simple'] = strength_set
 
+        self.cycles = {}
+        self.cycles['simple'] = {
+                    0: 1,
+                    1: 1,
+                    2: 1,
+                    3: 1,
+                    4: 1,
+                }
+
     def get_slot_ability(self, slot):
         return self.ability_sets[self.active_set][slot]
 
@@ -51,14 +60,18 @@ class Weapon(object):
         ability = self.ability_sets[self.active_set][slot]
         strength = self.strengths[self.active_set][slot]
         cd_adj = self.cd_adjs[self.active_set][slot]
+        current_cycle = self.cycles[self.active_set][slot]
         self.cd_timers[self.active_set][slot] = ability.activate(
                 actor=actor,
                 power=strength,
                 slot=slot,
+                cycle=current_cycle,
                 current_time=current_time,
                 distance=distance,
                 cd_adj=cd_adj,
             )
+        next_cycle = ability.cycle(current_cycle)
+        self.cycles[self.active_set][slot] = next_cycle
 
     def activate_hyp(self, actor, slot, current_time, distance, moved):
         current_cd = self.cd_timers[self.active_set][slot]
@@ -73,10 +86,12 @@ class Weapon(object):
 
         strength = self.strengths[self.active_set][slot]
         cd_adj = self.cd_adjs[self.active_set][slot]
+        current_cycle = self.cycles[self.active_set][slot]
         return ability.activate_hyp(
                 actor=actor,
                 power=strength,
                 slot=slot,
+                cycle=current_cycle,
                 current_time=current_time,
                 distance=distance,
                 cd_adj=cd_adj,

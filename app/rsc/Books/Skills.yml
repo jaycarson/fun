@@ -1,12 +1,23 @@
 ---
 'martial':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'simple':
-    slash_abilities:
+    slash_primary_abilities:
         - slash
+    bludgeon_primary_abilities:
+        - bash
+    pierce_primary_abilities:
+        - stab
+    chop_primary_abilities:
+        - chop
+    slash_abilities:
         - swing
         - slice
         - gash
@@ -21,7 +32,6 @@
         - wild_blow
         - strike
         - wild_strike
-        - bash
         - wild_bash
     pierce_abilities:
         - slice
@@ -31,7 +41,6 @@
         - wild_thrust
         - advance
     chop_abilities:
-        - chop
         - swing
         - double_chop
         - triple_chop
@@ -40,91 +49,163 @@
         - flurry
         - whirl
 'light-weapon':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'finesse':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'range':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'reach':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'thrown':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'heavy':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'engineer':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'hunt':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'fire':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'earth':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'water':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'air':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'light':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'dark':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'life':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'death':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'spirit':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:
     chop_abilities:
 'blood':
+    slash_primary_abilities:
+    bludgeon_primary_abilities:
+    pierce_primary_abilities:
+    chop_primary_abilities:
     slash_abilities:
     bludgeon_abilities:
     pierce_abilities:

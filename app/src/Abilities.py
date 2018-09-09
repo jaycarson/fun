@@ -7,9 +7,7 @@ class Abilities(object):
     def __init__(self):
         self.abilities = {
                 'advance': Advance(),
-                'bash': Bash(),
                 'blow': Blow(),
-                'chop': Chop(),
                 'cut': Cut(),
                 'double_chop': DoubleChop(),
                 'final_thrust': FinalThrust(),
@@ -18,7 +16,6 @@ class Abilities(object):
                 'jab': Jab(),
                 'rip': Rip(),
                 'skull_crack': SkullCrack(),
-                'slash': Slash(),
                 'slice': Slice(),
                 'smack': Smack(),
                 'strike': Strike(),
@@ -34,6 +31,13 @@ class Abilities(object):
                 'whirl': Whirl(),
             }
 
+        self.primary_abilities = {
+                'bash': Bash(),
+                'chop': Chop(),
+                'slash': Slash(),
+                'stab': Stab(), #
+            }
+
     def get_ability(self, name):
         return self.abilities[name]
 
@@ -41,26 +45,29 @@ class Abilities(object):
 class Ability(object):
     def __init__(self):
         self.name = 'None'
-        self.cd = 1000  # Cool Down
-        self.gcd = 1000  # Global Cool Down
+        self.one_second = 1000
+        self.cd = self.one_second  # Cool Down
+        self.gcd = self.one_second  # Global Cool Down
         self.combat_type = 'melee'
         self.combat_role = 'damage'
         self.range = 1
         self.base_damage = 100
         self.damage_type = 'physical'
-        self.min_gcd = 500
-        self.max_cd = 60000
+        self.min_gcd = self.one_second / 2
+        self.max_cd = self.one_second * 60
         self.can_attack_on_move = True
         self.primary_attribute = 'force'
         self.secondary_attribute = 'athletic'
         self.base_stat = BookStat().base
         self.max_stat = self.base_stat * 2
+        self.cycle = self.noncyclable
 
     def activate(
             self,
             actor,
             power,
             slot,
+            cycle,
             current_time,
             distance,
             cd_adj,
@@ -71,12 +78,12 @@ class Ability(object):
 
         if target_enemy is not None:
             target_enemy.take_damage(
-                    self.calc_damage(actor, power, slot),
+                    self.calc_damage(actor, power, slot, cycle),
                     self.damage_type,
                 )
 
-            actor.take_gcd(cooldown=self.calc_gcd(actor, power, slot))
-            cooldown_added = self.calc_cooldown(actor, power, slot)
+            actor.take_gcd(cooldown=self.calc_gcd(actor, power, slot, cycle))
+            cooldown_added = self.calc_cooldown(actor, power, slot, cycle)
 
         return cooldown_added + current_time
 
@@ -85,23 +92,24 @@ class Ability(object):
             actor,
             power,
             slot,
+            cycle,
             current_time,
             distance,
             cd_adj,
             ):
-        if distance > self.get_range(actor, power, slot):
+        if distance > self.get_range(actor, power, slot, cycle):
             return 0
         else:
-            damage = self.calc_damage(actor, power, slot)
-            time = self.calc_gcd(actor, power, slot) / 1000.0
+            damage = self.calc_damage(actor, power, slot, cycle)
+            time = self.calc_gcd(actor, power, slot, cycle) / float(self.one_second)
             dps = damage / time
             return dps
 
-    def get_range(self, actor, power, slot):
-        return self.calc_range(actor, power, slot)
+    def get_range(self, actor, power, slot, cycle):
+        return self.calc_range(actor, power, slot, cycle)
 
-    def get_cooldown(self, actor, power, slot, cooldown_adj):
-        cooldown = self.calc_cooldown(actor, power, slot)
+    def get_cooldown(self, actor, power, slot, cycle, cooldown_adj):
+        cooldown = self.calc_cooldown(actor, power, slot, cycle)
 
         if isinstance(cooldown_adj, float):
             cooldown = int(self.cd * cooldown_adj)
@@ -110,7 +118,7 @@ class Ability(object):
 
         return cooldown
 
-    def calc_damage(self, actor, power, slot):
+    def calc_damage(self, actor, power, slot, cycle):
         slot_damage = self.base_damage * slot * 0.5
         power_damage = self.base_damage * power * 0.5
         primary = actor.get_full_stat(self.primary_attribute)
@@ -123,10 +131,10 @@ class Ability(object):
                 )
         return total_damage
 
-    def calc_range(self, actor, power, slot):
+    def calc_range(self, actor, power, slot, cycle):
         return self.range
 
-    def calc_cooldown(self, actor, power, slot):
+    def calc_cooldown(self, actor, power, slot, cycle):
         if slot == 0:
             return 0
         else:
@@ -142,7 +150,7 @@ class Ability(object):
                 )
             return min(cooldown, self.max_cd)
 
-    def calc_gcd(self, actor, power, slot):
+    def calc_gcd(self, actor, power, slot, cycle):
         secondary = actor.get_stat(self.secondary_attribute) / 2
         power_bonus = 1 - power
         slot_bonus = 0
@@ -155,17 +163,50 @@ class Ability(object):
             )
         return max(int(self.gcd * power_bonus - slot_bonus), self.min_gcd)
 
+    def cyclable(self, cycle):
+        if cycle == 3:
+            cycle = 1
+        else:
+            cycle += 1
+
+        return cycle
+
+    def noncyclable(self, cycle):
+        return cycle
+
+
+class Stab(Ability):
+    def __init__(self):
+        Ability.__init__(self)
+        self.name = 'Stab'
+        self.cycle = self.cyclable
+
 
 class Bash(Ability):
     def __init__(self):
         Ability.__init__(self)
         self.name = 'Bash'
+        self.cycle = self.cyclable
 
     def calc_damage(self, actor, power, slot):
         return self.base_damage * 1.1
 
     def calc_cooldown(self, actor, power, slot):
         return self.cd
+
+
+class Chop(Ability):
+    def __init__(self):
+        Ability.__init__(self)
+        self.name = 'Chop'
+        self.cycle = self.cyclable
+
+
+class Slash(Ability):
+    def __init__(self):
+        Ability.__init__(self)
+        self.name = 'Slash'
+        self.cycle = self.cyclable
 
 
 class FinalThrust(Ability):
@@ -232,12 +273,6 @@ class Swing(Ability):
     def __init__(self):
         Ability.__init__(self)
         self.name = 'Swing'
-
-
-class Slash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
-        self.name = 'Slash'
 
 
 class Slice(Ability):
@@ -322,12 +357,6 @@ class Advance(Ability):
     def __init__(self):
         Ability.__init__(self)
         self.name = 'Advance'
-
-
-class Chop(Ability):
-    def __init__(self):
-        Ability.__init__(self)
-        self.name = 'Chop'
 
 
 class DoubleChop(Ability):
