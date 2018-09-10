@@ -9,19 +9,19 @@ class Dice(object):
         self._defense = defense + attack
         self._morale = morale + self._defense
         self._sides = self._morale
-        self._value = "Attack"
+        self._value = "attack"
 
     def set_seed(self, seed):
         random.seed(seed)
 
     def set_attack(self):
-        self._value = "Attack"
+        self._value = "attack"
 
     def set_defense(self):
-        self._value = "Defense"
+        self._value = "defense"
 
     def set_morale(self):
-        self._value = "Morale"
+        self._value = "morale"
 
     def get_value(self):
         return self._value
@@ -30,11 +30,11 @@ class Dice(object):
         n = random.randint(0, self._sides)
 
         if n < self._attack:
-            self._value = "Attack"
+            self._value = "attack"
         elif n < self._defense:
-            self._value = "Defense"
+            self._value = "defense"
         else:
-            self._value = "Morale"
+            self._value = "morale"
 
         return self._value
 

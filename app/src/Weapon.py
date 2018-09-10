@@ -15,6 +15,7 @@ class Weapon(object):
                  cd_adj_set,
                  strength_set,
                  weapon_id,
+                 dice,
                  ):
         self.weapon_type = weapon_type
         self.quality = quality
@@ -43,6 +44,8 @@ class Weapon(object):
                     3: 1,
                     4: 1,
                 }
+        
+        self.dice = dice
 
     def get_slot_ability(self, slot):
         return self.ability_sets[self.active_set][slot]
@@ -121,3 +124,12 @@ class Weapon(object):
     def get_active_ability_slot(self, slot):
         active_set = self.get_active_ability_set()
         return active_set[slot]
+    
+    def roll_dice(self):
+        return self.dice.roll()
+
+    def get_dice_face(self):
+        return self.dice.get_value(self)
+
+    def set_dice_face(self, face):
+        self.dice.value = face

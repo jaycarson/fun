@@ -10,6 +10,7 @@ class Armor(object):
                  skills,
                  stats,
                  armor_id,
+                 dice,
                  ):
         self.armor_type = armor_type
         self.piece = piece
@@ -18,7 +19,17 @@ class Armor(object):
         self.required_skills = skills
         self.stats = stats
         self.id = armor_id
+        self.dice = dice
 
     def get_stat(self, stat):
         assert stat in self.stats
         return self.stats.get(stat)
+
+    def roll_dice(self):
+        return self.dice.roll()
+
+    def get_dice_face(self):
+        return self.dice.get_value(self)
+
+    def set_dice_face(self, face):
+        self.dice.value = face

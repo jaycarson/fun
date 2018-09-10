@@ -10,6 +10,7 @@ from Library import BookSkill
 from Abilities import Abilities
 from Weapon import Weapon
 from Armor import Armor
+from Dice import Dice
 
 from random import seed
 from random import choice
@@ -82,6 +83,10 @@ class Smith(object):
 
         return new_id
 
+    def create_dice(self, color):
+
+        return Dice(attack=attack, defense=defense, morale=morale)
+
 
 class SmithArmor(Smith):
     def __init__(self):
@@ -110,6 +115,8 @@ class SmithArmor(Smith):
         if armor_piece == 'any' or armor_piece not in self._armor_pieces:
             armor_piece = choice(self._armor_pieces)
 
+        dice = self.create_dice(color=color)
+
         armor = Armor(
             armor_type=armor_type,
             piece=armor_piece,
@@ -118,6 +125,7 @@ class SmithArmor(Smith):
             skills=skills,
             stats=self._book_stat.generate_for_gear(quality),
             armor_id=self.generate_id(),
+            dice=dice,
             )
 
         return armor

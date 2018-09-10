@@ -13,27 +13,27 @@ class DiceTest(unittest.TestCase):
 
     def test_roll_the_dice(self):
         self.sut.set_seed(0)
-        self.assertEqual("Morale", self.sut.roll())
+        self.assertEqual("morale", self.sut.roll())
         self.sut.set_seed(1)
-        self.assertEqual("Attack", self.sut.roll())
+        self.assertEqual("attack", self.sut.roll())
         self.sut.set_seed(2)
-        self.assertEqual("Morale", self.sut.roll())
+        self.assertEqual("morale", self.sut.roll())
         self.sut.set_seed(3)
-        self.assertEqual("Defense", self.sut.roll())
+        self.assertEqual("defense", self.sut.roll())
         self.sut.set_seed(4)
-        self.assertEqual("Defense", self.sut.roll())
+        self.assertEqual("defense", self.sut.roll())
 
     def test_set_attack(self):
         self.sut.set_attack()
-        self.assertEqual("Attack", self.sut.get_value())
+        self.assertEqual("attack", self.sut.get_value())
 
     def test_set_defense(self):
         self.sut.set_defense()
-        self.assertEqual("Defense", self.sut.get_value())
+        self.assertEqual("defense", self.sut.get_value())
 
     def test_set_morale(self):
         self.sut.set_morale()
-        self.assertEqual("Morale", self.sut.get_value())
+        self.assertEqual("morale", self.sut.get_value())
 
 
 if __name__ == '__main__':
