@@ -45,6 +45,8 @@ class Character(object):
         self.movement = 3
         self.movement_speed = 1000
 
+        self.hyp_set = 'active'
+
         self.traits = set()
 
         self.current_dungeon_master = None
@@ -52,7 +54,10 @@ class Character(object):
         self.stats = stats
 
         self.target_enemy = None
+        self.distance_to_enemy = 0
+        
         self.target_ally = None
+        self.distance_to_ally = 0
 
     def get_level(self):
         return self.levelable.get_level()
@@ -69,6 +74,17 @@ class Character(object):
 
     def get_locale_time(self):
         return self.dm.get_time()
+
+    def get_time(self):
+        return self.dm.get_time()
+
+    def get_power(self, slot):
+        if self.hyp_set = 'inactive':
+            return
+
+    def get_cycle(self, slot):
+        if self.hyp_set = 'inactive':
+            return
 
     def give_experience(self, experience):
         self.levelable.give_exp(experience)

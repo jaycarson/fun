@@ -54,6 +54,7 @@ class Brain(object):
 
         if len(adjacent_enemies) > 0:
             actor.target_enemy = choice(adjacent_enemies)
+            actor.distance_to_enemy = actor.dm.distance(requestor, actor.target_enemy)
         else:
             actor.target_enemy = actor.dm.get_nearest_enemy(actor)
 

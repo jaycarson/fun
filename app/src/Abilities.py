@@ -62,18 +62,14 @@ class Ability(object):
         self.max_stat = self.base_stat * 2
         self.cycle = self.noncyclable
 
-    def activate(
-            self,
-            actor,
-            power,
-            slot,
-            cycle,
-            current_time,
-            distance,
-            cd_adj,
-            ):
+    def activate(self, actor, slot, cd_adj):
         target_enemy = actor.target_enemy
         target_ally = actor.target_ally
+        power = actor.get_power(weapon, slot)
+        cycle = actor.get_cycle(weapon, slot)
+        current_time = actor.get_time()
+        distance = actor.get_distance_to_enemy()
+
         cooldown_added = 0
 
         if target_enemy is not None:
@@ -87,16 +83,14 @@ class Ability(object):
 
         return cooldown_added + current_time
 
-    def activate_hyp(
-            self,
-            actor,
-            power,
-            slot,
-            cycle,
-            current_time,
-            distance,
-            cd_adj,
-            ):
+    def activate_hyp(self, actor, slot, cd_adj):
+        target_enemy = actor.target_enemy
+        target_ally = actor.target_ally
+        power = actor.get_power(slot)
+        cycle = actor.get_cycle(slot)
+        current_time = actor.get_time()
+        distance = actor.distance_to_enemy
+
         if distance > self.get_range(actor, power, slot, cycle):
             return 0
         else:

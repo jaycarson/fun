@@ -159,6 +159,9 @@ class DungeonMaster(object):
                 min_dist = current
                 closest = enemy
 
+        requestor.target_enemy = enemy
+        requestor.distance_to_enemy = min_dist
+
         return closest
 
     def distance(self, actor, target):
