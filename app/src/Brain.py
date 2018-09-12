@@ -31,11 +31,11 @@ class Brain(object):
         if target is None:
             return
         elif actor.get_range(primary_attack) >= actor.distance_to_enemy:
-            self.actor.moved = False
+            actor.moved = False
             self.attack(actor)
         else:
             self.move_towards(actor, target)
-            self.actor.moved = True
+            actor.moved = True
             self.attack(actor)
 
     def find_target(self, actor):
@@ -55,14 +55,14 @@ class Brain(object):
 
         if len(adjacent_enemies) > 0:
             actor.target_enemy = choice(adjacent_enemies)
-            actor.distance_to_enemy = actor.dm.distance(requestor, actor.target_enemy)
+            actor.distance_to_enemy = actor.dm.distance(actor, actor.target_enemy)
         else:
             actor.target_enemy = actor.dm.get_nearest_enemy(actor)
 
     def attack(self, actor):
         best = -1
         best_slot = 0
-        distance = actor.dm.distance(actor, target)
+        distance = actor.dm.distance(actor, actor.target_enemy)
 
         for slot in range(0, 5):
             current = actor.attack_hyp(slot)

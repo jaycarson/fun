@@ -73,12 +73,12 @@ class Weapon(object):
     def activate_hyp(self, actor, slot):
         current_cd = self.cd_timers[self.active_set][slot]
 
-        if current_cd > current_time:
+        if current_cd > actor.get_time():
             return -1
 
         ability = self.ability_sets[self.active_set][slot]
 
-        if moved and not ability.can_attack_on_move:
+        if actor.moved and not ability.can_attack_on_move:
             return -1
 
         return ability.activate_hyp(actor=actor, slot=slot)

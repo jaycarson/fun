@@ -7,6 +7,7 @@ sys.path.insert(0, '../src')
 from Weapon import Weapon
 from Character import Character
 from Clock import Clock
+from Dice import Dice
 
 class WeaponTest(unittest.TestCase):
     def setUp(self):
@@ -30,7 +31,8 @@ class WeaponTest(unittest.TestCase):
             cd_timer_set=sut_cooldown_set,
             cd_adj_set=sut_cooldown_adj_set,
             strength_set=sut_strength_set,
-            weapon_id=1
+            weapon_id=1,
+            dice=Dice(attack=2, defense=2, morale=2)
             )
 
     def test_get_weapon_type(self):
