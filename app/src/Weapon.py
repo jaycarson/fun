@@ -59,24 +59,18 @@ class Weapon(object):
     def on_cooldown(self, slot, current_time):
         return self.cd_timers[self.active_set][slot] > current_time
 
-    def activate(self, actor, slot, current_time, distance):
+    def activate(self, actor, slot):
         ability = self.ability_sets[self.active_set][slot]
-        strength = self.strengths[self.active_set][slot]
-        cd_adj = self.cd_adjs[self.active_set][slot]
+        
+        new_cooldown = ability.activate(actor=actor, slot=slot)
+        
+        self.cd_timers[self.active_set][slot] = new_cooldown
+        
         current_cycle = self.cycles[self.active_set][slot]
-        self.cd_timers[self.active_set][slot] = ability.activate(
-                actor=actor,
-                power=strength,
-                slot=slot,
-                cycle=current_cycle,
-                current_time=current_time,
-                distance=distance,
-                cd_adj=cd_adj,
-            )
         next_cycle = ability.cycle(current_cycle)
         self.cycles[self.active_set][slot] = next_cycle
 
-    def activate_hyp(self, actor, slot, current_time, distance, moved):
+    def activate_hyp(self, actor, slot):
         current_cd = self.cd_timers[self.active_set][slot]
 
         if current_cd > current_time:
@@ -87,18 +81,7 @@ class Weapon(object):
         if moved and not ability.can_attack_on_move:
             return -1
 
-        strength = self.strengths[self.active_set][slot]
-        cd_adj = self.cd_adjs[self.active_set][slot]
-        current_cycle = self.cycles[self.active_set][slot]
-        return ability.activate_hyp(
-                actor=actor,
-                power=strength,
-                slot=slot,
-                cycle=current_cycle,
-                current_time=current_time,
-                distance=distance,
-                cd_adj=cd_adj,
-            )
+        return ability.activate_hyp(actor=actor, slot=slot)
 
     def get_stat(self, stat_name):
         assert stat_name in self.stats

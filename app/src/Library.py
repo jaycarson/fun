@@ -8,13 +8,13 @@ from random import choice
 class BookColor(object):
     def __init__(self):
         self._list = [
-            'Red',
-            'Purple',
-            'Blue',
-            'Green',
-            'Yellow',
-            'Orange',
-            'White',
+            'red',
+            'purple',
+            'blue',
+            'green',
+            'yellow',
+            'orange',
+            'white',
         ]
 
     def get_list(self):
@@ -198,6 +198,21 @@ class BookWeapon(object):
 
     def get_weapon_handed(self, weapon):
         return self._weapons[weapon]['handed']
+
+
+class BookDice(object):
+    def __init__(self):
+        book_path = "../rsc/Books/Dice.yml"
+        self.dice_book = yaml.load(open(book_path))
+
+    def get_attack(self, color):
+        return self.dice_book[color]['attack']
+
+    def get_defense(self, color):
+        return self.dice_book[color]['defense']
+
+    def get_morale(self, color):
+        return self.dice_book[color]['morale']
 
 
 class BookArmor(object):

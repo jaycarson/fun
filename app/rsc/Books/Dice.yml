@@ -1,0 +1,28 @@
+red:
+    attack: 1
+    defense: 3
+    morale: 2
+purple:
+    attack: 1
+    defense: 2
+    morale: 3
+blue:
+    attack: 2
+    defense: 1
+    morale: 3
+green:
+    attack: 3
+    defense: 1
+    morale: 2
+yellow:
+    attack: 3
+    defense: 2
+    morale: 1
+orange:
+    attack: 2
+    defense: 3
+    morale: 1
+white:
+    attack: 2
+    defense: 2
+    morale: 2

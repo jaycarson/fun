@@ -6,6 +6,7 @@ from Library import BookStat
 from Library import BookWeapon
 from Library import BookArmor
 from Library import BookSkill
+from Library import BookDice
 
 from Abilities import Abilities
 from Weapon import Weapon
@@ -19,48 +20,49 @@ from random import randint
 
 class Smithy(object):
     def __init__(self):
-        self._book_weapons = BookWeapon()
-        self._book_quality = BookQuality()
+        self.book_weapons = BookWeapon()
+        self.book_quality = BookQuality()
 
-        self._weapon_types = self._book_wepaon.get_types()
-        self._qualities = self._book_quality.get_qualities()
+        self.weapon_types = self.book_wepaon.get_types()
+        self.qualities = self.book_quality.get_qualities()
 
-        self._book = BookSkill()
+        self.book = BookSkill()
 
-        self._smith_sword = SmithWeaponSword(self._book)
+        self.smith_sword = SmithWeaponSword(self.book)
 
     def set_seed(self, new_seed):
         seed(new_seed)
 
     def create(self, category='Any', name='Any', quality='Any'):
         if category == 'Any':
-            weapon_type = choice(self._weapon_types)
+            weapon_type = choice(self.weapon_types)
         if quality == 'Any':
-            quality = choice(self._qualities)
+            quality = choice(self.qualities)
 
         if weapon_type == 'Axe':
-            return self._sword_smith.create(weapon_name)
+            return self.sword_smith.create(weapon_name)
         elif weapon_type == 'Mace':
-            return self._sword_smith.create(weapon_name)
+            return self.sword_smith.create(weapon_name)
         elif weapon_type == 'Sword':
-            return self._sword_smith.create(weapon_name)
+            return self.sword_smith.create(weapon_name)
         else:
-            return self._sword_smith.create(weapon_name)
+            return self.sword_smith.create(weapon_name)
 
 
 class Smith(object):
     def __init__(self):
-        self._book_stat = BookStat()
-        self._book_quality = BookQuality()
-        self._book_color = BookColor()
+        self.book_stat = BookStat()
+        self.book_quality = BookQuality()
+        self.book_color = BookColor()
+        self.book_dice = BookDice()
 
-        self._colors = self._book_color.get_list()
+        self.colors = self.book_color.get_list()
 
-        self._qualities = self._book_quality.get_list_of_qualities()
-        self._stat_weights = self._book_quality.get_qualities()
+        self.qualities = self.book_quality.get_list_of_qualities()
+        self.stat_weights = self.book_quality.get_qualities()
 
-        self._ids = []
-        self._max_rand_id = 10000000
+        self.ids = []
+        self.max_rand_id = 10000000
 
     def set_seed(self, seed):
         random.seed(seed)
@@ -70,31 +72,34 @@ class Smith(object):
 
     def generate_color(self, color='Any'):
         if color == 'Any':
-            color = choice(self._colors)
+            color = choice(self.colors)
         return color
 
     def generate_id(self):
-        new_id = randint(1, self._max_rand_id)
+        new_id = randint(1, self.max_rand_id)
 
-        while new_id in self._ids:
-            new_id = randint(1, self._max_rand_id)
+        while new_id in self.ids:
+            new_id = randint(1, self.max_rand_id)
 
-        self._ids.append(new_id)
+        self.ids.append(new_id)
 
         return new_id
 
-    def create_dice(self, color):
-
-        return Dice(attack=attack, defense=defense, morale=morale)
+    def get_dice(self, color):
+        return Dice(
+                attack=self.book_dice.get_attack(color),
+                defense=self.book_dice.get_defense(color),
+                morale=self.book_dice.get_morale(color),
+            )
 
 
 class SmithArmor(Smith):
     def __init__(self):
         Smith.__init__(self)
 
-        self._book_armor = BookArmor()
-        self._armor_pieces = self._book_armor.get_pieces()
-        self._armor_types = self._book_armor.get_types()
+        self.book_armor = BookArmor()
+        self.armor_pieces = self.book_armor.get_pieces()
+        self.armor_types = self.book_armor.get_types()
 
     def set_seed(self, seed):
         random.seed(seed)
@@ -106,16 +111,14 @@ class SmithArmor(Smith):
                armor_piece='any',
                skills=None,
                ):
-        if armor_type == 'any' or armor_type not in self._armor_types:
-            armor_type = choice(self._armor_types)
-        if quality == 'any' or quality not in self._qualities:
-            quality = choice(self._qualities)
-        if color == 'any' or color not in self._colors:
-            color = choice(self._colors)
-        if armor_piece == 'any' or armor_piece not in self._armor_pieces:
-            armor_piece = choice(self._armor_pieces)
-
-        dice = self.create_dice(color=color)
+        if armor_type == 'any' or armor_type not in self.armor_types:
+            armor_type = choice(self.armor_types)
+        if quality == 'any' or quality not in self.qualities:
+            quality = choice(self.qualities)
+        if color == 'any' or color not in self.colors:
+            color = choice(self.colors)
+        if armor_piece == 'any' or armor_piece not in self.armor_pieces:
+            armor_piece = choice(self.armor_pieces)
 
         armor = Armor(
             armor_type=armor_type,
@@ -123,9 +126,9 @@ class SmithArmor(Smith):
             quality=quality,
             color=color,
             skills=skills,
-            stats=self._book_stat.generate_for_gear(quality),
+            stats=self.book_stat.generate_for_gear(quality),
             armor_id=self.generate_id(),
-            dice=dice,
+            dice=self.get_dice(color),
             )
 
         return armor
@@ -134,24 +137,24 @@ class SmithArmor(Smith):
 class SmithWeapon(Smith):
     def __init__(self):
         Smith.__init__(self)
-        self._book_weapon = BookWeapon()
-        self._book_skill = BookSkill()
-        self._weapons = self._book_weapon.get_weapon_list()
-        self._abilities = Abilities()
+        self.book_weapon = BookWeapon()
+        self.book_skill = BookSkill()
+        self.weapons = self.book_weapon.get_weapon_list()
+        self.abilities = Abilities()
 
     def create(self,
                weapon='any',
                quality='any',
                color='any',
                ):
-        if weapon == 'any' or weapon not in self._weapons:
-            weapon = choice(self._weapons)
-        if quality == 'any' or quality not in self._qualities:
-            quality = choice(self._qualities)
-        if color == 'any' or color not in self._colors:
-            color = choice(self._colors)
+        if weapon == 'any' or weapon not in self.weapons:
+            weapon = choice(self.weapons)
+        if quality == 'any' or quality not in self.qualities:
+            quality = choice(self.qualities)
+        if color == 'any' or color not in self.colors:
+            color = choice(self.colors)
 
-        damage_type = self._book_weapon.get_weapon_damage_type(weapon)
+        damage_type = self.book_weapon.get_weapon_damage_type(weapon)
         damage_types = []
         damage_types.append(damage_type)
 
@@ -164,15 +167,16 @@ class SmithWeapon(Smith):
             weapon_type=weapon,
             quality=quality,
             color=color,
-            skills=self._book_weapon.get_weapon_skills(weapon),
-            handed=self._book_weapon.get_weapon_handed(weapon),
+            skills=self.book_weapon.get_weapon_skills(weapon),
+            handed=self.book_weapon.get_weapon_handed(weapon),
             damage=damage_types,
-            stats=self._book_stat.generate_for_gear(quality),
+            stats=self.book_stat.generate_for_gear(quality),
             ability_set=ability_set,
             cd_timer_set=cooldown_set,
             cd_adj_set=cooldown_adj_set,
             strength_set=strength_set,
             weapon_id=self.generate_id(),
+            dice=self.get_dice(color),
             )
 
     def generate_ability_set(self, damage_types, skills=['simple']):
@@ -181,7 +185,7 @@ class SmithWeapon(Smith):
 
         for skill in skills:
             for damage_type in damage_types:
-                skill_list += self._book_skill.get_skill_abilities(
+                skill_list += self.book_skill.get_skill_abilities(
                     skill=skill,
                     damage_type=damage_type,
                     )
@@ -222,4 +226,4 @@ class SmithWeapon(Smith):
         return {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
 
     def get_ability(self, ability_name):
-        return self._abilities.get_ability(ability_name)
+        return self.abilities.get_ability(ability_name)

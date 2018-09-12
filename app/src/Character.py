@@ -19,7 +19,7 @@ class Character(object):
         self.char_id = char_id
         self.locale_id = 0
         self.gcd = 0
-
+        
         self.skillable = Skillable()
         self.levelable = Levelable(
                     exp=experience,
@@ -58,6 +58,7 @@ class Character(object):
         
         self.target_ally = None
         self.distance_to_ally = 0
+        self.moved = False
 
     def get_level(self):
         return self.levelable.get_level()
@@ -79,12 +80,16 @@ class Character(object):
         return self.dm.get_time()
 
     def get_power(self, slot):
-        if self.hyp_set = 'inactive':
-            return
+        weapon = self.get_weapon()
+        return weapon.strengths[weapon.active_set][slot]
 
     def get_cycle(self, slot):
-        if self.hyp_set = 'inactive':
-            return
+        weapon = self.get_weapon()
+        return weapon.cycles[weapon.active_set][slot]
+
+    def get_cd_adj(self, slot):
+        weapon = self.get_weapon()
+        return weapon.cd_adjs[weapon.active_set][slot]
 
     def give_experience(self, experience):
         self.levelable.give_exp(experience)
@@ -101,17 +106,12 @@ class Character(object):
 
         return combat_type + combat_role
 
-    def attack(self, slot=1, distance=1):
+    def attack(self, slot=1):
         weapon = self.get_weapon(slot)
 
-        weapon.activate(
-                self,
-                slot,
-                self.get_locale_time(),
-                distance,
-            )
+        weapon.activate(self, slot)
 
-    def attack_hyp(self, slot, distance, moved):
+    def attack_hyp(self, slot):
         weapon = self.get_weapon(slot)
 
         if weapon is None:
@@ -120,9 +120,6 @@ class Character(object):
         return weapon.activate_hyp(
                 actor=self,
                 slot=slot,
-                current_time=self.get_locale_time(),
-                distance=distance,
-                moved=moved,
             )
 
     def get_weapon(self, slot=1):

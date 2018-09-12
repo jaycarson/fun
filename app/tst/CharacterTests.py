@@ -145,7 +145,7 @@ class CharacterTest(unittest.TestCase):
 
     def test_character_gets_an_armor_and_automatically_equips_it(self):
         armor_smith = SmithArmor()
-        for piece in armor_smith._armor_pieces:
+        for piece in armor_smith.armor_pieces:
             self.sut.rack_armor.remove_armor(piece)
         new_armor = armor_smith.create()
         piece = new_armor.piece

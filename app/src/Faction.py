@@ -103,7 +103,7 @@ class Faction(object):
         character.rack_weapon.give_weapon(default_weapon)
 
     def equip_standard_armor(self, character):
-        for piece in self.smithy_armor._armor_pieces:
+        for piece in self.smithy_armor.armor_pieces:
             default_piece = self.smithy_armor.create(
                     armor_type='cloth',
                     armor_piece=piece,

@@ -25,23 +25,24 @@ class Brain(object):
     def act(self, actor):
         self.find_target(actor)
 
-        dm = actor.dm
         target = actor.target_enemy
         primary_attack = 0
 
         if target is None:
             return
-        elif actor.get_range(primary_attack) >= dm.distance(actor, target):
-            self.attack(actor, target, moved=False)
+        elif actor.get_range(primary_attack) >= actor.distance_to_enemy:
+            self.actor.moved = False
+            self.attack(actor)
         else:
             self.move_towards(actor, target)
-            self.attack(actor, target, moved=True)
+            self.actor.moved = True
+            self.attack(actor)
 
     def find_target(self, actor):
         if actor.get_range(0) == 1:
-            target = self.find_target_for_melee(actor)
+            self.find_target_for_melee(actor)
         else:
-            target = self.find_target_for_range(actor)
+            self.find_target_for_range(actor)
         
     def find_target_for_melee(self, actor):
         self.find_nearest_enemy(actor)
@@ -58,26 +59,19 @@ class Brain(object):
         else:
             actor.target_enemy = actor.dm.get_nearest_enemy(actor)
 
-    def attack(self, actor, target, moved):
+    def attack(self, actor):
         best = -1
         best_slot = 0
         distance = actor.dm.distance(actor, target)
 
         for slot in range(0, 5):
-            current = actor.attack_hyp(
-                    slot=slot,
-                    distance=distance,
-                    moved=moved,
-                )
+            current = actor.attack_hyp(slot)
             if current > best:
                 best = current
                 best_slot = slot
 
         if best >= 0:
-            actor.attack(
-                    slot=best_slot,
-                    distance=distance,
-                )
+            actor.attack(best_slot)
 
     def move_towards(self, actor, target):
         actor.dm.move_char_along_path(
