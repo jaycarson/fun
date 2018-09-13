@@ -20,6 +20,7 @@ class Armor(object):
         self.stats = stats
         self.id = armor_id
         self.dice = dice
+        self.dice.roll()
 
     def get_stat(self, stat):
         assert stat in self.stats

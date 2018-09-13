@@ -47,7 +47,10 @@ class Weapon(object):
                 }
         
         self.dice = dice
+        self.dice.roll()
         self.dice_both_handed = dice_both_handed
+        if dice_both_handed is not None:
+            self.dice_both_handed.roll()
 
     def get_slot_ability(self, slot):
         return self.ability_sets[self.active_set][slot]
