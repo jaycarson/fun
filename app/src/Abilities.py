@@ -65,42 +65,34 @@ class Ability(object):
     def activate(self, actor, slot):
         target_enemy = actor.target_enemy
         target_ally = actor.target_ally
-        power = actor.get_power(slot)
-        cycle = actor.get_cycle(slot)
         current_time = actor.get_time()
-        distance = actor.distance_to_enemy
 
         cooldown_added = 0
 
         if target_enemy is not None:
             target_enemy.take_damage(
-                    self.calc_damage(actor, power, slot, cycle),
+                    self.calc_damage(actor, slot),
                     self.damage_type,
                 )
 
-            actor.take_gcd(cooldown=self.calc_gcd(actor, power, slot, cycle))
-            cooldown_added = self.calc_cooldown(actor, power, slot, cycle)
+            actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
+            cooldown_added = self.calc_cooldown(actor, slot)
 
         return cooldown_added + current_time
 
     def activate_hyp(self, actor, slot):
-        target_enemy = actor.target_enemy
-        target_ally = actor.target_ally
-        power = actor.get_power(slot)
-        cycle = actor.get_cycle(slot)
-        current_time = actor.get_time()
         distance = actor.distance_to_enemy
 
-        if distance > self.get_range(actor, power, slot, cycle):
+        if distance > self.get_range(actor, slot):
             return 0
         else:
-            damage = self.calc_damage(actor, power, slot, cycle)
-            time = self.calc_gcd(actor, power, slot, cycle) / float(self.one_second)
+            damage = self.calc_damage(actor, slot)
+            time = self.calc_gcd(actor, slot) / float(self.one_second)
             dps = damage / time
             return dps
 
-    def get_range(self, actor, power, slot, cycle):
-        return self.calc_range(actor, power, slot, cycle)
+    def get_range(self, actor, slot):
+        return self.calc_range(actor, slot)
 
     def get_base_damage(self, actor):
         return actor.get_attack_dice() * 10 * self.base_scaling
@@ -111,8 +103,8 @@ class Ability(object):
     def get_base_morale(self, actor):
         return actor.get_morale_dice() * 10 * self.base_scaling
 
-    def get_cooldown(self, actor, power, slot, cycle, cooldown_adj):
-        cooldown = self.calc_cooldown(actor, power, slot, cycle)
+    def get_cooldown(self, actor, slot):
+        cooldown = self.calc_cooldown(actor, slot)
 
         if isinstance(cooldown_adj, float):
             cooldown = int(self.cd * cooldown_adj)
@@ -121,7 +113,8 @@ class Ability(object):
 
         return cooldown
 
-    def calc_damage(self, actor, power, slot, cycle):
+    def calc_damage(self, actor, slot):
+        power = actor.get_power(slot)
         base_damage = self.get_base_damage(actor)
         slot_damage = base_damage * slot * 0.5
         power_damage = base_damage * power * 0.5
@@ -135,10 +128,11 @@ class Ability(object):
                 )
         return total_damage
 
-    def calc_range(self, actor, power, slot, cycle):
+    def calc_range(self, actor, slot):
         return self.range
 
-    def calc_cooldown(self, actor, power, slot, cycle):
+    def calc_cooldown(self, actor, slot):
+        power = actor.get_power(slot)
         if slot == 0:
             return 0
         else:
@@ -154,7 +148,8 @@ class Ability(object):
                 )
             return min(cooldown, self.max_cd)
 
-    def calc_gcd(self, actor, power, slot, cycle):
+    def calc_gcd(self, actor, slot):
+        power = actor.get_power(slot)
         secondary = actor.get_stat(self.secondary_attribute) / 2
         power_bonus = 1 - power
         slot_bonus = 0

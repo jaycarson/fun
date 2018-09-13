@@ -152,8 +152,7 @@ class Character(object):
 
     def get_range(self, slot):
         weapon = self.get_weapon()
-        cycle = weapon.cycles[weapon.active_set][slot]
-        return self.sets_weapon.get_active_slot_range(slot, self, cycle)
+        return self.sets_weapon.get_active_slot_range(slot, self)
 
     def get_active_weapon_power(self, slot):
         weapon = self.get_weapon()

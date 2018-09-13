@@ -218,10 +218,9 @@ class SetsWeapon(object):
     def get_active_slot(self, slot):
         return self.get_slot(self.active_weapon_set, slot)
 
-    def get_active_slot_range(self, slot, actor, cycle):
+    def get_active_slot_range(self, slot, actor):
         ability = self.get_slot(self.active_weapon_set, slot)
-        power = actor.get_active_weapon_power(slot)
-        return ability.get_range(actor, power, slot, cycle)
+        return ability.get_range(actor, slot)
 
     def get_inactive_slot(self, slot):
         self.get_slot(self.inactive_weapon_set, slot)
