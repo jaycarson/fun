@@ -94,6 +94,7 @@ class DungeonMaster(object):
         member.dm = self
 
         faction.place_char(member, self.get_placement_locations(edge))
+        member.roll_equipped_dice()
 
     def remove_char(self, member):
         faction_id = member.faction.faction_id

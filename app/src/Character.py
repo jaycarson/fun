@@ -173,6 +173,10 @@ class Character(object):
 
     def take_gcd(self, cooldown):
         self.gcd = self.dm.get_time() + cooldown
+    
+    def roll_equipped_dice(self):
+        self.rack_weapon.roll_dice()
+        self.rack_armor.roll_dice()
 
 
 class CharacterPC(Character):

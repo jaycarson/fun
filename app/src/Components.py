@@ -94,6 +94,10 @@ class RackArmor(object):
 
         return count
 
+    def roll_dice(self):
+        for piece in self.armors_equipped_by_piece.keys():
+            self.armors_equipped_by_piece[piece].roll_dice()
+
 
 class RackWeapon(object):
     def __init__(self, weapon_sets=None):
@@ -161,6 +165,17 @@ class RackWeapon(object):
                 count += 1
 
         return count
+
+    def roll_dice(self):
+        if self.sets_weapon.get_equipped_weapon(hand='both') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='both')
+            weapon.roll_dice()
+        if self.sets_weapon.get_equipped_weapon(hand='main') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='main')
+            weapon.roll_dice()
+        if self.sets_weapon.get_equipped_weapon(hand='off') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='off')
+            weapon.roll_dice()
 
 
 class SetsWeapon(object):
