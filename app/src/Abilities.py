@@ -51,8 +51,8 @@ class Ability(object):
         self.combat_type = 'melee'
         self.combat_role = 'damage'
         self.range = 1
-        self.base_damage = 100
         self.damage_type = 'physical'
+        self.base_scaling = 1
         self.min_gcd = self.one_second / 2
         self.max_cd = self.one_second * 60
         self.can_attack_on_move = True
@@ -102,6 +102,15 @@ class Ability(object):
     def get_range(self, actor, power, slot, cycle):
         return self.calc_range(actor, power, slot, cycle)
 
+    def get_base_damage(self, actor):
+        return actor.get_attack_dice() * 10 * self.base_scaling
+
+    def get_base_defense(self, actor):
+        return actor.get_defense_dice() * 10 * self.base_scaling
+
+    def get_base_morale(self, actor):
+        return actor.get_morale_dice() * 10 * self.base_scaling
+
     def get_cooldown(self, actor, power, slot, cycle, cooldown_adj):
         cooldown = self.calc_cooldown(actor, power, slot, cycle)
 
@@ -113,12 +122,13 @@ class Ability(object):
         return cooldown
 
     def calc_damage(self, actor, power, slot, cycle):
-        slot_damage = self.base_damage * slot * 0.5
-        power_damage = self.base_damage * power * 0.5
+        base_damage = self.get_base_damage(actor)
+        slot_damage = base_damage * slot * 0.5
+        power_damage = base_damage * power * 0.5
         primary = actor.get_full_stat(self.primary_attribute)
-        stat_damage = self.base_damage * primary / self.max_stat
+        stat_damage = base_damage * primary / self.max_stat
         total_damage = int(
-                    self.base_damage +
+                    base_damage +
                     slot_damage +
                     power_damage +
                     stat_damage

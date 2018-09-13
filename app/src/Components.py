@@ -86,6 +86,14 @@ class RackArmor(object):
 
         return total
 
+    def get_dice_for_face(self, face):
+        count = 0
+        for piece in self.armors_equipped_by_piece.keys():
+            if face == self.armors_equipped_by_piece[piece].get_dice_face():
+                count += 1
+
+        return count
+
 
 class RackWeapon(object):
     def __init__(self, weapon_sets=None):
@@ -133,6 +141,26 @@ class RackWeapon(object):
             total += weapon.get_stat(stat)
 
         return total
+
+    def get_dice_for_face(self, face):
+        count = 0
+
+        if self.sets_weapon.get_equipped_weapon(hand='both') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='both')
+            if weapon.get_dice_face() == face:
+                count += 1
+            if weapon.get_dice_face_both_handed() == face:
+                count += 1
+        if self.sets_weapon.get_equipped_weapon(hand='main') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='main')
+            if weapon.get_dice_face() == face:
+                count += 1
+        if self.sets_weapon.get_equipped_weapon(hand='off') is not None:
+            weapon = self.sets_weapon.get_equipped_weapon(hand='off')
+            if weapon.get_dice_face() == face:
+                count += 1
+
+        return count
 
 
 class SetsWeapon(object):

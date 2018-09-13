@@ -16,6 +16,7 @@ class Weapon(object):
                  strength_set,
                  weapon_id,
                  dice,
+                 dice_both_handed=None
                  ):
         self.weapon_type = weapon_type
         self.quality = quality
@@ -46,6 +47,7 @@ class Weapon(object):
                 }
         
         self.dice = dice
+        self.dice_both_handed = dice_both_handed
 
     def get_slot_ability(self, slot):
         return self.ability_sets[self.active_set][slot]
@@ -112,7 +114,16 @@ class Weapon(object):
         return self.dice.roll()
 
     def get_dice_face(self):
-        return self.dice.get_value(self)
+        return self.dice.get_value()
 
     def set_dice_face(self, face):
         self.dice.value = face
+    
+    def roll_dice_both_handed(self):
+        return self.dice_both_handed.roll()
+
+    def get_dice_face_both_handed(self):
+        return self.dice_both_handed.get_value(self)
+
+    def set_dice_face_both_handed(self, face):
+        self.dice_both_handed.value = face

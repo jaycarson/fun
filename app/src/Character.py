@@ -106,6 +106,21 @@ class Character(object):
 
         return combat_type + combat_role
 
+    def get_attack_dice(self):
+        return self.get_dice_face_count('attack')
+
+    def get_defense_dice(self):
+        return self.get_dice_face_count('defense')
+
+    def get_morale_dice(self):
+        return self.get_dice_face_count('morale')
+
+    def get_dice_face_count(self, face):
+        count = 0
+        count += self.rack_weapon.get_dice_for_face(face)
+        count += self.rack_armor.get_dice_for_face(face)
+        return count
+
     def attack(self, slot=1):
         weapon = self.get_weapon(slot)
 

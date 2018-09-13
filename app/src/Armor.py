@@ -29,7 +29,7 @@ class Armor(object):
         return self.dice.roll()
 
     def get_dice_face(self):
-        return self.dice.get_value(self)
+        return self.dice.get_value()
 
     def set_dice_face(self, face):
         self.dice.value = face
