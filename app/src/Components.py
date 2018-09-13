@@ -72,6 +72,7 @@ class RackArmor(object):
 
     def equip_armor(self, armor):
         self.armors_equipped_by_piece[armor.piece] = armor
+        armor.roll_dice()
 
     def get_equipped_armor(self, piece='chest'):
         return self.armors_equipped_by_piece[piece]
@@ -223,6 +224,7 @@ class SetsWeapon(object):
 
         self.weapon_sets[weapon_set][hand] = weapon
         self.set_is_wielding_both_handed()
+        weapon.roll_dice()
 
     def get_equipped_weapon(self, hand='main'):
         return self.weapon_sets[self.active_weapon_set][hand]
