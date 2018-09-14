@@ -42,8 +42,6 @@
         - advance
     chop_abilities:
         - swing
-        - double_chop
-        - triple_chop
         - wild_swing
         - cut
         - flurry

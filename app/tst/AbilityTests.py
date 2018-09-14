@@ -13,7 +13,7 @@ class AbilityTest(unittest.TestCase):
 
     def test_name(self):
         test_name = 'None'
-        self.assertEqual(test_name, self.sut.name)
+        self.assertEqual(test_name, self.sut.name_1)
 
 
 if __name__ == '__main__':
