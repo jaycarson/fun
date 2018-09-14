@@ -65,8 +65,11 @@ class Ability(object):
         self.max_stat = self.base_stat * 2
         self.cycle = self.cycle_noncyclable
         self.get_name = self.get_name_noncyclable
+        self.damage_multiplier = 1.0
+        self.activate = self.activate_noncyclable
+        self.activate_hyp = self.activate_hyp_noncyclable
 
-    def activate(self, actor, slot):
+    def activate_noncyclable(self, actor, slot):
         target_enemy = actor.target_enemy
         target_ally = actor.target_ally
         current_time = actor.get_time()
@@ -84,7 +87,7 @@ class Ability(object):
 
         return cooldown_added + current_time
 
-    def activate_hyp(self, actor, slot):
+    def activate_hyp_noncyclable(self, actor, slot):
         distance = actor.distance_to_enemy
 
         if distance > self.get_range(actor, slot):
@@ -95,9 +98,17 @@ class Ability(object):
             dps = damage / time
             return dps
 
+    def activate_cyclable(self, actor, slot):
+        return
+    
+    def activate_hyp_cyclable(self, actor, slot):
+        return
+
     def set_cyclable(self):
         self.cycle = self.cycle_cyclable
         self.get_name = self.get_name_cyclable
+        self.activate = self.activate_cyclable
+        self.activate_hyp = self.activate_hyp_cyclable
 
     def get_name_noncyclable(self, actor, slot):
         return self.name_1
@@ -143,13 +154,13 @@ class Ability(object):
         power_damage = base_damage * power * 0.5
         primary = actor.get_full_stat(self.primary_attribute)
         stat_damage = base_damage * primary / self.max_stat
-        total_damage = int(
+        total_damage = (
                     base_damage +
                     slot_damage +
                     power_damage +
                     stat_damage
                 )
-        return total_damage
+        return int(total_damage * self.damage_multiplier)
 
     def calc_range(self, actor, slot):
         return self.range
