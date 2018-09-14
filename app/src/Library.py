@@ -284,6 +284,16 @@ class BookSkill(object):
 
         return self._skills[skill][damage_type]
 
+    def get_skill_abilities_primary(self, skill='Any', damage_type='Any'):
+        if skill == 'Any' or skill not in self._skill_list:
+            skill = choice(self._skill_list)
+        if damage_type == 'Any' or damage_type not in self._damage_types:
+            damage_type = choice(self._damage_types)
+
+        damage_type = damage_type + "_primary_abilities"
+
+        return self._skills[skill][damage_type]
+
     def get_list(self):
         return self._list_of_skills
 

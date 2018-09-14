@@ -39,6 +39,9 @@ class Abilities(object):
     def get_ability(self, name):
         return self.abilities[name]
 
+    def get_ability_primary(self, name):
+        return self.primary_abilities[name]
+
 
 class Ability(object):
     def __init__(self):
@@ -210,12 +213,6 @@ class Bash(Ability):
         self.name_2 = 'Double Bash'
         self.name_3 = 'Triple Bash'
         self.set_cyclable()
-
-    def calc_damage(self, actor, power, slot):
-        return self.base_damage * 1.1
-
-    def calc_cooldown(self, actor, power, slot):
-        return self.cd
 
 
 class Chop(Ability):

@@ -181,7 +181,15 @@ class SmithWeapon(Smith):
 
     def generate_ability_set(self, damage_types, skills=['simple']):
         skill_list = []
+        skill_list_primary = []
         ability_set = []
+
+        for skill in skills:
+            for damage_type in damage_types:
+                skill_list_primary += self.book_skill.get_skill_abilities_primary(
+                    skill=skill,
+                    damage_type=damage_type,
+                    )
 
         for skill in skills:
             for damage_type in damage_types:
@@ -190,7 +198,10 @@ class SmithWeapon(Smith):
                     damage_type=damage_type,
                     )
 
-        for counter in range(0, 5):
+        ability = self.get_ability_primary(choice(skill_list_primary))
+        ability_set.append(ability)
+
+        for counter in range(0, 4):
             ability = self.get_ability(choice(skill_list))
             ability_set.append(ability)
 
@@ -227,3 +238,6 @@ class SmithWeapon(Smith):
 
     def get_ability(self, ability_name):
         return self.abilities.get_ability(ability_name)
+    
+    def get_ability_primary(self, ability_name):
+        return self.abilities.get_ability_primary(ability_name)
