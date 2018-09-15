@@ -74,7 +74,7 @@ class Character(object):
         return base_stat + armor_stat + weapon_stat
 
     def get_locale_time(self):
-        return self.dm.get_time()
+        return self.get_time()
 
     def get_time(self):
         return self.dm.get_time()
