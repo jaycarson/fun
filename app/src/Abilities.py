@@ -79,6 +79,8 @@ class Ability(object):
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
             cooldown_added = self.calc_cooldown(actor, slot)
 
+        self.apply_effects(actor, slot)
+
         return cooldown_added + current_time
 
     def activate_hyp(self, actor, slot):
@@ -169,6 +171,9 @@ class Ability(object):
     def cycle(self, cycle):
         return cycle
 
+    def apply_effects(self, actor, slot):
+        return
+
 
 class AbilityCyclable(Ability):
     def __init__(self):
@@ -176,12 +181,9 @@ class AbilityCyclable(Ability):
         self.name_1 = 'None'
         self.name_2 = 'None'
         self.name_3 = 'None'
-
-    def activate(self, actor, slot):
-        return
-    
-    def activate_hyp(self, actor, slot):
-        return 0
+        self.cycle_1_modifier = 0.75
+        self.cycle_2_modifier = 1.25
+        self.cycle_3_modifier = 1.75
 
     def get_name(self, actor, slot):
         cycle = actor.get_cycle(slot)
@@ -202,6 +204,50 @@ class AbilityCyclable(Ability):
             cycle += 1
 
         return cycle
+
+    def calc_damage(self, actor, slot):
+        power = actor.get_power(slot)
+        base_damage = self.get_base_damage(actor)
+        slot_damage = base_damage * slot * 0.5
+        power_damage = base_damage * power * 0.5
+        primary = actor.get_full_stat(self.primary_attribute)
+        stat_damage = base_damage * primary / self.max_stat
+        total_damage = (
+                    base_damage +
+                    slot_damage +
+                    power_damage +
+                    stat_damage
+                )
+        
+        cycle = actor.get_cycle(slot)
+        
+        if cycle == 1:
+            total_damage *= self.cycle_1_modifier
+        elif cycle == 2:
+            total_damage *= self.cycle_2_modifier
+        elif cycle == 3:
+            total_damage *= self.cycle_3_modifier
+        
+        return int(total_damage * self.damage_multiplier)
+
+    def apply_effects(self, actor, slot):
+        cycle = actor.get_cycle(slot)
+        
+        if cycle == 1:
+            self.apply_cycle_1_effects(actor, slot)
+        elif cycle == 2:
+            self.apply_cycle_2_effects(actor, slot)
+        elif cycle == 3:
+            self.apply_cycle_3_effects(actor, slot)
+
+    def apply_cycle_1_effects(self, actor, slot):
+        return
+
+    def apply_cycle_2_effects(self, actor, slot):
+        return
+
+    def apply_cycle_3_effects(self, actor, slot):
+        return
 
 
 class Stab(AbilityCyclable):
