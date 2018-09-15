@@ -46,8 +46,6 @@ class Abilities(object):
 class Ability(object):
     def __init__(self):
         self.name_1 = 'None'
-        self.name_2 = 'None'
-        self.name_3 = 'None'
         self.one_second = 1000
         self.cd = self.one_second  # Cool Down
         self.gcd = self.one_second  # Global Cool Down
@@ -63,13 +61,9 @@ class Ability(object):
         self.secondary_attribute = 'athletic'
         self.base_stat = BookStat().base
         self.max_stat = self.base_stat * 2
-        self.cycle = self.cycle_noncyclable
-        self.get_name = self.get_name_noncyclable
         self.damage_multiplier = 1.0
-        self.activate = self.activate_noncyclable
-        self.activate_hyp = self.activate_hyp_noncyclable
 
-    def activate_noncyclable(self, actor, slot):
+    def activate(self, actor, slot):
         target_enemy = actor.target_enemy
         target_ally = actor.target_ally
         current_time = actor.get_time()
@@ -87,7 +81,7 @@ class Ability(object):
 
         return cooldown_added + current_time
 
-    def activate_hyp_noncyclable(self, actor, slot):
+    def activate_hyp(self, actor, slot):
         distance = actor.distance_to_enemy
 
         if distance > self.get_range(actor, slot):
@@ -98,32 +92,8 @@ class Ability(object):
             dps = damage / time
             return dps
 
-    def activate_cyclable(self, actor, slot):
-        return
-    
-    def activate_hyp_cyclable(self, actor, slot):
-        return
-
-    def set_cyclable(self):
-        self.cycle = self.cycle_cyclable
-        self.get_name = self.get_name_cyclable
-        self.activate = self.activate_cyclable
-        self.activate_hyp = self.activate_hyp_cyclable
-
-    def get_name_noncyclable(self, actor, slot):
+    def get_name(self, actor, slot):
         return self.name_1
-
-    def get_name_cyclable(self, actor, slot):
-        cycle = actor.get_cycle(slot)
-
-        if cycle == 1:
-            name = self.name_1
-        elif cycle == 2:
-            name = self.name_2
-        else:
-            name = self.name_3
-
-        return name
 
     def get_range(self, actor, slot):
         return self.calc_range(actor, slot)
@@ -196,7 +166,36 @@ class Ability(object):
             )
         return max(int(self.gcd * power_bonus - slot_bonus), self.min_gcd)
 
-    def cycle_cyclable(self, cycle):
+    def cycle(self, cycle):
+        return cycle
+
+
+class AbilityCyclable(Ability):
+    def __init__(self):
+        Ability.__init__(self)
+        self.name_1 = 'None'
+        self.name_2 = 'None'
+        self.name_3 = 'None'
+
+    def activate(self, actor, slot):
+        return
+    
+    def activate_hyp(self, actor, slot):
+        return 0
+
+    def get_name(self, actor, slot):
+        cycle = actor.get_cycle(slot)
+
+        if cycle == 1:
+            name = self.name_1
+        elif cycle == 2:
+            name = self.name_2
+        else:
+            name = self.name_3
+
+        return name
+
+    def cycle(self, cycle):
         if cycle == 3:
             cycle = 1
         else:
@@ -204,44 +203,37 @@ class Ability(object):
 
         return cycle
 
-    def cycle_noncyclable(self, cycle):
-        return cycle
 
-
-class Stab(Ability):
+class Stab(AbilityCyclable):
     def __init__(self):
-        Ability.__init__(self)
+        AbilityCyclable.__init__(self)
         self.name_1 = 'Stab'
         self.name_2 = 'Double Stab'
         self.name_3 = 'Tripple Stab'
-        self.set_cyclable()
 
 
-class Bash(Ability):
+class Bash(AbilityCyclable):
     def __init__(self):
-        Ability.__init__(self)
+        AbilityCyclable.__init__(self)
         self.name_1 = 'Bash'
         self.name_2 = 'Double Bash'
         self.name_3 = 'Triple Bash'
-        self.set_cyclable()
 
 
-class Chop(Ability):
+class Chop(AbilityCyclable):
     def __init__(self):
-        Ability.__init__(self)
+        AbilityCyclable.__init__(self)
         self.name_1 = 'Chop'
         self.name_2 = 'Double Chop'
         self.name_3 = 'Triple Chop'
-        self.set_cyclable()
 
 
-class Slash(Ability):
+class Slash(AbilityCyclable):
     def __init__(self):
-        Ability.__init__(self)
+        AbilityCyclable.__init__(self)
         self.name_1 = 'Slash'
         self.name_2 = 'Double Slash'
         self.name_3 = 'Triple Slash'
-        self.set_cyclable()
 
 
 class FinalThrust(Ability):
