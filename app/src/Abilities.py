@@ -1,39 +1,42 @@
 #!/usr/bin/python
 
 from Library import BookStat
+from StatusEffect import StatusEffects
 
 
 class Abilities(object):
     def __init__(self):
+        self.status_effects = StatusEffects()
+
         self.abilities = {
-                'advance': Advance(),
-                'blow': Blow(),
-                'cut': Cut(),
-                'final_thrust': FinalThrust(),
-                'flurry': Flurry(),
-                'gash': Gash(),
-                'jab': Jab(),
-                'rip': Rip(),
-                'skull_crack': SkullCrack(),
-                'slice': Slice(),
-                'smack': Smack(),
-                'strike': Strike(),
-                'thrust': Thrust(),
-                'swing': Swing(),
-                'wild_bash': WildBash(),
-                'wild_slash': WildSlash(),
-                'wild_strike': WildStrike(),
-                'wild_swing': WildSwing(),
-                'wild_thrust': WildThrust(),
-                'wild_blow': WildBlow(),
-                'whirl': Whirl(),
+                'advance': Advance(self.status_effects),
+                'blow': Blow(self.status_effects),
+                'cut': Cut(self.status_effects),
+                'final_thrust': FinalThrust(self.status_effects),
+                'flurry': Flurry(self.status_effects),
+                'gash': Gash(self.status_effects),
+                'jab': Jab(self.status_effects),
+                'rip': Rip(self.status_effects),
+                'skull_crack': SkullCrack(self.status_effects),
+                'slice': Slice(self.status_effects),
+                'smack': Smack(self.status_effects),
+                'strike': Strike(self.status_effects),
+                'thrust': Thrust(self.status_effects),
+                'swing': Swing(self.status_effects),
+                'wild_bash': WildBash(self.status_effects),
+                'wild_slash': WildSlash(self.status_effects),
+                'wild_strike': WildStrike(self.status_effects),
+                'wild_swing': WildSwing(self.status_effects),
+                'wild_thrust': WildThrust(self.status_effects),
+                'wild_blow': WildBlow(self.status_effects),
+                'whirl': Whirl(self.status_effects),
             }
 
         self.primary_abilities = {
-                'bash': Bash(),
-                'chop': Chop(),
-                'slash': Slash(),
-                'stab': Stab(), #
+                'bash': Bash(self.status_effects),
+                'chop': Chop(self.status_effects),
+                'slash': Slash(self.status_effects),
+                'stab': Stab(self.status_effects),
             }
 
     def get_ability(self, name):
@@ -44,7 +47,8 @@ class Abilities(object):
 
 
 class Ability(object):
-    def __init__(self):
+    def __init__(self, status_effects):
+        self.status_effects = status_effects
         self.name_1 = 'None'
         self.one_second = 1000
         self.cd = self.one_second  # Cool Down
@@ -176,8 +180,8 @@ class Ability(object):
 
 
 class AbilityCyclable(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'None'
         self.name_2 = 'None'
         self.name_3 = 'None'
@@ -251,206 +255,206 @@ class AbilityCyclable(Ability):
 
 
 class Stab(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, status_effects):
+        AbilityCyclable.__init__(self, status_effects)
         self.name_1 = 'Stab'
         self.name_2 = 'Double Stab'
         self.name_3 = 'Tripple Stab'
 
 
 class Bash(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, status_effects):
+        AbilityCyclable.__init__(self, status_effects)
         self.name_1 = 'Bash'
         self.name_2 = 'Double Bash'
         self.name_3 = 'Triple Bash'
 
 
 class Chop(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, status_effects):
+        AbilityCyclable.__init__(self, status_effects)
         self.name_1 = 'Chop'
         self.name_2 = 'Double Chop'
         self.name_3 = 'Triple Chop'
 
 
 class Slash(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, status_effects):
+        AbilityCyclable.__init__(self, status_effects)
         self.name_1 = 'Slash'
         self.name_2 = 'Double Slash'
         self.name_3 = 'Triple Slash'
 
 
 class FinalThrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Final Thrust'
 
 
 class Gash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Gash'
 
 
 class Hamstring(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Hamstring'
 
 
 class Hit(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Hit'
 
 
 class Impale(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Impale'
 
 
 class Rip(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Rip'
 
 
 class Ripost(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Ripost'
 
 
 class Rush(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Rush'
 
 
 class SavageLeap(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Savage Leap'
 
 
 class SeverArtery(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Sever Artery'
 
 
 class Swing(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Swing'
 
 
 class Slice(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Slice'
 
 
 class Gash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Gash'
 
 
 class WildSlash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Slash'
 
 
 class Strike(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Strike'
 
 
 class WildStrike(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Strike'
 
 
 class WildSwing(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Swing'
 
 
 class Smack(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Smack'
 
 
 class Blow(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Blow'
 
 
 class SkullCrack(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Skull Crack'
 
 
 class WildBlow(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Blow'
 
 
 class Thrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Thrust'
 
 
 class Jab(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Jab'
 
 
 class WildThrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Thrust'
 
 
 class Advance(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Advance'
 
 
 class Cut(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Cut'
 
 
 class Flurry(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Flurry'
 
 
 class Whirl(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Whirl'
 
 
 class WildBash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, status_effects):
+        Ability.__init__(self, status_effects)
         self.name_1 = 'Wild Bash'
