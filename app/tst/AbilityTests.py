@@ -10,8 +10,7 @@ from StatusEffect import StatusEffects
 
 class AbilityTest(unittest.TestCase):
     def setUp(self):
-        self.status_effects = StatusEffects()
-        self.sut = Ability(self.status_effects)
+        self.sut = Ability()
 
     def test_name(self):
         test_name = 'None'

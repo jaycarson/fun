@@ -178,6 +178,24 @@ class Character(object):
         self.rack_weapon.roll_dice()
         self.rack_armor.roll_dice()
 
+    def receive_status_effects(self, status_effects):
+        for effect in status_effects:
+            effect.trigger(self)
+            
+            if effect.ticks > 1:
+                self.active_effects.append(effect)
+
+    def resolve_status_effects(self):
+        expired_effects = []
+
+        for effect in self.active_effects:
+            effect.tigger(self)
+            if effect.ticks <= 1:
+                expired_effects.append
+            
+        for expired_effect in expired_effects:
+            self.active_effects.remove(expired_effect)
+
 
 class CharacterPC(Character):
     def __init__(self,
