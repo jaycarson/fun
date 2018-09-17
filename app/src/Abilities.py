@@ -72,18 +72,10 @@ class Ability(object):
         cooldown_added = 0
 
         if target_enemy is not None:
-            effects = [
-                        Damage(
-                            power=self.calc_damage(actor, slot),
-                            damage_type='physical',
-                        ),
-                    ]
-            target_enemy.receive_status_effects(effects)
+            target_enemy.receive_status_effects(self.get_effects(actor, slot))
 
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
             cooldown_added = self.calc_cooldown(actor, slot)
-
-        self.apply_effects(actor, slot)
 
         return cooldown_added + current_time
 
@@ -175,8 +167,13 @@ class Ability(object):
     def cycle(self, cycle):
         return cycle
 
-    def apply_effects(self, actor, slot):
-        return
+    def get_effects(self, actor, slot):
+        return [
+            Damage(
+                power=self.calc_damage(actor, slot),
+                damage_type='physical',
+                ),
+            ]
 
 
 class AbilityCyclable(Ability):
@@ -234,24 +231,42 @@ class AbilityCyclable(Ability):
         
         return int(total_damage * self.damage_multiplier)
 
-    def apply_effects(self, actor, slot):
+    def get_effects(self, actor, slot):
         cycle = actor.get_cycle(slot)
+        effects = []
         
         if cycle == 1:
-            self.apply_cycle_1_effects(actor, slot)
+            effects = self.get_cycle_1_effects(actor, slot)
         elif cycle == 2:
-            self.apply_cycle_2_effects(actor, slot)
+            effects = self.get_cycle_2_effects(actor, slot)
         elif cycle == 3:
-            self.apply_cycle_3_effects(actor, slot)
+            effects = self.get_cycle_3_effects(actor, slot)
 
-    def apply_cycle_1_effects(self, actor, slot):
-        return
+        return effects
 
-    def apply_cycle_2_effects(self, actor, slot):
-        return
+    def get_cycle_1_effects(self, actor, slot):
+        return [
+            Damage(
+                power=self.calc_damage(actor, slot),
+                damage_type='physical',
+                ),
+            ]
 
-    def apply_cycle_3_effects(self, actor, slot):
-        return
+    def get_cycle_2_effects(self, actor, slot):
+        return [
+            Damage(
+                power=self.calc_damage(actor, slot),
+                damage_type='physical',
+                ),
+            ]
+
+    def get_cycle_3_effects(self, actor, slot):
+        return [
+            Damage(
+                power=self.calc_damage(actor, slot),
+                damage_type='physical',
+                ),
+            ]
 
 
 class Stab(AbilityCyclable):
