@@ -79,10 +79,6 @@ class Ability(object):
                         ),
                     ]
             target_enemy.receive_status_effects(effects)
-            target_enemy.take_damage(
-                    self.calc_damage(actor, slot),
-                    self.damage_type,
-                )
 
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
             cooldown_added = self.calc_cooldown(actor, slot)
