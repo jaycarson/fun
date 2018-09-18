@@ -147,3 +147,15 @@ class Vulnerability(StatusEffect):
     def trigger(self, host):
         self.ticks -= 1
         host.status_count[self.effect] += 1
+
+
+class Chilled(StatusEffect):
+    def __init__(self, power):
+        StatusEffect.__init__(self, power)
+        self.name = 'Chilled'
+        self.effect = 'chilled'
+        self.ticks = 10 + power / 100
+
+    def trigger(self, host):
+        self.ticks -= 1
+        host.status_count[self.effect] += 1
