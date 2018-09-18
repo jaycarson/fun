@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from Library import BookStat
-from StatusEffect import Damage
+from StatusEffect import Damage, Bleed, BuffStat, Interfere, Snare, Vulnerability
 
 
 class Abilities(object):
@@ -58,7 +58,7 @@ class Ability(object):
         self.min_gcd = self.one_second / 2
         self.max_cd = self.one_second * 60
         self.can_attack_on_move = True
-        self.primary_attribute = 'force'
+        self.primary_attribute = 'might'
         self.secondary_attribute = 'athletic'
         self.base_stat = BookStat().base
         self.max_stat = self.base_stat * 2
@@ -72,7 +72,7 @@ class Ability(object):
         cooldown_added = 0
 
         if target_enemy is not None:
-            target_enemy.receive_status_effects(self.get_effects(actor, slot))
+            self.give_effects(actor, slot)
 
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
             cooldown_added = self.calc_cooldown(actor, slot)
@@ -128,7 +128,8 @@ class Ability(object):
                     power_damage +
                     stat_damage
                 )
-        return int(total_damage * self.damage_multiplier)
+        total_damage *= self.damage_multiplier
+        return int(total_damage)
 
     def calc_range(self, actor, slot):
         return self.range
@@ -167,13 +168,15 @@ class Ability(object):
     def cycle(self, cycle):
         return cycle
 
-    def get_effects(self, actor, slot):
-        return [
+    def give_effects(self, actor, slot):
+        debuffs = [
             Damage(
                 power=self.calc_damage(actor, slot),
                 damage_type='physical',
                 ),
             ]
+
+        actor.target_enemy.receive_status_effects(debuffs)
 
 
 class AbilityCyclable(Ability):
@@ -228,45 +231,52 @@ class AbilityCyclable(Ability):
             total_damage *= self.cycle_2_modifier
         elif cycle == 3:
             total_damage *= self.cycle_3_modifier
-        
-        return int(total_damage * self.damage_multiplier)
+       
+        total_damage *= self.damage_multiplier
+        return int(total_damage)
 
-    def get_effects(self, actor, slot):
+    def give_effects(self, actor, slot):
         cycle = actor.get_cycle(slot)
         effects = []
         
         if cycle == 1:
-            effects = self.get_cycle_1_effects(actor, slot)
+            self.give_cycle_1_effects(actor, slot)
         elif cycle == 2:
-            effects = self.get_cycle_2_effects(actor, slot)
+            self.give_cycle_2_effects(actor, slot)
         elif cycle == 3:
-            effects = self.get_cycle_3_effects(actor, slot)
+            self.give_cycle_3_effects(actor, slot)
 
         return effects
 
-    def get_cycle_1_effects(self, actor, slot):
-        return [
+    def give_cycle_1_effects(self, actor, slot):
+        debuffs = [
             Damage(
                 power=self.calc_damage(actor, slot),
                 damage_type='physical',
                 ),
             ]
 
-    def get_cycle_2_effects(self, actor, slot):
-        return [
+        actor.target_enemy.receive_status_effects(debuffs)
+
+    def give_cycle_2_effects(self, actor, slot):
+        debuffs = [
             Damage(
                 power=self.calc_damage(actor, slot),
                 damage_type='physical',
                 ),
             ]
 
-    def get_cycle_3_effects(self, actor, slot):
-        return [
+        actor.target_enemy.receive_status_effects(debuffs)
+
+    def give_cycle_3_effects(self, actor, slot):
+        debuffs = [
             Damage(
                 power=self.calc_damage(actor, slot),
                 damage_type='physical',
                 ),
             ]
+
+        actor.target_enemy.receive_status_effects(debuffs)
 
 
 class Stab(AbilityCyclable):
@@ -276,6 +286,30 @@ class Stab(AbilityCyclable):
         self.name_2 = 'Double Stab'
         self.name_3 = 'Tripple Stab'
 
+    def give_cycle_2_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        buffs = [
+                BuffStat(power=power, name='initiative'),
+            ]
+
+        debuffs = [
+                Damage(power=power, damage_type='physical'),
+            ]
+
+        actor.receive_status_effects(buffs)
+        actor.target_enemy.receive_status_effects(debuffs)
+
+    def give_cycle_3_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        debuffs = [
+                Damage(power=power/2, damage_type='physical'),
+                Bleed(power=power/2),
+            ]
+        
+        actor.target_enemy.receive_status_effects(debuffs)
+
 
 class Bash(AbilityCyclable):
     def __init__(self):
@@ -283,6 +317,31 @@ class Bash(AbilityCyclable):
         self.name_1 = 'Bash'
         self.name_2 = 'Double Bash'
         self.name_3 = 'Triple Bash'
+
+    def give_cycle_2_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        buffs = [
+                BuffStat(power=power, name='endurance'),
+            ]
+
+        debuffs = [
+                Damage(power=power * 3 / 4, damage_type='physical'),
+                Interfere(power=power/2),
+            ]
+
+        actor.receive_status_effects(buffs)
+        actor.target_enemy.receive_status_effects(debuffs)
+
+    def give_cycle_3_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        debuffs = [
+                Damage(power=power * 3 /4, damage_type='physical'),
+                Interfere(power=power),
+            ]
+        
+        actor.target_enemy.receive_status_effects(debuffs)
 
 
 class Chop(AbilityCyclable):
@@ -292,6 +351,30 @@ class Chop(AbilityCyclable):
         self.name_2 = 'Double Chop'
         self.name_3 = 'Triple Chop'
 
+    def give_cycle_2_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        buffs = [
+                BuffStat(power=power, name='might'),
+            ]
+
+        debuffs = [
+                Damage(power=power, damage_type='physical'),
+            ]
+
+        actor.receive_status_effects(buffs)
+        actor.target_enemy.receive_status_effects(debuffs)
+
+    def give_cycle_3_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        debuffs = [
+                Damage(power=power * 3/4, damage_type='physical'),
+                Snare(power=power/2),
+            ]
+        
+        actor.target_enemy.receive_status_effects(debuffs)
+
 
 class Slash(AbilityCyclable):
     def __init__(self):
@@ -299,6 +382,21 @@ class Slash(AbilityCyclable):
         self.name_1 = 'Slash'
         self.name_2 = 'Double Slash'
         self.name_3 = 'Triple Slash'
+
+    def get_cycle_2_effects(self, actor, slot):
+        power = self.calc_damage(actor, slot)
+        
+        buffs = [
+                BuffStat(power=power, name='reflex'),
+            ]
+
+        debuffs = [
+                Damage(power=power * 3/4, damage_type='physical'),
+                Vulnerability(power=power/2),
+            ]
+
+        actor.receive_status_effects(buffs)
+        actor.target_enemy.receive_status_effects(debuffs)
 
 
 class FinalThrust(Ability):

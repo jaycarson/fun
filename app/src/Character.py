@@ -1,11 +1,13 @@
 #!/usr/bin/python
 
-from random import choice
 from Components import Levelable
 from Components import Skillable
 from Components import RackArmor
 from Components import RackWeapon
 from Components import SetsWeapon
+
+from random import choice
+from copy import deepcopy
 
 
 class Character(object):
@@ -60,6 +62,30 @@ class Character(object):
         self.distance_to_ally = 0
         self.moved = False
 
+        self.buff_mult = 20
+        self.status_count_zero = {
+            'might': 0,
+            'athletic': 0,
+            'reflex': 0,
+            'initiative': 0,
+            'knowledge': 0,
+            'reason': 0,
+            'faith': 0,
+            'perception': 0,
+            'endurance': 0,
+            'fortitude': 0,
+            'presence': 0,
+            'willpower': 0,
+            'snare': 0,
+            'vulnerability': 0,
+        }
+
+        self.status_count = deepcopy(self.status_count_zero)
+        self.active_effects = []
+
+        self.casting = False
+        self.cast_time = 0
+
     def get_level(self):
         return self.levelable.get_level()
 
@@ -70,6 +96,7 @@ class Character(object):
         base_stat = self.stats.get(stat)
         armor_stat = self.rack_armor.get_stat(stat)
         weapon_stat = self.rack_weapon.get_stat(stat)
+        buff_stat = self.status_count.get(stat) * self.buff_mult
 
         return base_stat + armor_stat + weapon_stat
 
@@ -186,6 +213,7 @@ class Character(object):
                 self.active_effects.append(effect)
 
     def resolve_status_effects(self):
+        self.status_count = deepcopy(self.status_count_zero)
         expired_effects = []
 
         for effect in self.active_effects:

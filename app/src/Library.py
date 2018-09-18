@@ -60,7 +60,7 @@ class BookQuality(object):
 class BookStat(object):
     def __init__(self, base=80):
         self.stats = {
-            'force': base,
+            'might': base,
             'athletic': base,
             'reflex': base,
             'initiative': base,
@@ -75,7 +75,7 @@ class BookStat(object):
         }
 
         self.zero_stats = {
-            'force': 0,
+            'might': 0,
             'athletic': 0,
             'reflex': 0,
             'initiative': 0,
