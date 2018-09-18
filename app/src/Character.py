@@ -77,6 +77,7 @@ class Character(object):
             'presence': 0,
             'willpower': 0,
             'snare': 0,
+            'chilled': 0,
             'vulnerability': 0,
         }
 
@@ -192,6 +193,11 @@ class Character(object):
         self.dungeon_hex.character = None
         self.dungeon_hex = dungeon_hex
         self.dungeon_hex.character = self
+        
+        snare = self.status_count['snare'] * 100
+        snare += self.status_count['chilled'] * 66
+        move_speed = self.movement_speed + snare
+        self.take_gcd(move_speed)
 
     def take_damage(self, damage, damage_type):
         self.health -= damage

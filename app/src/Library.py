@@ -3,6 +3,60 @@
 import yaml
 from random import randint
 from random import choice
+from sets import Set
+
+
+class BookConst(object):
+    def __init__(self):
+        self.full_stats = 1000
+
+        self.stats = Set([
+            'might',
+            'athletic',
+            'reflex',
+            'initiative',
+            'knowledge',
+            'reason',
+            'faith',
+            'perception',
+            'endurance',
+            'fortitude',
+            'presence',
+            'willpower',
+        ])
+
+        self.stat_count = len(self.stats)
+        
+        self.colors = Set([
+            'red',
+            'purple',
+            'blue',
+            'green',
+            'yellow',
+            'orange',
+            'white',
+        ])
+
+        self.armor_pieces = Set([
+            'belt',
+            'chest',
+            'gloves',
+            'helm',
+            'pants',
+            'ring',
+            'shoes',
+            'shoulders',
+        ])
+
+        self.armor_count = len(self.armor_pieces)
+
+        self.armor_types = Set([
+            'cloth',
+            'leather',
+            'studded',
+            'chain',
+            'plate',
+        ])
 
 
 class BookColor(object):
@@ -29,12 +83,24 @@ class BookColor(object):
 
 class BookQuality(object):
     def __init__(self):
+        self.book_const = BookConst()
+
+        total_set_stats = (
+                self.book_const.full_stats / self.book_const.armor_count
+            )
+
+        common = total_set_stats / 2.0
+        uncommon = common + total_set_stats / 4.0
+        rare = uncommon + total_set_stats / 8.0
+        epic = rare + total_set_stats / 16.0
+        legendary = epic + total_set_stats / 32.0
+
         self._qual = {
-            'common':  40,
-            'uncommon': 40 + 20,
-            'rare': 40 + 20 + 10,
-            'epic': 40 + 20 + 10 + 5,
-            'legendary': 40 + 20 + 10 + 5 + 3,
+            'common':  int(common),
+            'uncommon': int(uncommon),
+            'rare': int(rare),
+            'epic': int(epic),
+            'legendary': int(legendary),
         }
 
         self._list_of_qualities = []
