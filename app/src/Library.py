@@ -4,6 +4,7 @@ import yaml
 from random import randint
 from random import choice
 from sets import Set
+from copy import deepcopy
 
 
 class BookConst(object):
@@ -12,15 +13,15 @@ class BookConst(object):
 
         self.stats = Set([
             'might',
-            'athletic',
+            'endurance',  # Athletic
             'reflex',
             'initiative',
             'knowledge',
             'reason',
             'faith',
             'perception',
-            'endurance',
-            'fortitude',
+            'wounds',  # Endurance
+            'toughness',  # Fortitude
             'presence',
             'willpower',
         ])
@@ -49,6 +50,8 @@ class BookConst(object):
         ])
 
         self.armor_count = len(self.armor_pieces)
+        self.weapon_count = 2
+        self.gear_count = self.armor_count + self.weapon_count
 
         self.armor_types = Set([
             'cloth',
@@ -85,8 +88,9 @@ class BookQuality(object):
     def __init__(self):
         self.book_const = BookConst()
 
+        gear = self.book_const.gear_count
         total_set_stats = (
-                self.book_const.full_stats / self.book_const.armor_count
+                self.book_const.full_stats / gear
             )
 
         common = total_set_stats / 2.0
@@ -125,6 +129,12 @@ class BookQuality(object):
 
 class BookStat(object):
     def __init__(self, base=80):
+        stat_flavor_path = "../rsc/Books/StatFlavors.yml"
+        self.stat_flavors = yaml.load(open(stat_flavor_path))
+        self.stat_flavor_keys = self.stat_flavors.keys()
+        self.book_const = BookConst()
+        self.base = self.book_const.full_stats / 2
+        
         self.stats = {
             'might': base,
             'athletic': base,
@@ -156,7 +166,6 @@ class BookStat(object):
         }
 
         self.book_quality = BookQuality()
-        self.base = base
 
         self.list_of_stats = []
 
@@ -180,41 +189,19 @@ class BookStat(object):
     def get_list(self):
         return self.list_of_stats
 
-    def generate_for_gear(self, quality):
+    def generate_for_gear(self, quality, name='warrior'):
         assert quality in self.book_quality.get_list_of_qualities()
+        assert name in self.stat_flavor_keys
 
         total_stat_weight = self.book_quality.get_quality(quality)
+        individual_stat = total_stat_weight / self.book_const.stat_count
         remainder = total_stat_weight
 
-        gear_stats = self.zero_stats.copy()
+        gear_stats = {}
 
-        list_of_stats = list(self.list_of_stats)
-
-        number_of_stats = randint(1, 5)
-
-        remaining_number = number_of_stats
-
-        for stat in range(0, number_of_stats):
-            stat = choice(list_of_stats)
-            list_of_stats.remove(stat)
-
-            if(remaining_number <= 1):
-                gear_stats[stat] = remainder
-                remaining_stats = 0
-            elif(remainder > 1):
-                min_rand = int(remainder/2)
-                max_rand = int(remainder/4) * 3
-
-                if max_rand <= min_rand:
-                    max_rand = min_rand + 1
-
-                this_stat = randint(min_rand, max_rand)
-
-                remainder -= this_stat
-
-                gear_stats[stat] = this_stat
-
-            remaining_number -= 1
+        for stat in self.book_const.stats:
+            stat_adj = self.stat_flavors[name][stat]
+            gear_stats[stat] = individual_stat + stat_adj
 
         return gear_stats
 

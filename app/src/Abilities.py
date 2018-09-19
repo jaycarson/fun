@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from Library import BookStat
+from Library import BookConst
 from StatusEffect import Damage, Bleed, BuffStat, Interfere, Snare, Vulnerability
 
 
@@ -60,7 +60,7 @@ class Ability(object):
         self.can_attack_on_move = True
         self.primary_attribute = 'might'
         self.secondary_attribute = 'athletic'
-        self.base_stat = BookStat().base
+        self.base_stat = BookConst().full_stats / 2
         self.max_stat = self.base_stat * 2
         self.damage_multiplier = 1.0
 

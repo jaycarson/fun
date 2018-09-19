@@ -97,7 +97,7 @@ class Faction(object):
         default_weapon = self.smithy_weapon.create(
                     weapon='club',
                     quality='common',
-                    color='whilte',
+                    color='white',
                 )
 
         character.rack_weapon.give_weapon(default_weapon)
