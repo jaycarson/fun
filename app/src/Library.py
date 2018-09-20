@@ -64,7 +64,6 @@ class BookConst(object):
 
 class Library(object):
     def __init__(self):
-
         self.loaded = {
                 'armor': False,
                 'atlas': False,
@@ -195,6 +194,7 @@ class BookStat(object):
     def __init__(self, base=80):
         stat_flavor_path = "../rsc/Books/StatFlavors.yml"
         self.stat_flavors = yaml.load(open(stat_flavor_path))
+
         self.stat_flavor_keys = self.stat_flavors.keys()
         self.book_const = BookConst()
         self.base = self.book_const.full_stats / 2
@@ -253,9 +253,11 @@ class BookStat(object):
     def get_list(self):
         return self.list_of_stats
 
-    def generate_for_gear(self, quality, name='warrior'):
+    def generate_for_gear(self, quality, name='any'):
         assert quality in self.book_quality.get_list_of_qualities()
-        assert name in self.stat_flavor_keys
+
+        if name not in self.stat_flavor_keys:
+            name = choice(self.stat_flavor_keys)
 
         total_stat_weight = self.book_quality.get_quality(quality)
         individual_stat = total_stat_weight / self.book_const.stat_count
