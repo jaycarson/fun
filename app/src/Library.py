@@ -5,6 +5,62 @@ from random import randint
 from random import choice
 
 
+class Library(object):
+    def __init__(self):
+
+        self.loaded = {
+                'armor': False,
+                'atlas': False,
+                'color': False,
+                'geography': False,
+                'quality': False,
+                'stat': False,
+                'stat': False,
+                'skill': False,
+                'weapon': False,
+            }
+
+        self.books = {
+                'armor': None,
+                'atlas': None,
+                'color': None,
+                'geography': None,
+                'quality': None,
+                'stat': None,
+                'skill': None,
+                'weapon': None,
+            }
+
+        def get_book(self, book_name):
+            book_name = book_name.lower()
+
+            assert book_name in self.books
+
+            if self.loaded[book_name] is False:
+                self.books[book_name] = self.load_book(book_name)
+                self.loaded[book_name] = True
+
+            return self.books[book_name]
+
+        def load_book(self, book_name):
+            if book_name == 'armor':
+                return BookArmor()
+            elif book_name == 'atlas':
+                return BookAtlas()
+            elif book_name == 'color':
+                return BookColor()
+            elif book_name == 'geography':
+                return BookGeography()
+            elif book_name == 'quality':
+                return BookQuality()
+            elif book_name == 'stat':
+                return BookStat()
+            elif book_name == 'skill':
+                return BookSkill()
+            elif book_name == 'weapon':
+                return BookWeapon()
+
+
 class BookColor(object):
     def __init__(self):
         self._list = [
