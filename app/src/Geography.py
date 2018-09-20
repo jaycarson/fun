@@ -1,20 +1,17 @@
 #!/usr/bin/python
 
-from Library import BookGeography
-
 from random import seed
 from PIL import Image  # sudo pip install Pillow
 
 
 class Geography(object):
-    def __init__(self,
-                 geo_id=0):
+    def __init__(self, library, geo_id=0):
         self._node_map = {}
         self._geo_id = geo_id
 
         self._terrain = ''
         self._flora = ''
-        self._book_geography = BookGeography()
+        self._book_geography = self.library.get_book('geography')
 
         seed(geo_id)
 

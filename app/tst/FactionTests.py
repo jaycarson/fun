@@ -8,16 +8,17 @@ from Clock import Clock
 from Faction import Faction
 from Smithy import SmithWeapon
 from Smithy import SmithArmor
-from Library import BookColor
 
+from Library import Library
 
 
 class FactionTest(unittest.TestCase):
     def setUp(self):
         self._clock = Clock()
         self.sut_name = 'sut'
-        self.sut_smithy_weapon = SmithWeapon()
-        self.sut_smithy_armor = SmithArmor()
+        self.library = Library()
+        self.sut_smithy_weapon = SmithWeapon(self.library)
+        self.sut_smithy_armor = SmithArmor(self.library)
 
         self.sut = Faction(
             experience=0,
@@ -26,6 +27,7 @@ class FactionTest(unittest.TestCase):
             clock=self._clock,
             smithy_weapon=self.sut_smithy_weapon,
             smithy_armor=self.sut_smithy_armor,
+            library=self.library,
             )
 
     def test_starts_as_level_0(self):
@@ -60,8 +62,8 @@ class FactionTest(unittest.TestCase):
     def test_gets_correct_id(self):
         expected_1 = 1
         expected_2 = 2
-        sut_1 = Faction(faction_id=expected_1)
-        sut_2 = Faction(faction_id=expected_2)
+        sut_1 = Faction(faction_id=expected_1, library=self.library)
+        sut_2 = Faction(faction_id=expected_2, library=self.library)
         self.assertEqual(expected_1, sut_1.faction_id)
         self.assertEqual(expected_2, sut_2.faction_id)
 
@@ -79,16 +81,16 @@ class FactionTest(unittest.TestCase):
         self.assertEqual(test_time, self.sut.get_world_time())
 
     def test_faction_receives_a_weapon(self):
-        colors = BookColor().get_list()
-        weapon_smith = SmithWeapon()
+        colors = self.library.get_book('color').get_list()
+        weapon_smith = SmithWeapon(self.library)
         new_weapon = weapon_smith.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
         given_wpn = self.sut.rack_weapon.weapons[new_weapon.id]
         self.assertTrue(given_wpn.color in colors)
 
     def test_faction_receives_an_armor(self):
-        colors = BookColor().get_list()
-        armor_smith = SmithArmor()
+        colors = self.library.get_book('color').get_list()
+        armor_smith = SmithArmor(self.library)
         new_armor = armor_smith.create()
         self.sut.rack_armor.give_armor(new_armor)
         given_arm = self.sut.rack_armor.armors[new_armor.id]

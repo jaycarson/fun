@@ -5,7 +5,8 @@ from PathFinder import PathFinder
 
 
 class DungeonMaster(object):
-    def __init__(self, clock, dungeon, locale_id):
+    def __init__(self, clock, dungeon, locale_id, library):
+        self.library = library
         self.clock = clock
         self.dungeon = dungeon
         self.path_finder = PathFinder(dungeon)

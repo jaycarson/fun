@@ -8,30 +8,30 @@ from Components import RackWeapon
 
 from Character import Character, CharacterVPC, CharacterNPC, CharacterPC
 
-from Library import BookStat
-
 
 class Faction(object):
     def __init__(self,
+                 library,
                  experience=0,
                  name='None',
                  faction_id=0,
                  clock=None,  # Clock Object
                  smithy_weapon=None,
                  smithy_armor=None,
-                 brains=None
+                 brains=None,
                  ):
+        self.library = library
         self.faction_id = faction_id
         self.races = ['human']
-        self.book_stat = BookStat()
+        self.book_stat = self.library.get_book('stat')
 
         self.skillable = Skillable()
         self.levelable = Levelable(
                     exp=experience,
                     skillable=self.skillable,
                 )
-        self.rack_armor = RackArmor()
-        self.rack_weapon = RackWeapon()
+        self.rack_armor = RackArmor(library=self.library)
+        self.rack_weapon = RackWeapon(library=self.library)
 
         self.name = name
         self.clock = clock
@@ -79,6 +79,7 @@ class Faction(object):
                 name=name,
                 char_id=name,
                 stats=new_stats,  # Dictionary
+                library=self.library,
             )
 
         new_character.faction = self
@@ -116,30 +117,33 @@ class Faction(object):
 
 
 class FactionPC(Faction):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self, library, experience=0, race='human', name='None'):
         Faction.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            library=library,
         )
 
 
 class FactionNPC(Faction):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self, library, experience=0, race='human', name='None'):
         Faction.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            library=library,
         )
 
 
 class FactionVPC(Faction):
-    def __init__(self, experience=0, race='human', name='None'):
+    def __init__(self, library, experience=0, race='human', name='None'):
         Faction.__init__(
             self,
             experience=experience,
             race=race,
             name=name,
+            library=library,
         )

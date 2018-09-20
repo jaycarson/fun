@@ -13,7 +13,7 @@ from Faction import Faction
 from Smithy import SmithWeapon
 from Smithy import SmithArmor
 
-from Library import BookStat
+from Library import Library
 
 from HexMap import HexMap
 
@@ -24,11 +24,13 @@ class DungeonMasterTest(unittest.TestCase):
     def setUp(self):
         self.locale_id = 5000
         self.start_time = 1
+        self.library = Library()
 
         self.sut = DungeonMaster(
                 clock=Clock(),
                 dungeon=self.create_arena(),
                 locale_id=self.locale_id,
+                library=self.library
             )
 
         self.sut.clock.add_locale(
@@ -36,9 +38,9 @@ class DungeonMasterTest(unittest.TestCase):
                 local_time=self.start_time,
             )
 
-        self._book_stat = BookStat()
-        self.smith_weapon = SmithWeapon()
-        self.smith_armor = SmithArmor()
+        self._book_stat = self.library.get_book('stat')
+        self.smith_weapon = SmithWeapon(library=self.library)
+        self.smith_armor = SmithArmor(library=self.library)
         self.brains = Brains()
 
     def create_vpc(self, name):
@@ -50,7 +52,8 @@ class DungeonMasterTest(unittest.TestCase):
             name=name,
             char_id=0,
             clock=self.sut.clock,
-            stats=new_stats
+            stats=new_stats,
+            library=self.library,
             )
         npc.locale_id = self.locale_id
 
@@ -68,6 +71,7 @@ class DungeonMasterTest(unittest.TestCase):
             smithy_weapon=self.smith_weapon,
             smithy_armor=self.smith_armor,
             brains=self.brains,
+            library=self.library,
             )
 
     def create_arena(self):

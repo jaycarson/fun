@@ -6,11 +6,13 @@ sys.path.insert(0, '../src')
 
 from Abilities import Ability
 from StatusEffect import StatusEffects
+from Library import Library
 
 
 class AbilityTest(unittest.TestCase):
     def setUp(self):
-        self.sut = Ability()
+        library = Library()
+        self.sut = Ability(library)
 
     def test_name(self):
         test_name = 'None'

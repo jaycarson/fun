@@ -5,7 +5,8 @@ from random import choice
 
 
 class Enchantress(object):
-    def __init__(self):
+    def __init__(self, library):
+        self.library = library
         self._magic_schools = [
             'Fire',
             'Earth',
@@ -26,7 +27,7 @@ class Enchantress(object):
             'Bow',
         ]
 
-        self._book = BookSpell()
+        self._book = self.libary.get_book('spell')
 
     def set_seed(self, new_seed):
         seed(new_seed)

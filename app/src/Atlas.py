@@ -1,13 +1,12 @@
 #!/usr/bin/python
 
-from Library import BookAtlas
-
 
 class Atlas(object):
-    def __init__(self, character_id):
+    def __init__(self, character_id, library):
+        self.library = library
         self._owner = character_id
         self._atlas = {}
-        self._book_atlas = BookAtlas()
+        self._book_atlas = self.library.get_book('atlas')
 
         self._terrain_types = self._book_atlas.get_terrain_types()
         self._flora_types = self._book_atlas.get_flora_types()

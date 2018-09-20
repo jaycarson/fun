@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-from Library import BookArmor
-
 
 class Levelable(object):
     def __init__(self,
@@ -51,12 +49,13 @@ class Skillable(object):
 
 
 class RackArmor(object):
-    def __init__(self):
+    def __init__(self, library):
+        self.library = library
         self.armors = {}
         self.armors_by_piece = {}
         self.armors_equipped_by_piece = {}
 
-        for piece in BookArmor().get_pieces():
+        for piece in self.library.get_book('armor').get_pieces():
             self.armors_by_piece[piece] = {}
             self.armors_equipped_by_piece[piece] = None
 
@@ -101,8 +100,9 @@ class RackArmor(object):
 
 
 class RackWeapon(object):
-    def __init__(self, weapon_sets=None):
+    def __init__(self, library, weapon_sets=None):
         self.weapons = {}
+        self.library = library
 
         if weapon_sets is None:
             self.give_weapon = self.give_weapon_not_equipable

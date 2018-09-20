@@ -1,13 +1,5 @@
 #!/usr/bin/python
 
-from Library import BookColor
-from Library import BookQuality
-from Library import BookStat
-from Library import BookWeapon
-from Library import BookArmor
-from Library import BookSkill
-from Library import BookDice
-
 from Abilities import Abilities
 from Weapon import Weapon
 from Armor import Armor
@@ -19,14 +11,15 @@ from random import randint
 
 
 class Smithy(object):
-    def __init__(self):
-        self.book_weapons = BookWeapon()
-        self.book_quality = BookQuality()
+    def __init__(self, library):
+        self.library = library
+        self.book_weapons = library.get_book('weapon')
+        self.book_quality = library.get_book('quality')
 
         self.weapon_types = self.book_wepaon.get_types()
         self.qualities = self.book_quality.get_qualities()
 
-        self.book = BookSkill()
+        self.book = library.get_book('skill')
 
         self.smith_sword = SmithWeaponSword(self.book)
 
@@ -50,11 +43,12 @@ class Smithy(object):
 
 
 class Smith(object):
-    def __init__(self):
-        self.book_stat = BookStat()
-        self.book_quality = BookQuality()
-        self.book_color = BookColor()
-        self.book_dice = BookDice()
+    def __init__(self, library):
+        self.library = library
+        self.book_stat = self.library.get_book('stat')
+        self.book_quality = self.library.get_book('quality')
+        self.book_color = self.library.get_book('color')
+        self.book_dice = self.library.get_book('dice')
 
         self.colors = self.book_color.get_list()
 
@@ -94,10 +88,10 @@ class Smith(object):
 
 
 class SmithArmor(Smith):
-    def __init__(self):
-        Smith.__init__(self)
+    def __init__(self, library):
+        Smith.__init__(self, library)
 
-        self.book_armor = BookArmor()
+        self.book_armor = self.library.get_book('armor')
         self.armor_pieces = self.book_armor.get_pieces()
         self.armor_types = self.book_armor.get_types()
 
@@ -135,12 +129,12 @@ class SmithArmor(Smith):
 
 
 class SmithWeapon(Smith):
-    def __init__(self):
-        Smith.__init__(self)
-        self.book_weapon = BookWeapon()
-        self.book_skill = BookSkill()
+    def __init__(self, library):
+        Smith.__init__(self, library)
+        self.book_weapon = self.library.get_book('weapon')
+        self.book_skill = self.library.get_book('skill')
         self.weapons = self.book_weapon.get_weapon_list()
-        self.abilities = Abilities()
+        self.abilities = Abilities(self.library)
 
     def create(self,
                weapon='any',

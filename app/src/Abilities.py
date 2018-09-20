@@ -1,40 +1,40 @@
 #!/usr/bin/python
 
-from Library import BookConst
 from StatusEffect import Damage, Bleed, BuffStat, Interfere, Snare, Vulnerability
 
 
 class Abilities(object):
-    def __init__(self):
+    def __init__(self, library):
+        self.library = library
         self.abilities = {
-                'advance': Advance(),
-                'blow': Blow(),
-                'cut': Cut(),
-                'final_thrust': FinalThrust(),
-                'flurry': Flurry(),
-                'gash': Gash(),
-                'jab': Jab(),
-                'rip': Rip(),
-                'skull_crack': SkullCrack(),
-                'slice': Slice(),
-                'smack': Smack(),
-                'strike': Strike(),
-                'thrust': Thrust(),
-                'swing': Swing(),
-                'wild_bash': WildBash(),
-                'wild_slash': WildSlash(),
-                'wild_strike': WildStrike(),
-                'wild_swing': WildSwing(),
-                'wild_thrust': WildThrust(),
-                'wild_blow': WildBlow(),
-                'whirl': Whirl(),
+                'advance': Advance(self.library),
+                'blow': Blow(self.library),
+                'cut': Cut(self.library),
+                'final_thrust': FinalThrust(self.library),
+                'flurry': Flurry(self.library),
+                'gash': Gash(self.library),
+                'jab': Jab(self.library),
+                'rip': Rip(self.library),
+                'skull_crack': SkullCrack(self.library),
+                'slice': Slice(self.library),
+                'smack': Smack(self.library),
+                'strike': Strike(self.library),
+                'thrust': Thrust(self.library),
+                'swing': Swing(self.library),
+                'wild_bash': WildBash(self.library),
+                'wild_slash': WildSlash(self.library),
+                'wild_strike': WildStrike(self.library),
+                'wild_swing': WildSwing(self.library),
+                'wild_thrust': WildThrust(self.library),
+                'wild_blow': WildBlow(self.library),
+                'whirl': Whirl(self.library),
             }
 
         self.primary_abilities = {
-                'bash': Bash(),
-                'chop': Chop(),
-                'slash': Slash(),
-                'stab': Stab(),
+                'bash': Bash(self.library),
+                'chop': Chop(self.library),
+                'slash': Slash(self.library),
+                'stab': Stab(self.library),
             }
 
     def get_ability(self, name):
@@ -45,7 +45,8 @@ class Abilities(object):
 
 
 class Ability(object):
-    def __init__(self):
+    def __init__(self, library):
+        self.library = library
         self.name_1 = 'None'
         self.one_second = 1000
         self.cd = self.one_second  # Cool Down
@@ -60,7 +61,7 @@ class Ability(object):
         self.can_attack_on_move = True
         self.primary_attribute = 'might'
         self.secondary_attribute = 'athletic'
-        self.base_stat = BookConst().full_stats / 2
+        self.base_stat = self.library.get_book('const').full_stats / 2
         self.max_stat = self.base_stat * 2
         self.damage_multiplier = 1.0
 
@@ -180,8 +181,8 @@ class Ability(object):
 
 
 class AbilityCyclable(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'None'
         self.name_2 = 'None'
         self.name_3 = 'None'
@@ -280,8 +281,8 @@ class AbilityCyclable(Ability):
 
 
 class Stab(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, library):
+        AbilityCyclable.__init__(self, library)
         self.name_1 = 'Stab'
         self.name_2 = 'Double Stab'
         self.name_3 = 'Tripple Stab'
@@ -312,8 +313,8 @@ class Stab(AbilityCyclable):
 
 
 class Bash(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, library):
+        AbilityCyclable.__init__(self, library)
         self.name_1 = 'Bash'
         self.name_2 = 'Double Bash'
         self.name_3 = 'Triple Bash'
@@ -345,8 +346,8 @@ class Bash(AbilityCyclable):
 
 
 class Chop(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, library):
+        AbilityCyclable.__init__(self, library)
         self.name_1 = 'Chop'
         self.name_2 = 'Double Chop'
         self.name_3 = 'Triple Chop'
@@ -377,8 +378,8 @@ class Chop(AbilityCyclable):
 
 
 class Slash(AbilityCyclable):
-    def __init__(self):
-        AbilityCyclable.__init__(self)
+    def __init__(self, library):
+        AbilityCyclable.__init__(self, library)
         self.name_1 = 'Slash'
         self.name_2 = 'Double Slash'
         self.name_3 = 'Triple Slash'
@@ -400,174 +401,174 @@ class Slash(AbilityCyclable):
 
 
 class FinalThrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Final Thrust'
 
 
 class Gash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Gash'
 
 
 class Hamstring(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Hamstring'
 
 
 class Hit(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Hit'
 
 
 class Impale(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Impale'
 
 
 class Rip(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Rip'
 
 
 class Ripost(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Ripost'
 
 
 class Rush(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Rush'
 
 
 class SavageLeap(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Savage Leap'
 
 
 class SeverArtery(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Sever Artery'
 
 
 class Swing(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Swing'
 
 
 class Slice(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Slice'
 
 
 class Gash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Gash'
 
 
 class WildSlash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Slash'
 
 
 class Strike(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Strike'
 
 
 class WildStrike(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Strike'
 
 
 class WildSwing(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Swing'
 
 
 class Smack(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Smack'
 
 
 class Blow(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Blow'
 
 
 class SkullCrack(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Skull Crack'
 
 
 class WildBlow(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Blow'
 
 
 class Thrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Thrust'
 
 
 class Jab(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Jab'
 
 
 class WildThrust(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Thrust'
 
 
 class Advance(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Advance'
 
 
 class Cut(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Cut'
 
 
 class Flurry(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Flurry'
 
 
 class Whirl(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Whirl'
 
 
 class WildBash(Ability):
-    def __init__(self):
-        Ability.__init__(self)
+    def __init__(self, library):
+        Ability.__init__(self, library)
         self.name_1 = 'Wild Bash'

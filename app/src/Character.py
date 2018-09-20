@@ -12,6 +12,7 @@ from copy import deepcopy
 
 class Character(object):
     def __init__(self,
+                 library,  # The Library
                  experience=0,
                  race='human',
                  name='None',
@@ -21,6 +22,7 @@ class Character(object):
         self.char_id = char_id
         self.locale_id = 0
         self.gcd = 0
+        self.library = library
         
         self.skillable = Skillable()
         self.levelable = Levelable(
@@ -30,8 +32,11 @@ class Character(object):
 
         self.sets_weapon = SetsWeapon()
 
-        self.rack_armor = RackArmor()
-        self.rack_weapon = RackWeapon(self.sets_weapon)
+        self.rack_armor = RackArmor(library=self.library)
+        self.rack_weapon = RackWeapon(
+                weapon_sets=self.sets_weapon,
+                library=self.library,
+            )
 
         self.sets_weapon.rack_weapon = self.rack_weapon
 
@@ -233,6 +238,7 @@ class Character(object):
 
 class CharacterPC(Character):
     def __init__(self,
+                 library,
                  experience=0,
                  race='human',
                  name='None',
@@ -246,11 +252,13 @@ class CharacterPC(Character):
             name=name,
             char_id=char_id,
             stats=stats,
+            library=library,
         )
 
 
 class CharacterNPC(Character):
     def __init__(self,
+                 library,
                  experience=0,
                  race='human',
                  name='None',
@@ -264,11 +272,13 @@ class CharacterNPC(Character):
             name=name,
             char_id=char_id,
             stats=stats,
+            library=library,
         )
 
 
 class CharacterVPC(Character):
     def __init__(self,
+                 library,
                  experience=0,
                  race='human',
                  name='None',
@@ -282,4 +292,5 @@ class CharacterVPC(Character):
             name=name,
             char_id=char_id,
             stats=stats,
+            library=library,
         )

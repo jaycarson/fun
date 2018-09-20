@@ -69,6 +69,8 @@ class Library(object):
                 'armor': False,
                 'atlas': False,
                 'color': False,
+                'const': False,
+                'dice': False,
                 'geography': False,
                 'quality': False,
                 'stat': False,
@@ -81,6 +83,8 @@ class Library(object):
                 'armor': None,
                 'atlas': None,
                 'color': None,
+                'const': None,
+                'dice': None,
                 'geography': None,
                 'quality': None,
                 'stat': None,
@@ -88,34 +92,38 @@ class Library(object):
                 'weapon': None,
             }
 
-        def get_book(self, book_name):
-            book_name = book_name.lower()
+    def get_book(self, book_name):
+        book_name = book_name.lower()
 
-            assert book_name in self.books
+        assert book_name in self.books
 
-            if self.loaded[book_name] is False:
-                self.books[book_name] = self.load_book(book_name)
-                self.loaded[book_name] = True
+        if self.loaded[book_name] is False:
+            self.books[book_name] = self.load_book(book_name)
+            self.loaded[book_name] = True
 
-            return self.books[book_name]
+        return self.books[book_name]
 
-        def load_book(self, book_name):
-            if book_name == 'armor':
-                return BookArmor()
-            elif book_name == 'atlas':
-                return BookAtlas()
-            elif book_name == 'color':
-                return BookColor()
-            elif book_name == 'geography':
-                return BookGeography()
-            elif book_name == 'quality':
-                return BookQuality()
-            elif book_name == 'stat':
-                return BookStat()
-            elif book_name == 'skill':
-                return BookSkill()
-            elif book_name == 'weapon':
-                return BookWeapon()
+    def load_book(self, book_name):
+        if book_name == 'armor':
+            return BookArmor()
+        elif book_name == 'atlas':
+            return BookAtlas()
+        elif book_name == 'color':
+            return BookColor()
+        elif book_name == 'const':
+            return BookConst()
+        elif book_name == 'dice':
+            return BookDice()
+        elif book_name == 'geography':
+            return BookGeography()
+        elif book_name == 'quality':
+            return BookQuality()
+        elif book_name == 'stat':
+            return BookStat()
+        elif book_name == 'skill':
+            return BookSkill()
+        elif book_name == 'weapon':
+            return BookWeapon()
 
 
 class BookColor(object):

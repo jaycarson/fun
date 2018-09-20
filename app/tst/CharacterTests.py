@@ -13,16 +13,17 @@ from HexMap import HexMap
 from DungeonMaster import DungeonMaster
 from Brain import Brains
 
-from Library import BookStat
+from Library import Library
 
 
 class CharacterTest(unittest.TestCase):
     def setUp(self):
         self._clock = Clock()
         self.locale_id = 1000
-        self.book_stat = BookStat()
-        self.sut_smithy_weapon = SmithWeapon()
-        self.sut_smithy_armor = SmithArmor()
+        self.library = Library()
+        self.book_stat = self.library.get_book('stat')
+        self.sut_smithy_weapon = SmithWeapon(library=self.library)
+        self.sut_smithy_armor = SmithArmor(library=self.library)
         self.sut_brains = Brains()
 
         self.sut_faction = Faction(
@@ -33,6 +34,7 @@ class CharacterTest(unittest.TestCase):
                     smithy_weapon=self.sut_smithy_weapon,
                     smithy_armor=self.sut_smithy_armor,
                     brains=self.sut_brains,
+                    library=self.library
                 )
 
         self.sut = self.sut_faction.create_vpc(name='sut')
@@ -46,6 +48,7 @@ class CharacterTest(unittest.TestCase):
                 clock=Clock(),
                 dungeon=arena,
                 locale_id=self.locale_id,
+                library=self.library,
             )
 
         self.sut_dm.add_char(
@@ -86,8 +89,8 @@ class CharacterTest(unittest.TestCase):
     def test_gets_correct_id(self):
         expected_1 = 1
         expected_2 = 2
-        sut_1 = Character(char_id=expected_1)
-        sut_2 = Character(char_id=expected_2)
+        sut_1 = Character(char_id=expected_1, library=self.library)
+        sut_2 = Character(char_id=expected_2, library=self.library)
         self.assertEqual(expected_1, sut_1.char_id)
         self.assertEqual(expected_2, sut_2.char_id)
 
@@ -126,7 +129,7 @@ class CharacterTest(unittest.TestCase):
             self.assertEqual(base_stat, self.sut.get_stat(stat))
 
     def test_character_gets_a_weapon(self):
-        weapon_smith = SmithWeapon()
+        weapon_smith = SmithWeapon(library=self.library)
         new_weapon = weapon_smith.create()
         weapon_id = self.sut.rack_weapon.give_weapon(new_weapon)
         self.sut.sets_weapon.equip_weapon_by_id(weapon_id=weapon_id)
@@ -137,14 +140,14 @@ class CharacterTest(unittest.TestCase):
         self.sut.sets_weapon.weapon_sets[1]['main'] = None
         self.sut.sets_weapon.weapon_sets[1]['off'] = None
         self.sut.sets_weapon.weapon_sets[1]['both'] = None
-        weapon_smith = SmithWeapon()
+        weapon_smith = SmithWeapon(library=self.library)
         new_weapon = weapon_smith.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
         equipped_weapon = self.sut.sets_weapon.get_equipped_weapon()
         self.assertEqual(equipped_weapon, new_weapon)
 
     def test_character_gets_an_armor_and_automatically_equips_it(self):
-        armor_smith = SmithArmor()
+        armor_smith = SmithArmor(library=self.library)
         for piece in armor_smith.armor_pieces:
             self.sut.rack_armor.remove_armor(piece)
         new_armor = armor_smith.create()
@@ -157,10 +160,11 @@ class CharacterTest(unittest.TestCase):
 class CharacterCombatTest(unittest.TestCase):
     def setUp(self):
         self._clock = Clock()
+        self.library = Library()
         self.locale_id = 1000
-        self.book_stat = BookStat()
-        self.sut_smithy_weapon = SmithWeapon()
-        self.sut_smithy_armor = SmithArmor()
+        self.book_stat = self.library.get_book('stat')
+        self.sut_smithy_weapon = SmithWeapon(self.library)
+        self.sut_smithy_armor = SmithArmor(self.library)
         self.sut_brains = Brains()
 
         self.sut_faction = Faction(
@@ -171,6 +175,7 @@ class CharacterCombatTest(unittest.TestCase):
                     smithy_weapon=self.sut_smithy_weapon,
                     smithy_armor=self.sut_smithy_armor,
                     brains=self.sut_brains,
+                    library=self.library,
                 )
 
         self.sut2_faction = Faction(
@@ -181,6 +186,7 @@ class CharacterCombatTest(unittest.TestCase):
                     smithy_weapon=self.sut_smithy_weapon,
                     smithy_armor=self.sut_smithy_armor,
                     brains=self.sut_brains,
+                    library=self.library,
                 )
 
         self.sut = self.sut_faction.create_vpc(name='sut')
@@ -195,6 +201,7 @@ class CharacterCombatTest(unittest.TestCase):
                 clock=Clock(),
                 dungeon=arena,
                 locale_id=self.locale_id,
+                library=self.library,
             )
 
         self.sut_dm.add_char(
@@ -209,7 +216,7 @@ class CharacterCombatTest(unittest.TestCase):
                 edge='se',
             )
 
-        weapon_smith = SmithWeapon()
+        weapon_smith = SmithWeapon(library=self.library)
         new_weapon = weapon_smith.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
 
