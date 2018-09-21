@@ -572,121 +572,121 @@ penetrator:
     willpower: 1.0
 pillaging:
     might: 1.0
-    endurance: 1.0
+    endurance: 0.75
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    knowledge: 1.25
+    reason: 0.5
     faith: 1.0
-    perception: 1.0
+    perception: 1.50
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    toughness: 0.75
+    presence: 1.25
     willpower: 1.0
 potent:
     might: 1.0
-    endurance: 1.0
+    endurance: 0.5
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    knowledge: 1.5
+    reason: 1.5
     faith: 1.0
     perception: 1.0
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    toughness: 0.5
+    presence: 1.5
+    willpower: 0.5
 precise:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 1.5
     reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    faith: 0.5
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.5
+    presence: 0.5
     willpower: 1.0
 rabid:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
+    might: 1.25
+    endurance: 1.5
+    reflex: 1.25
+    initiative: 1.5
+    knowledge: 0.5
+    reason: 0.5
+    faith: 0.75
+    perception: 1.25
+    wounds: 0.75
     toughness: 1.0
-    presence: 1.0
+    presence: 0.75
     willpower: 1.0
 rampager:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
+    might: 1.25
+    endurance: 1.5
+    reflex: 1.25
     initiative: 1.0
     knowledge: 1.0
     reason: 1.0
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 1.25
+    wounds: 0.5
+    toughness: 0.75
+    presence: 0.75
+    willpower: 0.75
 ravager:
-    might: 1.0
-    endurance: 1.0
+    might: 1.25
+    endurance: 1.5
     reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
+    initiative: 1.5
+    knowledge: 1.25
+    reason: 0.5
+    faith: 0.75
+    perception: 0.75
+    wounds: 0.75
+    toughness: 0.75
     presence: 1.0
     willpower: 1.0
 rejuvenator:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    might: 0.5
+    endurance: 1.5
+    reflex: 0.5
+    initiative: 0.75
+    knowledge: 1.5
+    reason: 0.5
+    faith: 1.25
+    perception: 1.5
     wounds: 1.0
     toughness: 1.0
     presence: 1.0
     willpower: 1.0
 resilient:
-    might: 1.0
-    endurance: 1.0
+    might: 0.5
+    endurance: 1.5
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    knowledge: 0.5
+    reason: 0.5
     faith: 1.0
     perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    wounds: 1.5
+    toughness: 1.5
+    presence: 0.5
+    willpower: 1.5
 sage:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 0.75
+    endurance: 1.25
+    reflex: 0.5
+    initiative: 0.75
+    knowledge: 1.5
+    reason: 1.25
+    faith: 1.25
+    perception: 1.25
+    wounds: 0.5
+    toughness: 0.5
+    presence: 1.25
+    willpower: 1.25
 seeker:
     might: 1.0
     endurance: 1.0
