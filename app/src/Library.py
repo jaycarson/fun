@@ -193,9 +193,12 @@ class BookQuality(object):
 class BookStat(object):
     def __init__(self, base=80):
         stat_flavor_path = "../rsc/Books/StatFlavors.yml"
+        armor_flavor_path = "../rsc/Books/ArmorFlavors.yml"
         self.stat_flavors = yaml.load(open(stat_flavor_path))
+        self.armor_flavors = yaml.load(open(armor_flavor_path))
 
         self.stat_flavor_keys = self.stat_flavors.keys()
+        self.armor_flavor_keys = self.armor_flavors.keys()
         self.book_const = BookConst()
         self.base = self.book_const.full_stats / 2
         
@@ -253,7 +256,7 @@ class BookStat(object):
     def get_list(self):
         return self.list_of_stats
 
-    def generate_for_gear(self, quality, name='any'):
+    def generate_for_gear(self, quality, name='any', armor_type=None, piece=None):
         assert quality in self.book_quality.get_list_of_qualities()
 
         if name not in self.stat_flavor_keys:
@@ -267,7 +270,12 @@ class BookStat(object):
 
         for stat in self.book_const.stats:
             stat_adj = self.stat_flavors[name][stat]
-            gear_stats[stat] = individual_stat + stat_adj
+
+            if armor_type is not None and piece is not None:
+                if stat in self.armor_flavors[armor_type][piece].keys():
+                    stat_adj += self.armor_flavors[armor_type][piece][stat]
+
+            gear_stats[stat] = individual_stat * stat_adj
 
         return gear_stats
 
@@ -350,7 +358,6 @@ class BookArmor(object):
         self._types = [
             'cloth',
             'leather',
-            'studded',
             'chain',
             'plate',
         ]

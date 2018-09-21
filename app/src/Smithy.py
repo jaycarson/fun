@@ -120,7 +120,11 @@ class SmithArmor(Smith):
             quality=quality,
             color=color,
             skills=skills,
-            stats=self.book_stat.generate_for_gear(quality),
+            stats=self.book_stat.generate_for_gear(
+                    quality=quality,
+                    piece=armor_piece,
+                    armor_type=armor_type,
+                ),
             armor_id=self.generate_id(),
             dice=self.get_dice(color),
             )

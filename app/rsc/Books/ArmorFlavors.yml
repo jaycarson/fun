@@ -1,0 +1,220 @@
+cloth:
+    belt:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    chest:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    gloves:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    helm:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+        perception: 1.25
+        might: 0.75
+    pants:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    ring:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    shoes:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+    shoulders:
+        knowledge: 1.5
+        reason: 1.5
+        toughness: 0.5
+        wounds: 0.5
+leather:
+    belt:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    chest:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    gloves:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    helm:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+        perception: 1.25
+        willpower: 0.75
+    pants:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    ring:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    shoes:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+    shoulders:
+        reflex: 1.5
+        initiative: 1.5
+        wounds: 0.75
+        toughness: 0.75
+        knowledge: 0.75
+        reason: 0.75
+chain:
+    belt:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    chest:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    gloves:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    helm:
+        faith: 1.5
+        knowledge: 0.75
+        perception: 0.75
+        presence: 1.25
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    pants:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    ring:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    shoes:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+    shoulders:
+        faith: 1.5
+        knowledge: 0.75
+        reason: 0.75
+        reflex: 0.75
+        toughness: 1.25
+plate:
+    belt:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    chest:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    gloves:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    helm:
+        faith: 1.25
+        knowledge: 0.5
+        perception: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        willpower: 1.25
+        wounds: 1.5
+    pants:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    ring:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    shoes:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
+    shoulders:
+        faith: 1.25
+        knowledge: 0.5
+        presence: 1.5
+        reason: 0.5
+        reflex: 0.5
+        toughness: 1.5
+        wounds: 1.25
