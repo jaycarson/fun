@@ -3,346 +3,346 @@ apostate:
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    knowledge: 1.25
+    reason: 1.25
+    faith: 0.75
+    perception: 1.25
     wounds: 1.0
     toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    presence: 0.75
+    willpower: 0.75
 apothecary:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
+    reflex: 0.75
+    initiative: 0.75
+    knowledge: 1.25
     reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
+    faith: 1.25
+    perception: 1.25
+    wounds: 0.75
     toughness: 1.0
     presence: 1.0
     willpower: 1.0
 assassin:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    reflex: 1.25
+    initiative: 1.25
     knowledge: 1.0
-    reason: 1.0
+    reason: 0.75
     faith: 1.0
-    perception: 1.0
+    perception: 1.25
     wounds: 1.0
     toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    presence: 0.75
+    willpower: 0.75
 avatar:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
+    endurance: 0.75
+    reflex: 0.75
     initiative: 1.0
     knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    reason: 0.75
+    faith: 1.25
     perception: 1.0
     wounds: 1.0
     toughness: 1.0
-    presence: 1.0
+    presence: 1.5
     willpower: 1.0
 barbarian:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    might: 1.25
+    endurance: 1.25
+    reflex: 0.75
+    initiative: 0.75
     knowledge: 1.0
-    reason: 1.0
+    reason: 0.75
     faith: 1.0
     perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    wounds: 1.50
+    toughness: 0.75
+    presence: 1.25
+    willpower: 0.75
 berserker:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    might: 1.5
+    endurance: 1.5
+    reflex: 0.75
+    initiative: 0.75
+    knowledge: 0.5
+    reason: 0.5
     faith: 1.0
     perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    wounds: 1.25
+    toughness: 0.75
+    presence: 1.5
     willpower: 1.0
 bringer:
     might: 1.0
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    knowledge: 0.5
+    reason: 0.5
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 1.5
+    wounds: 1.25
+    toughness: 1.25
+    presence: 1.25
+    willpower: 0.75
 captain:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    might: 1.25
+    endurance: 1.25
+    reflex: 0.75
+    initiative: 0.75
+    knowledge: 0.75
+    reason: 0.5
+    faith: 0.75
     perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    wounds: 1.25
+    toughness: 1.25
+    presence: 1.5
     willpower: 1.0
 carrion:
-    might: 1.0
+    might: 0.75
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
+    reflex: 1.25
+    initiative: 1.5
+    knowledge: 0.75
     reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    faith: 0.75
+    perception: 1.50
+    wounds: 0.75
+    toughness: 1.25
+    presence: 0.75
+    willpower: 0.75
 cavalier:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    endurance: 1.25
+    reflex: 1.25
+    initiative: 0.75
     knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    reason: 0.75
+    faith: 0.75
+    perception: 0.5
+    wounds: 1.25
+    toughness: 1.50
+    presence: 1.50
+    willpower: 0.5
 celestial:
-    might: 1.0
-    endurance: 1.0
+    might: 0.75
+    endurance: 0.5
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    knowledge: 1.50
+    reason: 0.50
+    faith: 1.50
+    perception: 1.25
+    wounds: 0.5
+    toughness: 0.5
+    presence: 1.50
+    willpower: 1.50
 cleric:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 0.75
+    endurance: 0.75
+    reflex: 0.5
+    initiative: 0.5
+    knowledge: 0.75
+    reason: 0.75
+    faith: 1.5
+    perception: 1.5
+    wounds: 1.25
+    toughness: 1.25
+    presence: 1.25
+    willpower: 1.25
 commander:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 1.25
+    endurance: 1.25
+    reflex: 0.75
+    initiative: 0.5
+    knowledge: 0.75
+    reason: 0.5
+    faith: 0.5
+    perception: 1.5
+    wounds: 1.5
+    toughness: 1.25
+    presence: 1.50
+    willpower: 0.75
 compassionate:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 0.5
+    endurance: 1.25
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 0.5
+    reason: 0.5
+    faith: 1.5
+    perception: 1.5
+    wounds: 0.75
+    toughness: 0.75
+    presence: 0.5
+    willpower: 1.25
 crusader:
-    might: 1.0
+    might: 1.25
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    knowledge: 0.5
+    reason: 0.5
+    faith: 1.5
+    perception: 0.5
+    wounds: 1.25
+    toughness: 1.5
+    presence: 1.5
+    willpower: 0.5
 deadshot:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    might: 1.25
+    endurance: 0.75
+    reflex: 1.5
+    initiative: 1.5
     knowledge: 1.0
-    reason: 1.0
+    reason: 1.25
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.75
+    presence: 0.5
+    willpower: 0.5
 demolisher:
-    might: 1.0
-    endurance: 1.0
+    might: 1.5
+    endurance: 1.5
     reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    initiative: 0.5
+    knowledge: 0.75
+    reason: 0.75
+    faith: 0.75
     perception: 1.0
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    toughness: 1.25
+    presence: 1.25
+    willpower: 0.75
 deserter:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
+    endurance: 1.5
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 0.75
+    reason: 0.5
+    faith: 0.5
+    perception: 1.5
+    wounds: 0.75
+    toughness: 0.75
     presence: 1.0
-    willpower: 1.0
+    willpower: 0.75
 destroyer:
-    might: 1.0
+    might: 1.5
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 0.5
+    reason: 0.5
+    faith: 0.5
+    perception: 1.5
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    toughness: 0.5
+    presence: 1.5
+    willpower: 0.5
 dire:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 1.5
+    endurance: 1.5
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 0.5
+    reason: 0.5
+    faith: 0.5
+    perception: 0.5
+    wounds: 1.5
+    toughness: 1.5
+    presence: 0.5
+    willpower: 0.5
 diviner:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 0.75
+    endurance: 0.75
+    reflex: 0.75
+    initiative: 0.75
+    knowledge: 1.25
+    reason: 1.25
+    faith: 1.5
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.5
+    presence: 1.25
+    willpower: 1.25
 explorer:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    might: 0.5
+    endurance: 0.5
+    reflex: 0.5
+    initiative: 1.5
+    knowledge: 1.5
+    reason: 1.5
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
+    perception: 1.5
+    wounds: 0.5
     toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    presence: 0.5
+    willpower: 1.5
 festering:
     might: 1.0
-    endurance: 1.0
+    endurance: 1.5
     reflex: 1.0
-    initiative: 1.0
+    initiative: 1.5
     knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    reason: 0.5
+    faith: 0.5
     perception: 1.0
     wounds: 1.0
     toughness: 1.0
     presence: 1.0
     willpower: 1.0
 forsaken:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
+    might: 1.5
+    endurance: 0.5
+    reflex: 1.5
+    initiative: 0.5
+    knowledge: 0.5
     reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    faith: 1.5
+    perception: 1.5
     wounds: 1.0
     toughness: 1.0
     presence: 1.0
-    willpower: 1.0
+    willpower: 0.5
 giver:
-    might: 1.0
+    might: 0.5
     endurance: 1.0
     reflex: 1.0
-    initiative: 1.0
+    initiative: 0.5
     knowledge: 1.0
     reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    faith: 1.5
+    perception: 1.5
     wounds: 1.0
     toughness: 1.0
     presence: 1.0
     willpower: 1.0
 grieving:
     might: 1.0
-    endurance: 1.0
+    endurance: 1.5
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    knowledge: 0.5
+    reason: 0.5
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 1.5
+    wounds: 0.5
+    toughness: 1.5
+    presence: 1.5
+    willpower: 0.5
 harrier:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
+    endurance: 1.5
+    reflex: 1.5
+    initiative: 0.5
+    knowledge: 0.75
+    reason: 0.75
     faith: 1.0
     perception: 1.0
     wounds: 1.0
@@ -350,176 +350,176 @@ harrier:
     presence: 1.0
     willpower: 1.0
 healer:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 0.5
+    endurance: 1.5
+    reflex: 0.5
+    initiative: 1.5
+    knowledge: 0.5
+    reason: 0.5
+    faith: 1.5
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.5
+    presence: 1.5
+    willpower: 1.5
 hearty:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
+    endurance: 1.5
+    reflex: 0.5
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    knowledge: 0.5
+    reason: 0.5
+    faith: 1.5
+    perception: 0.5
+    wounds: 1.5
+    toughness: 1.5
+    presence: 0.5
+    willpower: 1.5
 honed:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    endurance: 0.5
+    reflex: 1.5
+    initiative: 1.5
     knowledge: 1.0
     reason: 1.0
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.5
+    presence: 0.5
+    willpower: 1.5
 hunter:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    reflex: 1.25
+    initiative: 1.25
+    knowledge: 1.25
+    reason: 0.75
+    faith: 0.75
+    perception: 1.5
+    wounds: 0.5
+    toughness: 1.25
+    presence: 0.75
+    willpower: 0.75
 knight:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    might: 1.25
+    endurance: 1.5
+    reflex: 0.75
+    initiative: 0.5
     knowledge: 1.0
     reason: 1.0
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    perception: 0.5
+    wounds: 1.25
+    toughness: 1.5
+    presence: 1.25
+    willpower: 0.5
 lucky:
     might: 1.0
     endurance: 1.0
     reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    initiative: 1.5
+    knowledge: 1.5
+    reason: 1.5
+    faith: 0.5
+    perception: 1.5
+    wounds: 0.5
+    toughness: 0.5
+    presence: 0.5
     willpower: 1.0
 magi:
     might: 1.0
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
+    knowledge: 1.5
+    reason: 1.5
+    faith: 0.5
+    perception: 1.25
+    wounds: 0.5
+    toughness: 0.75
     presence: 1.0
     willpower: 1.0
 maligned:
-    might: 1.0
-    endurance: 1.0
+    might: 0.75
+    endurance: 0.75
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    knowledge: 0.75
+    reason: 1.25
+    faith: 1.25
     perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    wounds: 0.75
+    toughness: 1.25
+    presence: 1.5
+    willpower: 0.75
 marshal:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    might: 1.25
+    endurance: 0.75
+    reflex: 0.75
+    initiative: 0.75
+    knowledge: 0.75
+    reason: 1.25
+    faith: 0.75
+    perception: 1.25
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    toughness: 1.25
+    presence: 1.5
+    willpower: 0.75
 mender:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    reflex: 1.25
+    initiative: 0.5
     knowledge: 1.0
     reason: 1.0
     faith: 1.0
-    perception: 1.0
+    perception: 1.5
     wounds: 1.0
-    toughness: 1.0
+    toughness: 0.75
     presence: 1.0
     willpower: 1.0
 mercenary:
     might: 1.0
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    reflex: 1.25
+    initiative: 1.50
     knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
+    reason: 0.75
+    faith: 0.75
+    perception: 1.50
+    wounds: 0.75
     toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    presence: 0.75
+    willpower: 0.75
 mighty:
-    might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    might: 1.5
+    endurance: 0.75
+    reflex: 1.5
+    initiative: 1.5
+    knowledge: 0.75
+    reason: 0.75
+    faith: 0.75
+    perception: 0.75
+    wounds: 0.75
+    toughness: 1.25
+    presence: 1.25
+    willpower: 0.5
 minstrel:
-    might: 1.0
+    might: 0.75
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
+    knowledge: 1.5
+    reason: 0.75
+    faith: 0.75
     perception: 1.0
-    wounds: 1.0
+    wounds: 0.75
     toughness: 1.0
-    presence: 1.0
+    presence: 1.5
     willpower: 1.0
 mystical:
-    might: 1.0
+    might: 0.75
     endurance: 1.0
     reflex: 1.0
     initiative: 1.0
@@ -528,46 +528,46 @@ mystical:
     faith: 1.0
     perception: 1.0
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    toughness: 0.75
+    presence: 1.25
+    willpower: 1.25
 nomad:
     might: 1.0
-    endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
+    endurance: 1.5
+    reflex: 1.25
+    initiative: 1.25
     knowledge: 1.0
-    reason: 1.0
+    reason: 0.75
     faith: 1.0
-    perception: 1.0
-    wounds: 1.0
+    perception: 1.25
+    wounds: 0.75
     toughness: 1.0
-    presence: 1.0
-    willpower: 1.0
+    presence: 0.75
+    willpower: 0.5
 paladin:
-    might: 1.0
+    might: 1.25
     endurance: 1.0
-    reflex: 1.0
+    reflex: 0.75
     initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
+    knowledge: 0.75
+    reason: 0.75
+    faith: 1.5
+    perception: 0.75
     wounds: 1.0
-    toughness: 1.0
-    presence: 1.0
+    toughness: 0.75
+    presence: 1.5
     willpower: 1.0
 penetrator:
-    might: 1.0
+    might: 1.5
     endurance: 1.0
-    reflex: 1.0
-    initiative: 1.0
-    knowledge: 1.0
-    reason: 1.0
-    faith: 1.0
-    perception: 1.0
-    wounds: 1.0
-    toughness: 1.0
+    reflex: 1.25
+    initiative: 1.25
+    knowledge: 0.75
+    reason: 0.75
+    faith: 0.75
+    perception: 1.25
+    wounds: 0.75
+    toughness: 0.75
     presence: 1.0
     willpower: 1.0
 pillaging:
