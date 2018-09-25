@@ -7,17 +7,17 @@ from Components import RackArmor
 from Components import RackWeapon
 
 from Character import Character, CharacterVPC, CharacterNPC, CharacterPC
+from Character import Regiment
 
 
 class Faction(object):
     def __init__(self,
                  library,
+                 smithy,
                  experience=0,
                  name='None',
                  faction_id=0,
                  clock=None,  # Clock Object
-                 smithy_weapon=None,
-                 smithy_armor=None,
                  brains=None,
                  ):
         self.library = library
@@ -37,8 +37,8 @@ class Faction(object):
         self.clock = clock
         self.characters = []
         self.brains = brains
-        self.smithy_weapon = smithy_weapon
-        self.smithy_armor = smithy_armor
+        self.smithy_weapon = smithy.get_smith('weapon')
+        self.smithy_armor = smithy.get_smith('armor')
 
     def get_level(self):
         return self.levelable.get_level()
@@ -114,6 +114,29 @@ class Faction(object):
 
             character.rack_armor.give_armor(default_piece)
 
+    def equip_standard_regiment(self, regiment):
+        self.equip_standard_regiment_weapon(regiment)
+        self.equip_standard_regiment_armor(regiment)
+
+    def equip_standard_regiment_weapon(self, regiment):
+        default_weapon = self.smithy_regiment_weapon.create(
+                    weapon='club',
+                    quality='common',
+                    color='white',
+                )
+
+        regiment.rack_weapon.give_weapon(default_weapon)
+
+    def equip_standard_regiment_armor(self, regiment):
+        for piece in self.smithy_regiment_armor.armor_pieces:
+            default_piece = self.smithy_regiment_armor.create(
+                    armor_type='cloth',
+                    armor_piece=piece,
+                    quality='common',
+                    skills=None,
+                )
+
+            regiment.rack_armor.give_armor(default_piece)
 
 
 class FactionPC(Faction):

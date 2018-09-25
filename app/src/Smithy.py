@@ -13,33 +13,41 @@ from random import randint
 class Smithy(object):
     def __init__(self, library):
         self.library = library
-        self.book_weapons = library.get_book('weapon')
-        self.book_quality = library.get_book('quality')
 
-        self.weapon_types = self.book_wepaon.get_types()
-        self.qualities = self.book_quality.get_qualities()
+        self.loaded = {
+                'armor': False,
+                'weapon': False,
+                'regiment armor': False,
+                'regiment weapon': False,
+            }
 
-        self.book = library.get_book('skill')
+        self.smiths = {
+                'armor': None,
+                'weapon': None,
+                'regiment armor': None,
+                'regiment weapon': None,
+            }
 
-        self.smith_sword = SmithWeaponSword(self.book)
+    def get_smith(self, smith):
+        smith = smith.lower()
 
-    def set_seed(self, new_seed):
-        seed(new_seed)
+        assert smith in self.smiths
 
-    def create(self, category='Any', name='Any', quality='Any'):
-        if category == 'Any':
-            weapon_type = choice(self.weapon_types)
-        if quality == 'Any':
-            quality = choice(self.qualities)
+        if self.loaded[smith] is False:
+            self.smiths[smith] = self.wake_smith(smith)
+            self.loaded[smith] = True
 
-        if weapon_type == 'Axe':
-            return self.sword_smith.create(weapon_name)
-        elif weapon_type == 'Mace':
-            return self.sword_smith.create(weapon_name)
-        elif weapon_type == 'Sword':
-            return self.sword_smith.create(weapon_name)
-        else:
-            return self.sword_smith.create(weapon_name)
+        return self.smiths[smith]
+
+    def wake_smith(self, smith):
+        if smith == 'armor':
+            return SmithArmor(self.library)
+        elif smith == 'weapon':
+            return SmithWeapon(self.library)
+        elif smith == 'regiment armor':
+            return SmithRegimentArmor(self.library)
+        elif smith == 'regiment weapon':
+            return SmithRegimentWeapon(self.library)
 
 
 class Smith(object):
@@ -239,3 +247,63 @@ class SmithWeapon(Smith):
     
     def get_ability_primary(self, ability_name):
         return self.abilities.get_ability_primary(ability_name)
+
+
+class SmithRegimentArmor(SmithArmor):
+    def __init__(self, library):
+        Smith.__init__(self, library)
+
+
+class SmithRegimentWeapon(SmithWeapon):
+    def __init__(self, library):
+        Smith.__init__(self, library)
+    
+    def create(self,
+               weapon='any',
+               quality='any',
+               color='any',
+               ):
+        if weapon == 'any' or weapon not in self.weapons:
+            weapon = choice(self.weapons)
+        if quality == 'any' or quality not in self.qualities:
+            quality = choice(self.qualities)
+        if color == 'any' or color not in self.colors:
+            color = choice(self.colors)
+
+        damage_type = self.book_weapon.get_weapon_damage_type(weapon)
+        damage_types = []
+        damage_types.append(damage_type)
+
+        ability_set = self.generate_ability_set(weapon)
+        strength_set = self.generate_strength_set()
+        cooldown_set = self.generate_cooldown_set(strength_set)
+        cooldown_adj_set = self.generate_cooldown_adj_set(strength_set)
+
+        return Weapon(
+            weapon_type=weapon,
+            quality=quality,
+            color=color,
+            skills=self.book_weapon.get_weapon_skills(weapon),
+            handed=self.book_weapon.get_weapon_handed(weapon),
+            damage=damage_types,
+            stats=self.book_stat.generate_for_gear(quality),
+            ability_set=ability_set,
+            cd_timer_set=cooldown_set,
+            cd_adj_set=cooldown_adj_set,
+            strength_set=strength_set,
+            weapon_id=self.generate_id(),
+            dice=self.get_dice(color),
+            )
+
+    def generate_ability_set(self, weapon):
+        ability_set = []
+
+        return ability_set
+
+    def get_ability(self, ability_name):
+        return self.abilities.get_ability(ability_name)
+    
+    def get_ability_primary(self, ability_name):
+        return self.abilities.get_ability_primary(ability_name)
+
+

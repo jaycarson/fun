@@ -294,3 +294,24 @@ class CharacterVPC(Character):
             stats=stats,
             library=library,
         )
+
+
+class Regiment(Character):
+    def __init__(self,
+                 library,
+                 experience=0,
+                 race='human',
+                 name='None',
+                 char_id=0,
+                 stats=None,  # Dictionary
+                 ):
+        Character.__init__(
+            self,
+            experience=experience,
+            race=race,
+            name=name,
+            char_id=char_id,
+            stats=stats,
+            library=library,
+        )
+        return

@@ -10,8 +10,7 @@ from Clock import Clock
 from Character import Character
 from Faction import Faction
 
-from Smithy import SmithWeapon
-from Smithy import SmithArmor
+from Smithy import Smithy
 
 from Library import Library
 
@@ -39,8 +38,9 @@ class DungeonMasterTest(unittest.TestCase):
             )
 
         self._book_stat = self.library.get_book('stat')
-        self.smith_weapon = SmithWeapon(library=self.library)
-        self.smith_armor = SmithArmor(library=self.library)
+        self.smithy = Smithy(library=self.library)
+        self.smith_weapon = self.smithy.get_smith('weapon')
+        self.smith_armor = self.smithy.get_smith('armor')
         self.brains = Brains()
 
     def create_vpc(self, name):
@@ -68,8 +68,7 @@ class DungeonMasterTest(unittest.TestCase):
             name=name,
             faction_id=name,
             clock=self.sut.clock,
-            smithy_weapon=self.smith_weapon,
-            smithy_armor=self.smith_armor,
+            smithy=self.smithy,
             brains=self.brains,
             library=self.library,
             )

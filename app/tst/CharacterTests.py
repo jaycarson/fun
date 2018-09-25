@@ -7,8 +7,7 @@ sys.path.insert(0, '../src')
 from Clock import Clock
 from Character import Character
 from Faction import Faction
-from Smithy import SmithWeapon
-from Smithy import SmithArmor
+from Smithy import Smithy, SmithWeapon, SmithArmor
 from HexMap import HexMap
 from DungeonMaster import DungeonMaster
 from Brain import Brains
@@ -22,8 +21,7 @@ class CharacterTest(unittest.TestCase):
         self.locale_id = 1000
         self.library = Library()
         self.book_stat = self.library.get_book('stat')
-        self.sut_smithy_weapon = SmithWeapon(library=self.library)
-        self.sut_smithy_armor = SmithArmor(library=self.library)
+        self.sut_smithy = Smithy()
         self.sut_brains = Brains()
 
         self.sut_faction = Faction(
@@ -31,8 +29,7 @@ class CharacterTest(unittest.TestCase):
                     name='Red',
                     faction_id='1000',
                     clock=self._clock,
-                    smithy_weapon=self.sut_smithy_weapon,
-                    smithy_armor=self.sut_smithy_armor,
+                    smithy_weapon=self.sut_smithy,
                     brains=self.sut_brains,
                     library=self.library
                 )
@@ -163,8 +160,7 @@ class CharacterCombatTest(unittest.TestCase):
         self.library = Library()
         self.locale_id = 1000
         self.book_stat = self.library.get_book('stat')
-        self.sut_smithy_weapon = SmithWeapon(self.library)
-        self.sut_smithy_armor = SmithArmor(self.library)
+        self.sut_smithy = Smithy(self.library)
         self.sut_brains = Brains()
 
         self.sut_faction = Faction(
@@ -172,8 +168,7 @@ class CharacterCombatTest(unittest.TestCase):
                     name='Red',
                     faction_id='1000',
                     clock=self._clock,
-                    smithy_weapon=self.sut_smithy_weapon,
-                    smithy_armor=self.sut_smithy_armor,
+                    smithy=self.sut_smithy,
                     brains=self.sut_brains,
                     library=self.library,
                 )

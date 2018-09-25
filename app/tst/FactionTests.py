@@ -6,8 +6,7 @@ sys.path.insert(0, '../src')
 
 from Clock import Clock
 from Faction import Faction
-from Smithy import SmithWeapon
-from Smithy import SmithArmor
+from Smithy import Smithy
 
 from Library import Library
 
@@ -17,16 +16,16 @@ class FactionTest(unittest.TestCase):
         self._clock = Clock()
         self.sut_name = 'sut'
         self.library = Library()
-        self.sut_smithy_weapon = SmithWeapon(self.library)
-        self.sut_smithy_armor = SmithArmor(self.library)
+        self.sut_smithy = Smithy(self.library)
+        self.sut_smithy_weapon = self.sut_smithy.get_smith('weapon')
+        self.sut_smithy_armor = self.sut_smithy.get_smith('armor')
 
         self.sut = Faction(
             experience=0,
             name=self.sut_name,
             faction_id=0,
             clock=self._clock,
-            smithy_weapon=self.sut_smithy_weapon,
-            smithy_armor=self.sut_smithy_armor,
+            smithy=self.sut_smithy
             library=self.library,
             )
 
@@ -90,7 +89,7 @@ class FactionTest(unittest.TestCase):
 
     def test_faction_receives_an_armor(self):
         colors = self.library.get_book('color').get_list()
-        armor_smith = SmithArmor(self.library)
+        armor_smith = self.sut_smithy.get_smith('armor')
         new_armor = armor_smith.create()
         self.sut.rack_armor.give_armor(new_armor)
         given_arm = self.sut.rack_armor.armors[new_armor.id]

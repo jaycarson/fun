@@ -7,6 +7,8 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentClub
 'dagger':
     skills:
       - simple
@@ -18,6 +20,8 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentDagger
 'glaive': 
     skills: 
       - simple
@@ -28,6 +32,8 @@
       - slash
     handed: 
       - both
+    regiment:
+      - RegimentGlaive
 'sickle': 
     skills: 
       - simple
@@ -36,6 +42,8 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentSickle
 'sword': 
     skills: 
       - simple
@@ -45,6 +53,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentSword
 'sword great': 
     skills: 
       - simple
@@ -54,6 +64,8 @@
       - slash
     handed: 
       - both
+    regiment:
+      - RegimentSwordGreat
 'sword long': 
     skills: 
       - simple
@@ -63,6 +75,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentSwordLong
 'sword short': 
     skills: 
       - simple
@@ -76,6 +90,8 @@
       - main
       - off
       - both
+    regiment:
+      - RegimentSwordShort
 'sword rapier': 
     skills: 
       - simple
@@ -86,6 +102,8 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentSwordRapier
 'staff': 
     skills: 
       - simple
@@ -93,6 +111,8 @@
       - bludgeon
     handed: 
       - both
+    regiment:
+      - RegimentStaff
 'mace': 
     skills: 
       - simple
@@ -102,6 +122,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentMace
 'morning star': 
     skills: 
       - simple
@@ -112,6 +134,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentMorningStar
 'axe': 
     skills: 
       - simple
@@ -122,6 +146,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentAxe
 'axe great': 
     skills: 
       - simple
@@ -131,6 +157,8 @@
       - chop
     handed: 
       - both
+    regiment:
+      - RegimentAxeGreat
 'axe half moon': 
     skills: 
       - simple
@@ -141,6 +169,8 @@
     handed: 
       - main
       - both
+    regiment:
+      - RegimentAxeHalfMoon
 'axe hand': 
     skills: 
       - simple
@@ -152,6 +182,8 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentAxeHand
 'spear': 
     skills: 
       - simple
@@ -163,3 +195,5 @@
     handed: 
       - main
       - off
+    regiment:
+      - RegimentSpear

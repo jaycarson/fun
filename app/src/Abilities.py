@@ -37,11 +37,34 @@ class Abilities(object):
                 'stab': Stab(self.library),
             }
 
+        self.regiment_abilities = {
+                'RegimentClub': RegimentClub(self.library),
+                'RegimentDagger': RegimentDagger(self.library),
+                'RegimentGlaive': RegimentGlaive(self.library),
+                'RegimentSickle': RegimentSickle(self.library),
+                'RegimentSword': RegimentSword(self.library),
+                'RegimentSwordGreat': RegimentSwordGreat(self.library),
+                'RegimentSwordLong': RegimentSwordLong(self.library),
+                'RegimentSwordShort': RegimentSwordShort(self.library),
+                'RegimentSwordRapier': RegimentSwordRapier(self.library),
+                'RegimentStaff': RegimentStaff(self.library),
+                'RegimentMace': RegimentMace(self.library),
+                'RegimentMorningStar': RegimentMorningStar(self.library),
+                'RegimentAxe': RegimentAxe(self.library),
+                'RegimentAxeGreat': RegimentAxeGreat(self.library),
+                'RegimentAxeHalfMoon': RegimentAxeHalfMoon(self.library),
+                'RegimentAxeHand': RegimentAxeHand(self.library),
+                'RegimentSpear': RegimentSpear(self.library),
+            }
+
     def get_ability(self, name):
         return self.abilities[name]
 
     def get_ability_primary(self, name):
         return self.primary_abilities[name]
+
+    def get_regiment_ability(self, name):
+        return self.regiment_abilities[name]
 
 
 class Ability(object):
@@ -572,3 +595,105 @@ class WildBash(Ability):
     def __init__(self, library):
         Ability.__init__(self, library)
         self.name_1 = 'Wild Bash'
+
+
+class RegimentClub(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentClub'
+
+
+class RegimentDagger(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentDagger'
+
+
+class RegimentGlaive(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentGlaive'
+
+
+class RegimentSickle(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentSickle'
+
+
+class RegimentSword(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentSword'
+
+
+class RegimentSwordGreat(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentSwordGreat'
+
+
+class RegimentSwordLong(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'RegimentSwordLong'
+
+
+class RegimentSwordShort(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentSwordRapier(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentStaff(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentMace(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentMorningStar(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentAxe(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentAxeGreat(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentAxeHalfMoon(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentAxeHand(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'
+
+
+class RegimentSpear(Ability):
+    def __init__(self, library):
+        Ability.__init__(self, library)
+        self.name_1 = 'Regiment'

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 using_discover(){
-    python -m unittest discover -p '*Test*.py'
+    python2 -m unittest discover -p '*Test*.py'
 }
 
 using_bash(){
