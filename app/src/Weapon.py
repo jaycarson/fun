@@ -2,53 +2,39 @@
 
 
 class Weapon(object):
-    def __init__(self,
-                 weapon_type,
-                 quality,
-                 color,
-                 skills,
-                 handed,
-                 damage,
-                 stats,
-                 ability_set,
-                 cd_timer_set,
-                 cd_adj_set,
-                 strength_set,
-                 weapon_id,
-                 dice,
-                 dice_both_handed=None
-                 ):
-        self.weapon_type = weapon_type
-        self.quality = quality
-        self.color = color
-        self.skills = skills  # List
-        self.handed = handed  # List
-        self.damage = damage
-        self.stats = stats
+    def __init__(self):
+        self.weapon_type = ''
+        self.quality = ''
+        self.color = ''
+        self.skills = []  # List
+        self.handed = []  # List
+        self.damage = ''
+        self.stats = {}
 
         self.ability_sets = {}
         self.cd_timers = {}
         self.strengths = {}
-        self.cd_adjs = {}
-        self.ability_sets['simple'] = ability_set
-        self.active_set = 'simple'
-        self.id = weapon_id
-        self.cd_timers['simple'] = cd_timer_set
-        self.cd_adjs['simple'] = cd_adj_set
-        self.strengths['simple'] = strength_set
+        self.id = 0
 
         self.cycles = {}
-        self.cycles['simple'] = {
-                    0: 1,
-                    1: 1,
-                    2: 1,
-                    3: 1,
-                    4: 1,
-                }
         
+        self.dice = None
+        self.dice_both_handed = None
+
+    def add_ability_set(self, name, ability_set, strength_set):
+        self.strengths[name] = strength_set
+        self.ability_sets[name] = ability_set
+        self.cycles[name] = {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+        self.cd_timers[name] = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+
+        self.active_set = name
+
+    def add_dice(self, dice, dice_both):
         self.dice = dice
-        self.dice.roll()
         self.dice_both_handed = dice_both_handed
+        
+        self.dice.roll()
+
         if dice_both_handed is not None:
             self.dice_both_handed.roll()
 

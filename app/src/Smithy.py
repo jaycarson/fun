@@ -153,37 +153,56 @@ class SmithWeapon(Smith):
                quality='any',
                color='any',
                ):
-        if weapon == 'any' or weapon not in self.weapons:
-            weapon = choice(self.weapons)
+        weapon_type = weapon
         if quality == 'any' or quality not in self.qualities:
             quality = choice(self.qualities)
         if color == 'any' or color not in self.colors:
             color = choice(self.colors)
 
-        damage_type = self.book_weapon.get_weapon_damage_type(weapon)
+        damage_type = self.book_weapon.get_weapon_damage_type(weapon_type)
         damage_types = []
         damage_types.append(damage_type)
 
-        ability_set = self.generate_ability_set(damage_types)
+        new_weapon = Weapon()
+        new_weapon.weapon_type = weapon_type
+        new_weapon.quality = quality
+        new_weapon.color = color
+        new_weapon.skill = self.book_weapon.get_weapon_skills(weapon)
+        new_weapon.handed = self.book_weapon.get_weapon_handed(weapon)
+        new_weapon.damage = damage_types
+        new_weapon.stats = self.book_stat.generate_for_gear(quality)
+        new_weapon.ability_set = ability_set
+        new_weapon.cd_timer_set = cooldown_set
+        new_weapon.strength_set = strength_set
+        new_weapon.id = self.generate_id()
+
+        new_weapon.add_dice(self.get_dice(color))
+
+        self.add_ability_set_to_weapon(
+                weapon=new_weapon,
+                damage_type='simple regiment',
+                skills=['simple', 'regiment'],
+            )
+
+        self.add_ability_set_to_weapon(
+                weapon=new_weapon,
+                damage_type='simple',
+                skills=['simple'],
+            )
+
+        return new_weapon
+
+    def add_ability_set_to_weapon(self, weapon, set_name, skills):
+        weapon_type = weapon.weapon_type
+        if weapon_type == 'any' or weapon_type not in self.weapons:
+            weapon_type = choice(self.weapons)
+            weapon.weapon_type = weapon_type
+
+        ability_set = self.generate_ability_set(weapon.damage_types)
         strength_set = self.generate_strength_set()
         cooldown_set = self.generate_cooldown_set(strength_set)
-        cooldown_adj_set = self.generate_cooldown_adj_set(strength_set)
-
-        return Weapon(
-            weapon_type=weapon,
-            quality=quality,
-            color=color,
-            skills=self.book_weapon.get_weapon_skills(weapon),
-            handed=self.book_weapon.get_weapon_handed(weapon),
-            damage=damage_types,
-            stats=self.book_stat.generate_for_gear(quality),
-            ability_set=ability_set,
-            cd_timer_set=cooldown_set,
-            cd_adj_set=cooldown_adj_set,
-            strength_set=strength_set,
-            weapon_id=self.generate_id(),
-            dice=self.get_dice(color),
-            )
+        
+        new_weapon.add_ability_set(set_name, abilty_set, strength_set)
 
     def generate_ability_set(self, damage_types, skills=['simple']):
         skill_list = []
@@ -191,6 +210,8 @@ class SmithWeapon(Smith):
         ability_set = []
 
         for skill in skills:
+            if skill == 'regiment':
+                continue
             for damage_type in damage_types:
                 skill_list_primary += self.book_skill.get_skill_abilities_primary(
                     skill=skill,
@@ -207,9 +228,15 @@ class SmithWeapon(Smith):
         ability = self.get_ability_primary(choice(skill_list_primary))
         ability_set.append(ability)
 
-        for counter in range(0, 4):
-            ability = self.get_ability(choice(skill_list))
-            ability_set.append(ability)
+        if 'regiment' in skills:
+            ability_set.append(self.get_ablity('regiment advance')
+            ability_set.append(self.get_ablity('regiment turn left')
+            ability_set.append(self.get_ablity('regiment turn right')
+            ability_set.append(self.get_ablity('regiment charge')
+        else:
+            for counter in range(0, 4):
+                ability = self.get_ability(choice(skill_list))
+                ability_set.append(ability)
 
         return ability_set
 
@@ -239,71 +266,8 @@ class SmithWeapon(Smith):
         
         return cooldown_set
 
-    def generate_cooldown_adj_set(self, strength_set):
-        return {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
-
     def get_ability(self, ability_name):
         return self.abilities.get_ability(ability_name)
     
     def get_ability_primary(self, ability_name):
         return self.abilities.get_ability_primary(ability_name)
-
-
-class SmithRegimentArmor(SmithArmor):
-    def __init__(self, library):
-        Smith.__init__(self, library)
-
-
-class SmithRegimentWeapon(SmithWeapon):
-    def __init__(self, library):
-        Smith.__init__(self, library)
-    
-    def create(self,
-               weapon='any',
-               quality='any',
-               color='any',
-               ):
-        if weapon == 'any' or weapon not in self.weapons:
-            weapon = choice(self.weapons)
-        if quality == 'any' or quality not in self.qualities:
-            quality = choice(self.qualities)
-        if color == 'any' or color not in self.colors:
-            color = choice(self.colors)
-
-        damage_type = self.book_weapon.get_weapon_damage_type(weapon)
-        damage_types = []
-        damage_types.append(damage_type)
-
-        ability_set = self.generate_ability_set(weapon)
-        strength_set = self.generate_strength_set()
-        cooldown_set = self.generate_cooldown_set(strength_set)
-        cooldown_adj_set = self.generate_cooldown_adj_set(strength_set)
-
-        return Weapon(
-            weapon_type=weapon,
-            quality=quality,
-            color=color,
-            skills=self.book_weapon.get_weapon_skills(weapon),
-            handed=self.book_weapon.get_weapon_handed(weapon),
-            damage=damage_types,
-            stats=self.book_stat.generate_for_gear(quality),
-            ability_set=ability_set,
-            cd_timer_set=cooldown_set,
-            cd_adj_set=cooldown_adj_set,
-            strength_set=strength_set,
-            weapon_id=self.generate_id(),
-            dice=self.get_dice(color),
-            )
-
-    def generate_ability_set(self, weapon):
-        ability_set = []
-
-        return ability_set
-
-    def get_ability(self, ability_name):
-        return self.abilities.get_ability(ability_name)
-    
-    def get_ability_primary(self, ability_name):
-        return self.abilities.get_ability_primary(ability_name)
-
-

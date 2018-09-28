@@ -22,6 +22,7 @@ class Unit(object):
         self.char_id = char_id
         self.locale_id = 0
         self.gcd = 0
+        self.combat_mode = 'skirmish'  # skirmish/battle
         self.library = library
         
         self.skillable = Skillable()
