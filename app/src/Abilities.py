@@ -37,26 +37,6 @@ class Abilities(object):
                 'stab': Stab(self.library),
             }
 
-        self.regiment_abilities = {
-                'RegimentClub': RegimentClub(self.library),
-                'RegimentDagger': RegimentDagger(self.library),
-                'RegimentGlaive': RegimentGlaive(self.library),
-                'RegimentSickle': RegimentSickle(self.library),
-                'RegimentSword': RegimentSword(self.library),
-                'RegimentSwordGreat': RegimentSwordGreat(self.library),
-                'RegimentSwordLong': RegimentSwordLong(self.library),
-                'RegimentSwordShort': RegimentSwordShort(self.library),
-                'RegimentSwordRapier': RegimentSwordRapier(self.library),
-                'RegimentStaff': RegimentStaff(self.library),
-                'RegimentMace': RegimentMace(self.library),
-                'RegimentMorningStar': RegimentMorningStar(self.library),
-                'RegimentAxe': RegimentAxe(self.library),
-                'RegimentAxeGreat': RegimentAxeGreat(self.library),
-                'RegimentAxeHalfMoon': RegimentAxeHalfMoon(self.library),
-                'RegimentAxeHand': RegimentAxeHand(self.library),
-                'RegimentSpear': RegimentSpear(self.library),
-            }
-
     def get_ability(self, name):
         return self.abilities[name]
 
@@ -113,6 +93,23 @@ class Ability(object):
             time = self.calc_gcd(actor, slot) / float(self.one_second)
             dps = damage / time
             return dps
+
+    def activate_regiment(self, actor, slot):
+        current_time = actor.get_time()
+        cooldown = 0
+        
+        if slot == 1:
+            cooldown = self.activate_regiment_attack(actor)
+        elif slot == 2:
+            cooldown = self.activate_regiment_move_forward(actor)
+        elif slot == 3:
+            cooldown = self.activate_regiment_turn_left(actor)
+        elif slot == 4:
+            cooldown = self.activate_regiment_turn_right(actor)
+        elif slot == 5:
+            cooldown = self.activate_regiment_charge(actor)
+
+        return cooldown + current_time
 
     def get_name(self, actor, slot):
         return self.name_1
@@ -201,6 +198,78 @@ class Ability(object):
             ]
 
         actor.target_enemy.receive_status_effects(debuffs)
+
+    def activate_regiment_attack(self, actor):
+        enemies = actor.dm.get_adjacent_enemies(actor)
+        cooldown = 0
+
+        if len(enemies) > 0:
+            for enemy in enemies:
+                self.regiment_give_effects(actor, enemy)
+        elif actor.target_enemy is not None:
+            ability_range = int(self.calc_range(actor, slot=1)/self.scaling)
+            if ability_range > 1:
+                self.regiment_give_effects(actor, 1)
+
+            actor.take_gcd(cooldown=self.calc_gcd(actor, 1))
+            cooldown = self.calc_cooldown(actor, 1)
+
+        return cooldown
+
+    def activate_regiment_move_forward(self, actor):
+        new_hex = actor.dm.get_neighboring_hex(actor, actor.facing)
+
+        if actor.dm.is_neighboring_hex_empty(actor, actor.facing):
+            actor.move(actor.dm.get_neighboring_hex(actor, actor.facing))
+            speed = actor.regiment_speed / self.standard_speed
+            cooldown = speed * self.one_second
+            return cooldown
+
+        return 0
+
+    def activate_regiment_turn_left(self, actor):
+        new_facing = actor.facing - 1
+        if new_facing == -1:
+            new_facting = 5
+        actor.facing =  new_facing
+
+        speed = actor.regiment_speed / self.standard_speed
+        cooldown = speed * self.one_second / 4
+        return cooldown
+                
+    def activate_regiment_turn_right(self, actor):
+        new_facing = actor.facing + 1
+        if new_facing == 6:
+            new_facting = 0
+        actor.facing =  new_facing
+
+        speed = actor.regiment_speed / self.standard_speed
+        cooldown = speed * self.one_second / 4
+        return cooldown
+                    
+    def activate_regiment_charge(self, actor):
+        adjacent_enemies = actor.dm.get_adjacent_enemies(actor)
+
+        if len(adjacent_enemies) > 0:
+            return 0
+
+        chargable_enemies = actor.dm_get_enemies_in_line(
+                requestor=actor,
+                direction=actor.facing,
+                distance=actor.regiment_charge_range,
+            )
+
+        if len(chargable_enemies) == 0:
+            return 0
+
+        for movement in range(0, actor.regiment_charge_range + 1):
+            self.activate_regiment_move_forward(actor)
+
+        self.regiment_give_effects_charge(actor, 1)
+
+        speed = actor.regiment_speed / self.standard_speed
+        cooldown = speed * self.one_second
+        return cooldown
 
 
 class AbilityCyclable(Ability):
@@ -595,105 +664,3 @@ class WildBash(Ability):
     def __init__(self, library):
         Ability.__init__(self, library)
         self.name_1 = 'Wild Bash'
-
-
-class RegimentClub(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentClub'
-
-
-class RegimentDagger(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentDagger'
-
-
-class RegimentGlaive(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentGlaive'
-
-
-class RegimentSickle(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentSickle'
-
-
-class RegimentSword(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentSword'
-
-
-class RegimentSwordGreat(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentSwordGreat'
-
-
-class RegimentSwordLong(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'RegimentSwordLong'
-
-
-class RegimentSwordShort(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentSwordRapier(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentStaff(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentMace(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentMorningStar(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentAxe(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentAxeGreat(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentAxeHalfMoon(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentAxeHand(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'
-
-
-class RegimentSpear(Ability):
-    def __init__(self, library):
-        Ability.__init__(self, library)
-        self.name_1 = 'Regiment'

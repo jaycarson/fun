@@ -307,6 +307,18 @@ class HexMap(object):
 
         return results
 
+    def line(self, center_hex, direction, distance):
+        results = []
+
+        for step in range(0, distance + 1):
+            current_hex = self.add(
+                            center_hex, 
+                            self.scale(self.get_direction(direction), step)
+                        )
+            results.append(current_hex)
+
+        return results
+
     def get_variance(self, point, radius):
         points = self.spiral(point, radius)
 

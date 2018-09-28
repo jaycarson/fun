@@ -10,14 +10,14 @@ from random import choice
 from copy import deepcopy
 
 
-class Character(object):
+class Unit(object):
     def __init__(self,
                  library,  # The Library
+                 stats,
                  experience=0,
                  race='human',
                  name='None',
                  char_id=0,
-                 stats=None,  # Dictionary
                  ):
         self.char_id = char_id
         self.locale_id = 0
@@ -159,17 +159,6 @@ class Character(object):
 
         weapon.activate(self, slot)
 
-    def attack_hyp(self, slot):
-        weapon = self.get_weapon(slot)
-
-        if weapon is None:
-            return -1
-
-        return weapon.activate_hyp(
-                actor=self,
-                slot=slot,
-            )
-
     def get_weapon(self, slot=1):
         ws = self.sets_weapon
         active_ws = self.get_active_weapon_set()
@@ -234,6 +223,27 @@ class Character(object):
             
         for expired_effect in expired_effects:
             self.active_effects.remove(expired_effect)
+
+
+class Character(Unit):
+    def __init__(self,
+                 library,  # The Library
+                 stats,  # Dictionary
+                 experience=0,
+                 race='human',
+                 name='None',
+                 char_id=0,
+                 ):
+        Unit.__init__(
+            self,
+            experience=experience,
+            race=race,
+            name=name,
+            char_id=char_id,
+            stats=stats,
+            library=library,
+        )
+
 
 
 class CharacterPC(Character):
@@ -314,4 +324,12 @@ class Regiment(Character):
             stats=stats,
             library=library,
         )
-        return
+        self.size = 1
+        self.max_size = 30
+        self.facing = 0  # 0 = North. 0-5 Clockwise
+
+    def add_unit(self, quanitity=1):
+        self.size += quantity
+
+        if self.size > self.max_size:
+            self.size = self.max_size

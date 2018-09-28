@@ -128,6 +128,10 @@ class DungeonMaster(object):
         hexes = self.dungeon.neighbors(requestor.dungeon_hex)
         return self.get_enemies(requestor, hexes)
 
+    def get_enemies_in_line(self, requestor, direction, distance):
+        hexes = self.dungeon.line(requestor.dungeon_hex, direction, distance)
+        return self.get_enemies(requestor, hexes)
+
     def get_nearby_enemies(self, requestor, radius=2):
         hexes = self.dungeon.spiral(requestor.dungeon_hex, radius)
         return self.get_enemies(requestor, hexes)
@@ -165,6 +169,16 @@ class DungeonMaster(object):
         requestor.distance_to_enemy = min_dist
 
         return closest
+
+    def get_neighboring_hex(self, actor, direction):
+        return self.dungeon.neighbor(actor.dungeon_hex, direction)
+
+    def is_neighboring_hex_empty(self, actor, direction):
+        neighbor = self.get_neighboring_hex(actor, direction)
+        if neighbor.character is None:
+            return True
+        else:
+            return False
 
     def distance(self, actor, target):
         return self.dungeon.distance(actor.dungeon_hex, target.dungeon_hex)
