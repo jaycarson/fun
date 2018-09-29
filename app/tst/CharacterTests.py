@@ -21,7 +21,7 @@ class CharacterTest(unittest.TestCase):
         self.locale_id = 1000
         self.library = Library()
         self.book_stat = self.library.get_book('stat')
-        self.sut_smithy = Smithy()
+        self.sut_smithy = Smithy(self.library)
         self.sut_brains = Brains()
 
         self.sut_faction = Faction(

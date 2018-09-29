@@ -9,6 +9,7 @@ class Weapon(object):
         self.skills = []  # List
         self.handed = []  # List
         self.damage = ''
+        self.damage_types = []
         self.stats = {}
 
         self.ability_sets = {}
@@ -29,7 +30,7 @@ class Weapon(object):
 
         self.active_set = name
 
-    def add_dice(self, dice, dice_both):
+    def add_dice(self, dice, dice_both_handed=None):
         self.dice = dice
         self.dice_both_handed = dice_both_handed
         
@@ -85,9 +86,6 @@ class Weapon(object):
             abilities.append(key)
 
         return abilities
-
-    def add_ability_set(self, ability_set, ability_set_name):
-        self.ability_sets[ability_set_name] = ability_set
 
     def get_active_ability_set(self):
         return self.ability_sets[self.active_set]

@@ -154,6 +154,8 @@ class SmithWeapon(Smith):
                color='any',
                ):
         weapon_type = weapon
+        if weapon_type == 'any' or weapon_type not in self.weapons:
+            weapon_type = choice(self.weapons)
         if quality == 'any' or quality not in self.qualities:
             quality = choice(self.qualities)
         if color == 'any' or color not in self.colors:
@@ -167,36 +169,32 @@ class SmithWeapon(Smith):
         new_weapon.weapon_type = weapon_type
         new_weapon.quality = quality
         new_weapon.color = color
-        new_weapon.skills = self.book_weapon.get_weapon_skills(weapon)
-        new_weapon.handed = self.book_weapon.get_weapon_handed(weapon)
-        new_weapon.damage = damage_types
+        new_weapon.skills = self.book_weapon.get_weapon_skills(weapon_type)
+        new_weapon.handed = self.book_weapon.get_weapon_handed(weapon_type)
+        new_weapon.damage_types = damage_types
         new_weapon.stats = self.book_stat.generate_for_gear(quality)
-        new_weapon.ability_set = ability_set
-        new_weapon.cd_timer_set = cooldown_set
-        new_weapon.strength_set = strength_set
+        
         new_weapon.id = self.generate_id()
 
         new_weapon.add_dice(self.get_dice(color))
 
         self.add_ability_set_to_weapon(
                 weapon=new_weapon,
-                damage_type='simple',
+                set_name='simple',
                 skills=['simple'],
             )
 
         return new_weapon
 
     def add_ability_set_to_weapon(self, weapon, set_name, skills):
-        weapon_type = weapon.weapon_type
-        if weapon_type == 'any' or weapon_type not in self.weapons:
-            weapon_type = choice(self.weapons)
-            weapon.weapon_type = weapon_type
-
-        ability_set = self.generate_ability_set(weapon.damage_types)
+        ability_set = self.generate_ability_set(
+                        damage_types=weapon.damage_types,
+                        skills=skills,
+                    )
         strength_set = self.generate_strength_set()
         cooldown_set = self.generate_cooldown_set(strength_set)
         
-        new_weapon.add_ability_set(set_name, abilty_set, strength_set)
+        weapon.add_ability_set(set_name, ability_set, strength_set)
 
     def generate_ability_set(self, damage_types, skills=['simple']):
         skill_list = []
