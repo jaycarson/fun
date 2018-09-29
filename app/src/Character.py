@@ -164,6 +164,17 @@ class Unit(object):
         weapon = self.get_weapon(slot)
 
         weapon.activate(self, slot)
+    
+    def attack_hyp(self, slot):
+        weapon = self.get_weapon(slot)
+
+        if weapon is None:
+            return -1
+
+        return weapon.activate_hyp(
+                actor=self,
+                slot=slot,
+            )
 
     def get_weapon(self, slot=1):
         ws = self.sets_weapon
