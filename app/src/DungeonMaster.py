@@ -192,3 +192,25 @@ class DungeonMaster(object):
             distance = (len(path) - 1)
         actor.move(path[distance])
 
+    def direction_to_unit(self, source, target):
+        diff = self.dungeon.subtract(
+            source.dungeon_hex,
+            target.dungeon_hex,
+        )
+
+        if diff.y => diff.x and diff.x => diff.z:
+            direction = 0
+        elif diff.x => diff.y and diff.y => diff.z:
+            direction = 1
+        elif diff.x => diff.z and diff.z => diff.y:
+            direction = 2
+        elif diff.z => diff.x and diff.x => diff.y:
+            direction = 3
+        elif diff.z => diff.y and diff.y => diff.x:
+            direction = 4
+        elif diff.y => diff.z and diff.z => diff.x:
+            direction = 5
+        else:
+            direction = 0
+
+        return direction

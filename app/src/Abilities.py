@@ -113,16 +113,6 @@ class Ability(object):
     def get_base_morale(self, actor):
         return actor.get_morale_dice() * 10 * self.base_scaling
 
-    def get_cooldown(self, actor, slot):
-        cooldown = self.calc_cooldown(actor, slot)
-
-        if isinstance(cooldown_adj, float):
-            cooldown = int(self.cd * cooldown_adj)
-        else:
-            cooldown = self.cd + cooldown_adj
-
-        return cooldown
-
     def calc_damage(self, actor, slot):
         power = actor.get_power(slot)
         base_damage = self.get_base_damage(actor)
@@ -187,10 +177,17 @@ class Ability(object):
         actor.target_enemy.receive_status_effects(debuffs)
 
     def give_effects_regiment(self, actor, enemy):
+        side_actor_to_enemy = actor.get_side_to_unit(enemy)
+        side_enemy_to_actor = enemy.get_side_to_unit(actor)
+
+        attack_count = actor.get_attack_count(side_actor_to_enemy)
+
         debuffs = [
             RegimentDamage(
                 power=self.calc_damage(actor, slot),
                 damage_type='physical',
+                target_count=attack_count,
+                side=side_enemy_to_actor,
                 ),
             ]
 
@@ -203,13 +200,13 @@ class Ability(object):
         if len(enemies) > 0:
             for enemy in enemies:
                 self.give_effects_regiment(actor, enemy)
-            actor.take_gcd(cooldown=self.calc_gcd(actor, 1))
+            actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
         elif actor.target_enemy is not None:
-            ability_range = int(self.calc_range(actor, slot=1)/self.scaling)
+            ability_range = int(self.calc_range(actor, slot=slot)/self.scaling)
             if ability_range > 1:
-                self.give_effects_regiment(actor, 1)
+                self.give_effects_regiment(actor, slot)
 
-            actor.take_gcd(cooldown=self.calc_gcd(actor, 1))
+            actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
 
         return cooldown
 
@@ -627,6 +624,13 @@ class RegimentAdvance(Ability):
     def activate_hyp(self, actor, slot):
         return 0
 
+    def calc_gcd(self, actor, slot):
+        gcd = self.one_second / self.movement_speed * self.one_second
+        return gcd
+
+    def calc_cooldown(self, actor, slot):
+        return 0
+
 
 class RegimentTurnLeft(Ability):
     def __init__(self, library):
@@ -639,13 +643,19 @@ class RegimentTurnLeft(Ability):
             new_facting = 5
         actor.facing =  new_facing
 
-        speed = actor.regiment_speed / self.standard_speed
-        cooldown = speed * self.one_second * actor.turn_cost
-        return cooldown
+        return self.calc_cooldown()
 
     def activate_hyp(self, actor, slot):
         return 0
-                
+
+    def calc_gcd(self, actor, slot):
+        gcd = self.one_second / self.movement_speed * self.one_second
+        gcd += actor.turn_cost
+        return gcd
+
+    def calc_cooldown(self, actor, slot):
+        return 0
+                    
 
 class RegimentTurnRight(Ability):
     def __init__(self, library):
@@ -658,11 +668,17 @@ class RegimentTurnRight(Ability):
             new_facting = 0
         actor.facing =  new_facing
 
-        speed = actor.regiment_speed / self.standard_speed
-        cooldown = speed * self.one_second * actor.turn_cost
-        return cooldown
+        return self.calc_cooldown()
 
     def activate_hyp(self, actor, slot):
+        return 0
+
+    def calc_gcd(self, actor, slot):
+        gcd = self.one_second / self.movement_speed * self.one_second
+        gcd += actor.turn_cost
+        return gcd
+
+    def calc_cooldown(self, actor, slot):
         return 0
                     
 
@@ -671,7 +687,7 @@ class RegimentCharge(Ability):
         Ability.__init__(self, library)
         self.name_1 = 'Charge'
         
-    def advance_unit(self, actor)
+    def advance_unit(self, actor):
         new_hex = actor.dm.get_neighboring_hex(actor, actor.facing)
 
         if actor.dm.is_neighboring_hex_empty(actor, actor.facing):
@@ -702,9 +718,7 @@ class RegimentCharge(Ability):
 
         self.regiment_give_effects(actor, 1)
 
-        speed = actor.regiment_speed / self.standard_speed
-        cooldown = speed * self.one_second
-        return cooldown
+        return self.calc_cooldown()
 
     def activate_hyp(self, actor, slot):
         return 0
@@ -718,3 +732,10 @@ class RegimentCharge(Ability):
             ]
 
         enemy.receive_status_effects(debuffs)
+    
+    def calc_gcd(self, actor, slot):
+        gcd = self.one_second / self.movement_speed * self.one_second
+        return gcd
+
+    def calc_cooldown(self, actor, slot):
+        return 0

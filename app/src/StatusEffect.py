@@ -40,6 +40,26 @@ class Damage(StatusEffect):
         self.ticks -= 1
 
 
+class RegimentDamage(StatusEffect):
+    def __init__(self, power, damage_type, target_count, side):
+        StatusEffect.__init__(self, power)
+        self.name = 'Damage'
+        self.damage_type = damage_type
+        self.ticks = 1
+        self.damage_tick = self.power
+        self.target_count = target_count
+        self.side = side
+
+    def trigger(self, host):
+        host.take_damage(
+                damage=self.damage_tick,
+                damage_type=self.damage_type,
+                target_count=self.target_count,
+                side=self.side,
+            )
+        self.ticks -= 1
+
+
 class Dot(StatusEffect):
     def __init__(self, power):
         StatusEffect.__init__(self, power)

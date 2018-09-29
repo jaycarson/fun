@@ -167,7 +167,7 @@ class SmithWeapon(Smith):
         new_weapon.weapon_type = weapon_type
         new_weapon.quality = quality
         new_weapon.color = color
-        new_weapon.skill = self.book_weapon.get_weapon_skills(weapon)
+        new_weapon.skills = self.book_weapon.get_weapon_skills(weapon)
         new_weapon.handed = self.book_weapon.get_weapon_handed(weapon)
         new_weapon.damage = damage_types
         new_weapon.stats = self.book_stat.generate_for_gear(quality)
@@ -177,12 +177,6 @@ class SmithWeapon(Smith):
         new_weapon.id = self.generate_id()
 
         new_weapon.add_dice(self.get_dice(color))
-
-        self.add_ability_set_to_weapon(
-                weapon=new_weapon,
-                damage_type='simple regiment',
-                skills=['simple', 'regiment'],
-            )
 
         self.add_ability_set_to_weapon(
                 weapon=new_weapon,
@@ -210,8 +204,6 @@ class SmithWeapon(Smith):
         ability_set = []
 
         for skill in skills:
-            if skill == 'regiment':
-                continue
             for damage_type in damage_types:
                 skill_list_primary += self.book_skill.get_skill_abilities_primary(
                     skill=skill,
@@ -228,15 +220,9 @@ class SmithWeapon(Smith):
         ability = self.get_ability_primary(choice(skill_list_primary))
         ability_set.append(ability)
 
-        if 'regiment' in skills:
-            ability_set.append(self.get_ablity('regiment advance')
-            ability_set.append(self.get_ablity('regiment turn left')
-            ability_set.append(self.get_ablity('regiment turn right')
-            ability_set.append(self.get_ablity('regiment charge')
-        else:
-            for counter in range(0, 4):
-                ability = self.get_ability(choice(skill_list))
-                ability_set.append(ability)
+        for counter in range(0, 4):
+            ability = self.get_ability(choice(skill_list))
+            ability_set.append(ability)
 
         return ability_set
 

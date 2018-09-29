@@ -25,7 +25,7 @@ class FactionTest(unittest.TestCase):
             name=self.sut_name,
             faction_id=0,
             clock=self._clock,
-            smithy=self.sut_smithy
+            smithy=self.sut_smithy,
             library=self.library,
             )
 
@@ -61,8 +61,16 @@ class FactionTest(unittest.TestCase):
     def test_gets_correct_id(self):
         expected_1 = 1
         expected_2 = 2
-        sut_1 = Faction(faction_id=expected_1, library=self.library)
-        sut_2 = Faction(faction_id=expected_2, library=self.library)
+        sut_1 = Faction(f
+                action_id=expected_1,
+                library=self.library,
+                smithy=self.sut_smithy,
+            )
+        sut_2 = Faction(
+                faction_id=expected_2,
+                library=self.library,
+                smithy=self.sut_smithy,
+            )
         self.assertEqual(expected_1, sut_1.faction_id)
         self.assertEqual(expected_2, sut_2.faction_id)
 

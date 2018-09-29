@@ -52,6 +52,7 @@ class Unit(object):
         self.health = self.max_health
         self.movement = 3
         self.movement_speed = 1000
+        self.turn_cost = 0.25
 
         self.hyp_set = 'active'
 
@@ -92,6 +93,10 @@ class Unit(object):
 
         self.casting = False
         self.cast_time = 0
+        
+        self.facing = 0  # 0 = North. 0-5 Clockwise
+        self.formation_width = 1
+        self.formation_depth = 1
 
     def get_level(self):
         return self.levelable.get_level()
@@ -184,6 +189,26 @@ class Unit(object):
     def get_active_weapon_set(self):
         return self.sets_weapon.active_weapon_set
 
+    def get_direction_to_unit(self, target):
+        return dm.direction_to_unit(source=self, target=target)
+
+    def get_side_to_unit(self, target):
+        direction = self.get_direction_to_unit(target)
+        side = direction - self.facing
+
+        if side < 0:
+            side += 6
+        if side > 5:
+            side -= 6
+
+        return side
+
+    def get_attack_count(self, side):
+        if side == 4 or side == 2:
+            attack_count = self.formation_depth
+        else:
+            attack_count = self.formation_width
+
     def move(self, dungeon_hex):
         self.dungeon_hex.character = None
         self.dungeon_hex = dungeon_hex
@@ -194,7 +219,7 @@ class Unit(object):
         move_speed = self.movement_speed + snare
         self.take_gcd(move_speed)
 
-    def take_damage(self, damage, damage_type):
+    def take_damage(self, damage, damage_type, target_count=1, side=0):
         self.health -= damage
         if self.health < 0:
             self.dm.remove_char(self)
@@ -244,7 +269,6 @@ class Character(Unit):
             stats=stats,
             library=library,
         )
-
 
 
 class CharacterPC(Character):
@@ -327,10 +351,90 @@ class Regiment(Character):
         )
         self.size = 1
         self.max_size = 30
-        self.facing = 0  # 0 = North. 0-5 Clockwise
+        self.soldiers = [Soldier(self.max_health)]
 
     def add_unit(self, quanitity=1):
         self.size += quantity
+        count = len(self.soldiers)
 
-        if self.size > self.max_size:
-            self.size = self.max_size
+        if count + quanitity > self.max_size:
+            quantity = self.max_size - count
+
+        for new_soldier in range(0, quantity):
+            self.soldiers.append(Soldier(self.max_health))
+    
+    def get_laps(self, target_count):
+        return min(target_count / len(self.soldiers), 3)
+
+    def take_damage(self, damage, damage_type, target_count=1, side=0):
+        # TODO damage modification based on resistances
+
+        if side == 2:
+            self.take_damage_right_side(damage, target_count)
+        elif side == 4:
+            self.take_damage_left_side(damage, target_count)
+        elif side == 3:
+            self.take_damage_rear(damage, target_count)
+        else:
+            self.take_damage_front(damage, target_count)
+
+        self.resolve_unit_damage()
+
+    def take_damage_front(self, damage, target_count):
+        for lap in range(0, self.get_laps(target_count) + 1):
+            for target in range(0, target_count):
+                soldiers[target].take_damage(damage)
+
+    def take_damage_left_side(self, damage, target_count):
+        laps = target_count / len(self.soldiers)
+
+        for lap in range(0, self.get_laps(target_count) + 1):
+            for row in range(0, self.formation_width):
+                for column in range(0, self.formation_depth):
+                    target = row * self.formation_width + column
+
+                    if target <= len(self.soldiers):
+                        soldiers[target].take_damage(damage)
+                        target_count -= 1
+                        if target_count <= 0:
+                            return
+
+    def take_damage_right_side(self, damage, target_count):
+        laps = target_count / len(self.soldiers)
+
+        for lap in range(0, self.get_laps(target_count) + 1):
+            for row in range(self.formation_width, 0):
+                for column in range(0, self.formation_depth):
+                    target = row * self.formation_width + column
+
+                    if target <= len(self.soldiers):
+                        soldiers[target].take_damage(damage)
+                        target_count -= 1
+                        if target_count <= 0:
+                            return
+
+    def take_damage_rear(self, damage, target_count):
+        laps = target_count / len(self.soldiers)
+
+        for lap in range(0, self.get_laps(target_count) + 1):
+            for target in range(target_count, 0):
+                soldiers[target].take_damage(damage)
+
+    def resolve_unit_damage(self):
+        for soldier in soldiers:
+            if soldier.health <= 0:
+                soldiers.remove(soldier)
+
+        self.formation_depth = len(soldiers) / self.formation_width
+
+
+class Soldier(object):
+    def __init__(self, health):
+        self.health = health
+        self.max_health = health
+
+    def take_damage(self, damage):
+        self.health = max(self.health - damage, 0)
+
+    def heal_damage(self, heal):
+        self.health = min(self.health + heal, self.max_health)
