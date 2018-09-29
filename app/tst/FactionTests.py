@@ -61,8 +61,8 @@ class FactionTest(unittest.TestCase):
     def test_gets_correct_id(self):
         expected_1 = 1
         expected_2 = 2
-        sut_1 = Faction(f
-                action_id=expected_1,
+        sut_1 = Faction(
+                faction_id=expected_1,
                 library=self.library,
                 smithy=self.sut_smithy,
             )
@@ -89,8 +89,7 @@ class FactionTest(unittest.TestCase):
 
     def test_faction_receives_a_weapon(self):
         colors = self.library.get_book('color').get_list()
-        weapon_smith = SmithWeapon(self.library)
-        new_weapon = weapon_smith.create()
+        new_weapon = self.sut_smithy_weapon.create()
         self.sut.rack_weapon.give_weapon(new_weapon)
         given_wpn = self.sut.rack_weapon.weapons[new_weapon.id]
         self.assertTrue(given_wpn.color in colors)

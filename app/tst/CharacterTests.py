@@ -29,7 +29,7 @@ class CharacterTest(unittest.TestCase):
                     name='Red',
                     faction_id='1000',
                     clock=self._clock,
-                    smithy_weapon=self.sut_smithy,
+                    smithy=self.sut_smithy,
                     brains=self.sut_brains,
                     library=self.library
                 )
@@ -86,8 +86,17 @@ class CharacterTest(unittest.TestCase):
     def test_gets_correct_id(self):
         expected_1 = 1
         expected_2 = 2
-        sut_1 = Character(char_id=expected_1, library=self.library)
-        sut_2 = Character(char_id=expected_2, library=self.library)
+        book_stats=self.library.get_book('stat')
+        sut_1 = Character(
+                    char_id=expected_1,
+                    library=self.library,
+                    stats=book_stats.generate_for_character(),
+                )
+        sut_2 = Character(
+                    char_id=expected_2,
+                    library=self.library,
+                    stats=book_stats.generate_for_character(),
+                )
         self.assertEqual(expected_1, sut_1.char_id)
         self.assertEqual(expected_2, sut_2.char_id)
 
@@ -178,8 +187,7 @@ class CharacterCombatTest(unittest.TestCase):
                     name='blue',
                     faction_id='1001',
                     clock=self._clock,
-                    smithy_weapon=self.sut_smithy_weapon,
-                    smithy_armor=self.sut_smithy_armor,
+                    smithy=self.sut_smithy,
                     brains=self.sut_brains,
                     library=self.library,
                 )
