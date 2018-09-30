@@ -36,6 +36,7 @@ class Faction(object):
         self.name = name
         self.clock = clock
         self.characters = []
+        self.regiments = []
         self.brains = brains
         self.smithy_weapon = smithy.get_smith('weapon')
         self.smithy_armor = smithy.get_smith('armor')
@@ -89,6 +90,31 @@ class Faction(object):
         self.characters.append(new_character)
 
         return new_character
+
+    def create_regiment(self, owner, name='any', race='any'):
+        if race == 'any' or race not in self.races:
+            race = choice(self.races)
+
+        new_stats = self.book_stat.generate_for_character()
+
+        new_regiment = Regiment(
+                experience=0,
+                race=race,
+                name=name,
+                char_id=name,
+                stats=new_stats,  # Dictionary
+                library=self.library,
+            )
+
+        new_regiment.faction = self
+
+        self.equip_standard_character(new_regiment)
+
+        self.regiments.append(new_regiment)
+
+        owner.command_regiment(new_regiment)
+
+        return new_regiment
 
     def equip_standard_character(self, character):
         self.equip_standard_weapon(character)

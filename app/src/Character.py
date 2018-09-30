@@ -280,6 +280,10 @@ class Character(Unit):
             stats=stats,
             library=library,
         )
+        self.regiments = []
+    
+    def command_regiment(self, regiment):
+        self.regiments.append(regiment)
 
 
 class CharacterPC(Character):
@@ -360,20 +364,26 @@ class Regiment(Character):
             stats=stats,
             library=library,
         )
-        self.size = 1
+        self.size = 0
         self.max_size = 30
-        self.soldiers = [Soldier(self.max_health)]
+        self.formation_width = 4
+        self.formation_depth = 1
+        self.soldiers = []
+        initial_quantity = 10
+        self.add_unit(quantity=initial_quantity)
+        self.update_formation_depth()
 
-    def add_unit(self, quanitity=1):
-        self.size += quantity
+    def add_unit(self, quantity=1):
         count = len(self.soldiers)
 
-        if count + quanitity > self.max_size:
+        if count + quantity > self.max_size:
             quantity = self.max_size - count
 
         for new_soldier in range(0, quantity):
             self.soldiers.append(Soldier(self.max_health))
-    
+        
+        self.size += quantity
+
     def get_laps(self, target_count):
         return min(target_count / len(self.soldiers), 3)
 
@@ -393,50 +403,68 @@ class Regiment(Character):
 
     def take_damage_front(self, damage, target_count):
         for lap in range(0, self.get_laps(target_count) + 1):
-            for target in range(0, target_count):
-                soldiers[target].take_damage(damage)
-
-    def take_damage_left_side(self, damage, target_count):
-        laps = target_count / len(self.soldiers)
-
-        for lap in range(0, self.get_laps(target_count) + 1):
-            for row in range(0, self.formation_width):
-                for column in range(0, self.formation_depth):
+            for row in range(0, self.formation_depth):
+                for column in range(0, self.formation_width):
                     target = row * self.formation_width + column
 
-                    if target <= len(self.soldiers):
-                        soldiers[target].take_damage(damage)
+                    if target < len(self.soldiers):
+                        self.soldiers[target].take_damage(damage)
+                        target_count -= 1
+                        if target_count <= 0:
+                            return
+
+    def take_damage_left_side(self, damage, target_count):
+        for lap in range(0, self.get_laps(target_count) + 1):
+            for column in range(0, self.formation_width):
+                for row in range(0, self.formation_depth):
+                    target = row * self.formation_width + column
+
+                    if target < len(self.soldiers):
+                        self.soldiers[target].take_damage(damage)
                         target_count -= 1
                         if target_count <= 0:
                             return
 
     def take_damage_right_side(self, damage, target_count):
-        laps = target_count / len(self.soldiers)
-
         for lap in range(0, self.get_laps(target_count) + 1):
-            for row in range(self.formation_width, 0):
-                for column in range(0, self.formation_depth):
+            for column in range(self.formation_width - 1, -1, -1):
+                for row in range(self.formation_depth - 1, -1, -1):
                     target = row * self.formation_width + column
 
-                    if target <= len(self.soldiers):
-                        soldiers[target].take_damage(damage)
+                    if target < len(self.soldiers):
+                        self.soldiers[target].take_damage(damage)
                         target_count -= 1
                         if target_count <= 0:
                             return
 
     def take_damage_rear(self, damage, target_count):
-        laps = target_count / len(self.soldiers)
-
         for lap in range(0, self.get_laps(target_count) + 1):
-            for target in range(target_count, 0):
-                soldiers[target].take_damage(damage)
+            for row in range(self.formation_depth - 1, -1, -1):
+                for column in range(self.formation_width - 1, -1, -1):
+                    target = row * self.formation_width + column
+
+                    if target < len(self.soldiers):
+                        self.soldiers[target].take_damage(damage)
+                        target_count -= 1
+                        if target_count <= 0:
+                            return
 
     def resolve_unit_damage(self):
-        for soldier in soldiers:
+        for soldier in self.soldiers:
             if soldier.health <= 0:
-                soldiers.remove(soldier)
+                self.soldiers.remove(soldier)
 
-        self.formation_depth = len(soldiers) / self.formation_width
+        self.size = len(self.soldiers)
+
+        self.update_formation_depth()
+
+    def update_formation_depth(self):
+        count = len(self.soldiers)
+        self.formation_depth = count / self.formation_width
+        
+        remainder = count % self.formation_width
+        if remainder > 0:
+            self.formation_depth += 1
 
 
 class Soldier(object):

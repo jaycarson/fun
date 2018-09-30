@@ -79,7 +79,7 @@ class DungeonMaster(object):
 
         return self.playing
 
-    def add_char(self, member, faction='dm', edge='dm', insert_time=0):
+    def add_unit(self, member, faction='dm', edge='dm', insert_time=0):
         if faction == 'dm':
             faction = self
 

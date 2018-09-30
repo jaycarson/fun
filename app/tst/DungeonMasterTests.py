@@ -88,13 +88,13 @@ class DungeonMasterTest(unittest.TestCase):
         self.vpc_2 = self.faction_2.create_vpc(name='joe')
         self.chars = [self.vpc_1, self.vpc_2]
 
-        self.sut.add_char(
+        self.sut.add_unit(
                 faction=self.faction_1,
                 member=self.vpc_1,
                 edge='ne',
                 insert_time=0,
             )
-        self.sut.add_char(
+        self.sut.add_unit(
                 faction=self.faction_2,
                 member=self.vpc_2,
                 edge='sw',
