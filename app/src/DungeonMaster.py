@@ -80,22 +80,19 @@ class DungeonMaster(object):
         return self.playing
 
     def add_unit(self, member, faction='dm', edge='dm', insert_time=0):
-        if faction == 'dm':
-            faction = self
+        member.dm = self
 
-        if faction.faction_id not in self.factions.keys():
-            self.factions[faction.faction_id] = []
+        faction.place_char(member, self.get_placement_locations(edge))
+
+    def add_unit_to_queue(self, member, insert_time=0):
+        if member.faction.faction_id not in self.factions.keys():
+            self.factions[member.faction.faction_id] = []
 
         if insert_time == 0:
             insert_time = self.get_time() + member.get_stat('initiative')
 
-        self.factions[faction.faction_id].append(member)
+        self.factions[member.faction.faction_id].append(member)
         self.queue.put(member, insert_time)
-
-        member.dm = self
-
-        faction.place_char(member, self.get_placement_locations(edge))
-        member.roll_equipped_dice()
 
     def remove_char(self, member):
         faction_id = member.faction.faction_id

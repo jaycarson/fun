@@ -86,6 +86,8 @@ class DungeonMasterTest(unittest.TestCase):
         self.faction_2 = self.create_faction('blue')
         self.vpc_1 = self.faction_1.create_vpc(name='jon')
         self.vpc_2 = self.faction_2.create_vpc(name='joe')
+        self.vpc_1.combat_mode = 'battle'
+        self.vpc_2.combat_mode = 'battle'
         self.chars = [self.vpc_1, self.vpc_2]
 
         self.sut.add_unit(

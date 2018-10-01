@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from StatusEffect import Damage, Bleed, BuffStat, Interfere, Snare, Vulnerability
+from StatusEffect import RegimentDamage
 
 
 class Abilities(object):
@@ -68,6 +69,7 @@ class Ability(object):
         self.base_stat = self.library.get_book('const').full_stats / 2
         self.max_stat = self.base_stat * 2
         self.damage_multiplier = 1.0
+        self.scaling_to_battle = 8
 
     def activate(self, actor, slot):
         target_enemy = actor.target_enemy
@@ -176,7 +178,7 @@ class Ability(object):
 
         actor.target_enemy.receive_status_effects(debuffs)
 
-    def give_effects_regiment(self, actor, enemy):
+    def give_effects_regiment(self, actor, enemy, slot):
         side_actor_to_enemy = actor.get_side_to_unit(enemy)
         side_enemy_to_actor = enemy.get_side_to_unit(actor)
 
@@ -199,12 +201,12 @@ class Ability(object):
 
         if len(enemies) > 0:
             for enemy in enemies:
-                self.give_effects_regiment(actor, enemy)
+                self.give_effects_regiment(actor, enemy, slot)
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
         elif actor.target_enemy is not None:
-            ability_range = int(self.calc_range(actor, slot=slot)/self.scaling)
+            ability_range = int(self.calc_range(actor, slot=slot)/self.scaling_to_battle)
             if ability_range > 1:
-                self.give_effects_regiment(actor, slot)
+                self.give_effects_regiment(actor, actor.target_enemy, slot)
 
             actor.take_gcd(cooldown=self.calc_gcd(actor, slot))
 

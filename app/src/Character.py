@@ -201,7 +201,7 @@ class Unit(object):
         return self.sets_weapon.active_weapon_set
 
     def get_direction_to_unit(self, target):
-        return dm.direction_to_unit(source=self, target=target)
+        return self.dm.direction_to_unit(source=self, target=target)
 
     def get_side_to_unit(self, target):
         direction = self.get_direction_to_unit(target)
@@ -284,6 +284,31 @@ class Character(Unit):
     
     def command_regiment(self, regiment):
         self.regiments.append(regiment)
+
+    def place_unit_in_dungeon(self, unit, locations):
+        looking = True
+
+        while looking:
+            location = choice(locations)
+            if location.character is None:
+                location.character = self
+                unit.dungeon_hex = location
+                unit.roll_equipped_dice()
+                locations.remove(location)
+                looking = False
+        
+        self.dm.add_unit_to_queue(unit)
+
+    def place_regiments_in_dungeon(self, locations_orig):
+        locations = list(locations_orig)
+        self.place_unit_in_dungeon(self, locations)
+
+        for regiment in self.regiments:
+            self.place_unit_in_dungeon(regiment, locations)
+
+    def place_self_in_dungeon(self, locations_orig):
+        locations = list(locations_orig)
+        self.place_unit_in_dungeon(self, locations)
 
 
 class CharacterPC(Character):

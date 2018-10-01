@@ -59,14 +59,10 @@ class Faction(object):
         return character.gcd
 
     def place_char(self, character, locations):
-        looking = True
-
-        while looking:
-            location = choice(locations)
-            if location.character is None:
-                location.character = character
-                character.dungeon_hex = location
-                looking = False
+        if character.combat_mode == 'skirmish':
+            character.place_self_in_dungeon(locations)
+        elif character.combat_mode == 'battle':
+            character.place_regiments_in_dungeon(locations)
 
     def create_vpc(self, name='any', race='any'):
         if race == 'any' or race not in self.races:
